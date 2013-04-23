@@ -49,8 +49,7 @@ class BaseAction extends Action{
 
 
     function getReturnUrl() {
-        //return __URL__ . '?' . C('VAR_MODULE') . '=' . MODULE_NAME . '&' . C('VAR_ACTION') . '=' . C('DEFAULT_ACTION');
-        return U(strtolower(MODULE_NAME).'/'.strtolower(  C('DEFAULT_ACTION') ) );
+        return U(MODULE_NAME.'/'.strtolower(  C('DEFAULT_ACTION') ) );
     }
 
     protected function _search($name=""){
@@ -192,7 +191,8 @@ class BaseAction extends Action{
         $name = $this->getActionName();
         $model = M($name);
         if(!empty($model)){
-            $id = $this->_param( $model->getPk() );
+            $pk =$model->getPk();
+            $id = $this->_param( $pk );
             if( !isset($id) ){
                 $this->error("非法操作！");
             }
