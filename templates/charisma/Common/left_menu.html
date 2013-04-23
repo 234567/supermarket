@@ -1,0 +1,35 @@
+{/*
+
+左边固定导航菜单
+
+*/}
+
+<div class="well nav-collapse sidebar-nav affix span2">
+    <ul class="nav nav-tabs nav-stacked main-menu">
+        <li class="nav-header hidden-tablet">功能列表</li>
+        <li>
+            <a class="nav-header menu-first " href="{:U('/index')}">
+                <i class="icon-home"></i>
+                <span class="hidden-tablet">仪表盘</span>
+            </a>
+        </li>
+        <li>
+            <a href="#authority" class="nav-header menu-first collapsed" data-toggle="collapse">
+                <i class="icon-lock"></i>权限管理</a>
+            <ul id="authority" class="nav nav-list collapse menu-second">
+                <li><a href="{:U('node/index')}"><i class="icon-list"></i>节点列表</a></li>
+                <li><a href="{:U('role/index')}"><i class="icon-list"></i>角色列表</a></li>
+                <li><a href="{:U('node/add')}"><i class="icon-user"></i>增加节点</a></li>
+                <li><a href="{:U('role/add')}"><i class="icon-user"></i>增加角色</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#staff" class="nav-header menu-first collapsed" data-toggle="collapse">
+                <i class="icon-lock"></i>员工管理</a>
+            <ul id="staff" class="nav nav-list collapse menu-second">
+                <li><a href="{:U('staff/index')}"><i class="icon-list"></i>员工列表</a></li>
+                <li><a href="{:U('staff/add')}"><i class="icon-user"></i>新增员工</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>

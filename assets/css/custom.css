@@ -1,0 +1,86 @@
+.control-group .add-on{
+    display: inline-block;
+    width: auto;
+    height: 18px;
+    min-width: 16px;
+    padding: 4px 5px;
+    font-weight: normal;
+    line-height: 18px;
+    text-align: center;
+    text-shadow: 0 1px 0 #ffffff;
+    vertical-align: middle;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    margin-left: -1px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    margin-right: -1px;
+}
+
+
+body {
+    padding-bottom: 40px;
+    margin-top:60px;
+}
+.sidebar-nav {
+    padding: 9px 0;
+}
+.affix {
+    position: fixed;
+    top:70px;
+    left:10px;
+}
+
+.branch-box{
+    min-height: 310px;
+}
+
+
+/*左侧菜单*/
+.sidebar-menu{
+    border-right: 1px solid #c4c8cb;
+}
+
+
+/*一级菜单*/
+.menu-first{
+    height:26px;
+    line-height:32px;
+    border-top: 1px solid #efefef;
+    border-bottom: 1px solid #e1e1e1;
+    padding: 0;
+    font-size: 14px;
+}
+/*一级菜单鼠标划过状态*/
+.menu-first:hover{
+    text-decoration: none;
+    background-color: #d6d4d5;
+    border-top: 1px solid #b7b7b7;
+    border-bottom: 1px solid #acacac;
+}
+
+/*二级菜单*/
+.menu-second li a{
+    height:22px;
+    line-height:22px;
+    border-top: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+    font-size: 11px;
+    text-align: center;
+}
+/*二级菜单鼠标划过样式*/
+.menu-second li a:hover {
+    text-decoration: none;
+    background-color: #66c3ec;
+    border-top: 1px solid #83ceed;
+    border-bottom: 1px solid #83ceed;
+    border-right: 3px solid #f8881c;
+    border-left: 3px solid #66c3ec;
+}
+
+/*覆盖bootstrap的样式*/
+.nav-list,.nav-list li a{
+    padding: 0px;
+    margin: 0px;
+}

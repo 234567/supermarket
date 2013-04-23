@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    {// 不同的标签 }
+    <title><block name="page_title">超市管理系统</block></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {//导入CSS }
+    <include  file="Common:css"/>
+    <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- jQuery -->
+    <js href="__ASSETS__/js/jquery-1.8.3.min.js" />
+</head>
+<body>
+
+{//导入顶部固定导航栏，如此导入，如需使用不同导航，可重定义 }
+<block name="nav-top"><include file="Common:nav_top"/></block>
+
+{//左侧的导航内容 }
+<block name="left-menu"><include file="Common:left_menu"/></block>
+
+<div class="container">
+    <div class="row">
+
+        <div class="span11 offset1" style="min-height: 500px;">
+            {/*
+            面包屑导航
+            */}
+            <!--
+            <ul class="breadcrumb">
+            <block name="breadcrumb">
+                <li>
+                    <a href="{:U('/index')}">后台首页</a>
+                    <span class="divider">/</span>
+                </li>
+            </block>
+            </ul>
+            -->
+
+            {//主体的内容部分}
+            <block name="main"></block>
+        </div>
+    </div>
+</div>
+
+{//页面底部}
+<block name="footer"><include file="Common:footer"/></block>
+
+{//JS文件}
+<block name="js"><include file="Common:js"/></block>
+
+{//其他需要添加的部分，可以在这一部分写页面独立的JS，或者导入其他JS文件等。}
+<block name="other"></block>
+</body>
+</html>

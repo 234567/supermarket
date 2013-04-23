@@ -1,0 +1,4 @@
+#根据实际情况添加一些忽略文件
+
+#忽略SuperMarket目录下的Runtime文件夹
+SuperMarket/Runtime/**/*
