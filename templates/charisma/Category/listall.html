@@ -1,0 +1,22 @@
+<span>分类列表</span>
+<select data-rel="chosen">
+<volist name="category_list" id="vo">
+
+        <if condition="($vo.category_id eq $category_default)">
+            <option value="{$vo.category_id}" selected="selected">{$vo.category_name}</option>
+            <else />
+
+
+            <eq name="vo.parent_id" value="0">
+                <option value="{$vo.category_id}">{$vo.category_name}</option>
+            </eq>
+            <between name="vo.parent_id" value="1,100">
+                <option value="{$vo.category_id}"> -- {$vo.category_name}</option>
+            </between>
+            <between name="vo.parent_id" value="101,1000">
+                <option value="{$vo.category_id}"> --  --{$vo.category_name}</option>
+            </between>
+        </if>
+
+</volist>
+</select>

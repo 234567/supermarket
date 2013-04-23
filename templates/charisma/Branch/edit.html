@@ -1,0 +1,69 @@
+<extend name="Common:base" />
+
+
+<block name="page_title">修改分店信息</block>
+<block name="main">
+
+    <div class="box">
+        <div class="box-header well">
+            <h4><i class="icon-edit"></i>修改分店信息</h4>
+        </div>
+        <div class="box-content">
+
+            <form class="form-horizontal" method="post" action="{:U('branch/update')}">
+                <input type="hidden" name="id" value="{$vo.id}"/>
+                <fieldset>
+                    <legend>{$vo.name} 分店信息</legend>
+
+                    <div class="control-group">
+                        <label class="control-label">分店名称：</label>
+                        <div class="controls">
+                            <input type="text" name="name" value="{$vo.name}" />
+                            <span class="help-inline label label-info" >*请输入</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">地址：</label>
+                        <div class="controls">
+                            <input type="text" name="address" value="{$vo.address}"/>
+                            <span class="help-inline label label-info" >*请输入</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">联系电话：</label>
+                        <div class="controls">
+                            <input type="text" name="phone" value="{$vo.phone}"/>
+                            <span class="help-inline label label-info" >*请输入</span>
+                        </div>
+                    </div>
+
+
+                    <div class="control-group">
+                        <label class="control-label">负责人：</label>
+                        <div class="controls">
+                            <input type="text" name="director_staff_id" value="{$vo.director_staff_id}"/>
+                            <span class="help-inline label label-info" >*请输入</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">图片：</label>
+                        <div class="controls">
+                            <input type="text" name="photo" value="{$vo .photo}"/>
+                            <span class="help-inline label label-info" >*请输入</span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">确定修改</button>
+                        <a class="btn btn-back" >返回</a>
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+    </div>
+
+</block>

@@ -1,0 +1,54 @@
+<extend name="Common:base" />
+
+
+<block name="page_title">连锁分店管理</block>
+<block name="main">
+
+    <div class="box">
+        <div class="box-header well-small">
+            <h4>分店列表</h4>
+        </div>
+        <div class="box-content">
+            <a id="btn-add" href="{:U('branch/add')}" class="btn btn-round btn-info ">
+                <i class="icon-plus"></i>新增连锁分店
+            </a>
+            <div id="dialog"></div>
+            <hr />
+            <div id="branch_list">
+                <div class="row ">
+                    <volist name="list" id="vo" key="idx" mod="3">
+                        <div class="box span3">
+
+                            <div class="box-header well-small" data-original-title="">
+                                <h4>{$vo.name}</h4>
+                                <div class="box-icon">
+                                    <a href="#" class=" btn-minimize btn-mini"><i class="icon-chevron-up"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="box-content">
+                                <img src="__ASSETS__/images/noimages.png" alt="" style="width: 260px; height: 120px;"><p></p>
+                                <p>地址：{$vo.address}</p>
+                                <p>电话：{$vo.phone}</p>
+                                <p>负责人姓名：{$vo.director_name}</p>
+                                <p>负责人手机：{$vo.director_mobile}</p>
+                                <p>
+                                    <a href="#" class="btn">商品</a>
+                                    <a href="#" class="btn">销售</a>
+                                    <a href="{:U('branch/edit')}?id={$vo.id}" class="btn btn-info">修改</a>
+                                    <a href="{:U('branch/foreverdelete')}?id={$vo.id}" class="btn btn-info">删除</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <eq name="mod" value="2"><br/></div><div class="row "></eq>
+
+                </volist>
+
+            </div>
+
+                <div id="page" class="pagination pagination-small ">{$page}</div>
+            </div>
+        </div>
+    </div>
+</block>

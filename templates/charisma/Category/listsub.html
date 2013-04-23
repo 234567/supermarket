@@ -1,0 +1,17 @@
+<volist name="category_list" id="vo">
+
+    <if condition="(empty($category_selected) or (($category_selected eq $vo.id) and ($vo.id eq 9999)))">
+        <optgroup label="其他">
+            <option value="9999" selected="selected">未分类</option>
+        </optgroup>
+    </if>
+
+    <volist name="vo.children" id="child">
+        <optgroup label="{$vo.name}->{$child.name}">
+            <volist name="child.children" id="category">
+                <option value="{$category.id}" <eq name="category.id" value="$category_selected">selected="selected"</eq>>{$category.name}</option>
+            </volist>
+        </optgroup>
+    </volist>
+
+</volist>
