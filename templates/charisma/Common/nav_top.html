@@ -16,13 +16,13 @@
             <!-- user dropdown starts -->
             <div class="btn-group pull-right" >
                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="icon-user"></i><span class="hidden-phone">{$Think.session.staff_info}</span>
+                    <i class="icon-user"></i><span class="hidden-phone">{$Think.session.staff_info.name}</span>
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a >修改个人资料</a></li>
+                    <li><a href="{:U('staff/profile')}">修改个人资料</a></li>
                     <li class="divider"></li>
-                    <li><a href="{:U('/index/logout')}">退出登陆</a></li>
+                    <li><a href="{:U('public/logout')}">退出登陆</a></li>
                 </ul>
             </div>
             <!-- user dropdown ends -->
