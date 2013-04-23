@@ -68,7 +68,6 @@ class PublicAction extends Action{
             session( C('USER_AUTH_KEY') ,$authInfo['id']);
             //保存员工姓名
             session("staff_info", $authInfo);
-//            $_SESSION["staff_info"] = $authInfo;
 
             //如果是超级管理员
             if($authInfo['account'] === 'admin') {
@@ -81,10 +80,8 @@ class PublicAction extends Action{
                     $this->error("员工信息不正确！不存在的分店信息！");
                 }
                 //保存分店信息
-                //session("branch_id", $authInfo["branch_id"]);
                 session("branch_info" , M("Branch")->where( array("id"=>$authInfo["branch_id"]) )->find() );
             }
-
 
             //保存登录信息
             $Staff	=	M('Staff');

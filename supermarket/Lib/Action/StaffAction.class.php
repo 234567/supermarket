@@ -2,23 +2,28 @@
 // 后台用户模块
 class StaffAction extends BaseAction {
 
-    function _filter(&$map){
-        $map['id'] = array('egt',2);
-        if(!empty($_POST['account'])) {
-            $map['account'] = array('like',"%".$_POST['account']."%");
-        }
-    }
 
+
+    public function index(){
+        $service = D("Staff","Service");
+        //无过滤条件获取员工列表
+        $result = $service->getList(array());
+
+        $this->list = $result['list'];
+        $this->page = $result['page'];
+        $this->display();
+    }
 
     // 检查帐号
     public function checkAccount() {
-        if(!preg_match('/^[a-z]\w{4,}$/i',$_POST['account'])) {
-            $this->error( '用户名必须是字母，且5位以上！');
+        $name  =  $this->_param("account");
+
+        if(!preg_match('/^[a-z]\w{4,}$/i',$name)) {
+            $this->error( '帐号必须是字母，且5位以上！');
         }
-        $Staff = M("Staff");
         // 检测用户名是否冲突
-        $name  =  $_REQUEST['account'];
-        $result  =  $Staff->getByAccount($name);
+
+        $result  =   M("Staff")->getByAccount($name);
         if($result) {
             $this->error('该用户名已经存在！');
         }else {

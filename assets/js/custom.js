@@ -15,5 +15,6 @@ $(function(){
         history.go(-1);
     });
 
+    $('.datepicker').datepicker({inline: true});
 
 });

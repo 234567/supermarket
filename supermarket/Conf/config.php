@@ -29,12 +29,15 @@ return array(
     //启用REWRITE
     'URL_MODEL' => 2,
 
+    //开启参数过滤
+    'DEFAULT_FILTER' =>'htmlspecialchars,stripslashes,strip_tags',
+    'VAR_FILTERS'=>'htmlspecialchars,stripslashes,strip_tags',
     //更改分页的样式，这里改掉以配合Bootstrap的分页样式
-    'PAGE'=>array(
-        //'theme'=>'%upPage% %linkPage% %downPage% %ajax%'
-        'theme' =>'<ul><li><a>%totalRow% %header% %nowPage%/%totalPage% 页 </a></li>'.
-            '%first% %prePage% %upPage% %linkPage% %downPage% %nextPage% %end% </ul> %ajax%',
-    ),
+//    'PAGE'=>array(
+//        //'theme'=>'%upPage% %linkPage% %downPage% %ajax%'
+//        'theme' =>'<ul><li><a>%totalRow% %header% %nowPage%/%totalPage% 页 </a></li>'.
+//            '%first% %prePage% %upPage% %linkPage% %downPage% %nextPage% %end% </ul>',
+//    ),
 
     //自动开启SESSION
     'SESSION_AUTO_START'        =>  true,
@@ -66,5 +69,6 @@ return array(
     //自动加载、预加载标签库
     'APP_AUTOLOAD_PATH'         =>  '@.TagLib',
     'TAGLIB_PRE_LOAD' => 'Front' ,
+    'SHOW_PAGE_TRACE' => 1,
 );
 ?>
