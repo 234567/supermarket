@@ -68,20 +68,22 @@ class TagLibFront extends TagLib {
         $name = $tag['name'];
         $selected = $tag['selected'];
 
-        $options = D('Category')->listSub();
+        $options = D('Category',"Service")->listSub();
         $parseStr = '<select id="'.$id.'" name="'.$name.'" data-rel="chosen">';
         foreach($options as $key => $vo){
             $__LIST__ = $vo['children'];
+
             if(is_array($__LIST__ ) && count($__LIST__) !==0){
                 foreach($__LIST__ as $key => $child){
                     $__LIST__ = $child['children'];
-                    $parseStr .= '<optgroup label="'.$vo['category_name'].' =>'. $child['category_name'].'">';
+                    $parseStr .= '<optgroup label="'.$vo['name'].' =>'. $child['name'].'">';
+
                     if(is_array($__LIST__) && count($__LIST__) !==0){
                         foreach($__LIST__ as $key => $category){
-                            if(!empty($selected) && ($selected === $category['category_id'] ||  $category['category_id'] === 9999)){
-                                $parseStr .= '<option value="'.$category['category_id'].'" selected="selected">'.$category['category_name'].'</option>';
+                            if(!empty($selected) && ($selected === $category['id'] ||  $category['id'] === 999999)){
+                                $parseStr .= '<option value="'.$category['id'].'" selected="selected">'.$category['name'].'</option>';
                             }else{
-                                $parseStr .= '<option value="'.$category['category_id'].'">'.$category['category_name'].'</option>';
+                                $parseStr .= '<option value="'.$category['id'].'">'.$category['name'].'</option>';
                             }
 
                         }
@@ -95,7 +97,6 @@ class TagLibFront extends TagLib {
         return $parseStr;
     }
 
-//  'select' => array("attr"=>"id,name,selected,style","close"=>0),
     public function _select($attr,$content){
         //把标签的所有属性解析到$tag数组里面
         $tag = $this->parseXmlAttr($attr, 'select');
@@ -103,11 +104,11 @@ class TagLibFront extends TagLib {
         $id = $tag['id'] ? $tag['id'] : "";
         $name = $tag['name'] ? $tag['name'] : "";
         $model = $tag['model'];
-        $selected = $tag['selected'] ? $tag['selected'] : 0;
-        $disabled = $tag['disabled'] ? $tag['disabled'] : 0;
-        $style= $tag['style'];
+        $selected = isset($tag['selected']) ? $tag['selected'] : 0;
+        $disabled = isset($tag['disabled']) ? $tag['disabled'] : 0;
+        $style= isset($tag['style']) ? $tag['style'] : "";
 
-        $parsestr = '<select id="'.$id.'"  name="'.$name.'" class="'.$style.'" > ';
+        $parsestr = '<select id="'.$id.'"  name="'.$name.'" class="'.$style.'" data-rel="chosen"> ';
 
         if($model === 'level'){
 
@@ -118,6 +119,7 @@ class TagLibFront extends TagLib {
             }
 
         }elseif($model === 'node'){
+
             import("@.ORG.Category");
             $cat = new Category($model, array('id', 'pid', 'name', 'fullname'));
             $list = $cat->getList();               //获取分类结构
@@ -128,6 +130,7 @@ class TagLibFront extends TagLib {
                     $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '  level="' . $v['level'] .  '" >' . $v['fullname'].'('.$v['title'].')'.'</option>';
             }
         }elseif($model === 'role'){
+
             import("@.ORG.Category");
             $cat = new Category($model, array('id', 'pid', 'name', 'fullname'));
 //            $cat->add(array("id"=>-1,"pid"=>0,"name"=>"无"));
@@ -137,7 +140,19 @@ class TagLibFront extends TagLib {
                 $sel = $v['id'] == $selected ? ' selected="selected"' : "";
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>' . $v['fullname'].'</option>';
             }
+        }else if($model === "category"){
+
+            import("@.ORG.Category");
+            $cat = new Category($model, array('id', 'pid', 'name','fullname'));
+//            $cat->add(array("id"=>-1,"pid"=>0,"name"=>"无"));
+            $list = $cat->getList();               //获取分类结构
+            foreach ($list as $k => $v) {
+                $dis = $v['id'] == $disabled ? ' disabled="disabled"' : "";
+                $sel = $v['id'] == $selected ? ' selected="selected"' : "";
+                $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>'. $v['id']  .$v['fullname']. '</option>';
+            }
         }else{
+
             $list = M($model)->select();
             foreach ($list as $k => $v) {
                 $dis = $v['id'] == $disabled ? ' disabled="disabled"' : "";

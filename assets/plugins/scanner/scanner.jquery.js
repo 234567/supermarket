@@ -129,6 +129,7 @@
                 $(_overlay).show();
                 //_video[0].play();
                 _stop = false;
+                setTimeout(onCapture, 1000 / _FPS);
                 _container.css('overflow', 'hidden');
             },
             pause:function(){
@@ -210,6 +211,10 @@
         }
     }
 
+
+    //Barcode 对象封装来源：https://github.com/liip/barcode.js
+    //TODO：针对摄像头的模糊解析，此处还没有进行完善。
+    //感谢作者的开源，
 
     var Barcode = function (context, width, height) {
         this.context = context;

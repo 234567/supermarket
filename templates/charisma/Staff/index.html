@@ -37,7 +37,7 @@
                             <td><a href="{:U('staff/edit')}?id={$vo.id}">{$vo.name}</a></td>
                             <td><eq name="vo.sex" value="1">男<else/>女</eq></td>
                             <td>{$vo.mobile}</td>
-                            <td>{$vo.last_login_time|toDate='Y-m-d H#i#s'}</td>
+                            <td>{$vo.last_login_time|mdate}</td>
                             <td>{$vo.login_count|default="从未登陆"}</td>
                             <td>
                                 <if condition="($vo.status eq 1)">

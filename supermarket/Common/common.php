@@ -28,6 +28,9 @@ function toDate($time, $format = 'Y-m-d H:i:s') {
 +--------------------------------------------------------------------
  */
 function mdate($time = NULL) {
+    if (empty ( $time )) {
+        return '';
+    }
     $text = '';
     $time = $time === NULL || $time > time() ? time() : intval($time);
     $t = time() - $time; //时间差 （秒）
@@ -48,4 +51,24 @@ function mdate($time = NULL) {
     else
         $text = date('Y年m月d日', $time); //一年以前
     return $text;
+}
+
+
+function genTree($items,$id='id',$pid='pid',$son = 'children'){
+    $tree = array(); //格式化的树
+    $tmpMap = array();  //临时扁平数据
+
+    foreach ($items as $item) {
+        $tmpMap[$item[$id]] = $item;
+    }
+
+    foreach ($items as $item) {
+        if (isset($tmpMap[$item[$pid]])) {
+            $tmpMap[$item[$pid]][$son][] = &$tmpMap[$item[$id]];
+        } else {
+            $tree[] = &$tmpMap[$item[$id]];
+        }
+    }
+    unset($tmpMap);
+    return $tree;
 }

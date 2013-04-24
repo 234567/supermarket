@@ -95,5 +95,8 @@ class CategoryService{
         $category->commit();
     }
 
-
+    public function listSub(){
+        $list = M("Category")->select();
+        return genTree($list);
+    }
 }

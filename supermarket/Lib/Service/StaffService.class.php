@@ -95,7 +95,7 @@ class StaffService{
         $model = D("Staff");
         $id = $_GET["id"];
         if(!isset($id)){
-            throw new ThinkException("请提供要删除的员工ID！");
+            throw new ThinkException("参数错误！");
         }
 
         $model->startTrans();

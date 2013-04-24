@@ -21,16 +21,4 @@ class CategoryModel extends CommonModel{
     protected $_validate = array(
         array('pid','require','分店名必须！',Model::EXISTS_VALIDATE,'',Model:: MODEL_BOTH )
     );
-
-    public function listAll(){
-        $list = $this->select();
-        $list = $this->parseFieldsMap($list);
-        return $list;
-    }
-
-    public function listSub(){
-        $list = $this->select();
-        $list = $this->parseFieldsMap($list);
-        return genTree($list);
-    }
 }
