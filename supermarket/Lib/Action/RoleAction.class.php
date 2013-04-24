@@ -8,7 +8,6 @@
 
 class RoleAction extends BaseAction{
 
-
     public function access(){
         $roleid = $this->_get('roleid','intval',0);
         if(!$roleid) $this->error('参数错误!');

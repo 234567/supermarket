@@ -80,25 +80,8 @@ class NodeAction extends BaseAction {
        $str  = "<option value='\$id' \$selected \$disabled >\$spacer \$title</option>";
        $Tree = new Tree();
        $Tree->init($array);
-       $this->parentNode = $Tree->get_tree(0, $str, $pid);
+       $this->parentNode = $Tree->get_tree(0, $str);
        $this->display();
    }
-
-//   public function _before_edit(){
-//       $allNode =  M('node')->select();
-//       $array = array();
-//
-//       foreach($allNode as $k => $r) {
-//           $r['id']         = $r['id'];
-//           $r['title']      = $r['title'];
-//           $r['name']       = $r['name'];
-//           $r['disabled']   = $r['level']==3 ? 'disabled' : '';
-//           $array[$r['id']] = $r;
-//       }
-//       $str  = "<option value='\$id' \$selected \$disabled >\$spacer \$title</option>";
-//       $Tree = new Tree();
-//       $Tree->init($array);
-//       $this->parentNode = $Tree->get_tree(0, $str, $pid);
-//   }
 
 }

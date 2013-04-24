@@ -2,18 +2,6 @@
 // 后台用户模块
 class StaffAction extends BaseAction {
 
-
-
-    public function index(){
-        $service = D("Staff","Service");
-        //无过滤条件获取员工列表
-        $result = $service->getList(array());
-
-        $this->list = $result['list'];
-        $this->page = $result['page'];
-        $this->display();
-    }
-
     // 检查帐号
     public function checkAccount() {
         $name  =  $this->_param("account");

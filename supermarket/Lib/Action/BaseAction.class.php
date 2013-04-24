@@ -27,7 +27,7 @@ class BaseAction extends Action{
                         $this->assign('jumpUrl', PHP_FILE . C('USER_AUTH_GATEWAY'));
                     }
                     // 提示错误信息
-                    $this->error("访问出错！");
+                    $this->error("没有权限！");
                 }
             }
         }
@@ -36,6 +36,16 @@ class BaseAction extends Action{
 
     protected function getReturnUrl() {
         return U(MODULE_NAME.'/'.strtolower(  C('DEFAULT_ACTION') ) );
+    }
+
+    public function index(){
+        //实例化Service
+        $service = D($this->getActionName(),"Service");
+        //无过滤条件获取列表
+        $result = $service->getList(array());
+        $this->list = $result['list'];
+        $this->page = $result['page'];
+        $this->display();
     }
 
     public function insert(){

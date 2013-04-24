@@ -12,19 +12,19 @@
 
                 <form class="form-horizontal" method="post" action="{:U('role/updateAccess')}">
                     <fieldset>
-                        <legend>详细权限信息</legend>
+                        <legend>详细权限信息<a class="btn btn-info pull-right" href="{:U('role/index')}">返回角色列表</a></legend>
                 <table class="table table-striped table-bordered table-hover table-condensed">
                     <tbody>
                     <input type="hidden" name="id" value="{$info.id}"/>
                     <volist name="nodeList" id="level1">
                         <tr>
-                            <td><label><input name="data[]" level="1" type="checkbox" obj="node_{$level1.id}" value="{$level1.id}:1:0"/> <b>[项目]</b> {$level1.title}</label></td>
+                            <td><label><input name="data[]" level="1" type="checkbox" data-no-uniform="true"  obj="node_{$level1.id}" value="{$level1.id}:1:0"/> <b>[项目]</b> {$level1.title}</label></td>
                         </tr>
                         <volist name="level1['data']" id="level2">
                             <tr>
                                 <td style="padding-left: 30px; ">
                                     <label>
-                                        <input name="data[]" level="2" type="checkbox" obj="node_{$level1.id}_{$level2.id}" value="{$level2.id}:2:{$level2.pid}"/>
+                                        <input name="data[]" level="2" type="checkbox" data-no-uniform="true"  obj="node_{$level1.id}_{$level2.id}" value="{$level2.id}:2:{$level2.pid}"/>
                                         <b>[模块]</b> {$level2.title}
                                     </label>
                                 </td>
@@ -33,7 +33,7 @@
                                 <td style="padding-left: 60px;">
                                     <volist name="level2['data']" id="level3">
                                         <label>
-                                            <input name="data[]" level="3" type="checkbox" obj="node_{$level1.id}_{$level2.id}_{$level3.id}" value="{$level3.id}:3:{$level3.pid}"/>
+                                            <input name="data[]" level="3" type="checkbox" data-no-uniform="true"  obj="node_{$level1.id}_{$level2.id}_{$level3.id}" value="{$level3.id}:3:{$level3.pid}"/>
                                             <b>[操作]</b> {$level3.title}
                                         </label>
                                     </volist>

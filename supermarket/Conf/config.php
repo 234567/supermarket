@@ -30,8 +30,8 @@ return array(
     'URL_MODEL' => 2,
 
     //开启参数过滤
-    'DEFAULT_FILTER' =>'htmlspecialchars,stripslashes,strip_tags',
-    'VAR_FILTERS'=>'htmlspecialchars,stripslashes,strip_tags',
+    'DEFAULT_FILTER' =>'htmlspecialchars,strip_tags',
+    'VAR_FILTERS'=>'htmlspecialchars,strip_tags',
     //更改分页的样式，这里改掉以配合Bootstrap的分页样式
 //    'PAGE'=>array(
 //        //'theme'=>'%upPage% %linkPage% %downPage% %ajax%'
