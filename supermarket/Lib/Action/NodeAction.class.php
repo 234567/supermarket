@@ -66,22 +66,113 @@ class NodeAction extends BaseAction {
         $this->display();
     }
 
-   public function add(){
-       $allNode =  M('node')->select();
-       $array = array();
+    public function insert(){
+        $name = $this->getActionName();
+        $model = D($name);
+        $vo = $model->create();
+        if(false === $vo){
+            $this->error($model->getError());
+        }
+        $list = $model->add();
+        if(false === $list){
+            $this->error("新增失败！");
+        }
 
-       foreach($allNode as $k => $r) {
-           $r['id']         = $r['id'];
-           $r['title']      = $r['title'];
-           $r['name']       = $r['name'];
-           $r['disabled']   = $r['level']==3 ? 'disabled' : '';
-           $array[$r['id']] = $r;
-       }
-       $str  = "<option value='\$id' \$selected \$disabled >\$spacer \$title</option>";
-       $Tree = new Tree();
-       $Tree->init($array);
-       $this->parentNode = $Tree->get_tree(0, $str);
-       $this->display();
-   }
+        $this->success("新增成功！",$this->getReturnUrl());
+    }
+
+    public function edit(){
+        $name = $this->getActionName();
+        $model = M($name);
+        $id = $this->_param( $model->getPk());
+        if(empty($id)){
+            $this->error("参数错误！");
+        }
+        $vo = $model->getById($id);
+        $this->vo = $vo;
+        $this->display();
+    }
+
+    public function update(){
+        $name = $this->getActionName();
+        $model  = D($name);
+        if(false === $model->create()){
+            $this->error($model->getError());
+        }
+        $list = $model->save();
+        if(false === $list){
+            $this->error("编辑失败！");
+        }
+        $this->success("编辑成功！",$this->getReturnUrl());
+    }
+
+
+    public function del(){
+        $name = $this->getActionName();
+        $model = M($name);
+        if(!empty($model)){
+            $pk = $model->getPk();
+            $id = $this->_param( $pk );
+            if( !isset($id) ){
+                $this->error("非法操作！");
+            }
+            //根据传过来的ID参数，有可能是批量删除，也就是删除多个ID，默认以,分割
+            $condition = array($pk => array("in" ,explode(",",$id)));
+            $list = $model->where($condition)->setField('status',  -1 );
+            if( false === $list ){
+                $this->error("删除失败！");
+            }
+            $this->success("删除成功！",$this->getReturnUrl());
+        }
+    }
+
+    public function forbid(){
+        $name = $this->getActionName();
+        $model = D($name);
+        $pk = $model->getPk();
+        $id = $this->_param($pk);
+        if(empty($id)){
+            $this->error("非法参数！");
+        }
+        $condition = array($pk => array("in", $id));
+        $list = $model->forbid($condition);
+        if( false === $list){
+            $this->error("状态禁用失败！");
+        }
+
+        $this->success("状态禁用成功！",$this->getReturnUrl());
+    }
+
+    public function recycle(){
+        $name = $this->getActionName();
+        $model = D($name);
+        $pk = $model->getPk();
+        $id = $this->_get($pk);
+        if(empty($id)){
+            $this->error("非法参数！");
+        }
+        $condition = array($pk => array("in", $id));
+        $list = $model->recycle($condition);
+        if(false === $list){
+            $this->error("状态还原失败！");
+        }
+        $this->success("状态还原成功！",$this->getReturnUrl());
+    }
+
+    function resume() {
+        //恢复指定记录
+        $name = $this->getActionName();
+        $model = D($name);
+        $pk = $model->getPk();
+        $id = $this->_get( $pk );
+        if(empty($id)){
+            $this->error("非法参数！");
+        }
+        $condition = array($pk => array('in', $id));
+        if (false == $model->resume($condition)) {
+            $this->error('状态恢复失败！');
+        }
+        $this->success('状态恢复成功！',$this->getReturnUrl());
+    }
 
 }

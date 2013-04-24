@@ -32,6 +32,7 @@ return array(
     //开启参数过滤
     'DEFAULT_FILTER' =>'htmlspecialchars,strip_tags',
     'VAR_FILTERS'=>'htmlspecialchars,strip_tags',
+    'DB_FIELDTYPE_CHECK'=>true,
     //更改分页的样式，这里改掉以配合Bootstrap的分页样式
 //    'PAGE'=>array(
 //        //'theme'=>'%upPage% %linkPage% %downPage% %ajax%'
@@ -45,7 +46,7 @@ return array(
     //以下配置与RBAC权限认证有关
     'USER_AUTH_ON'              =>  true,
     'USER_AUTH_TYPE'			=>  2,		// 默认认证类型 1 登录认证 2 实时认证
-    'USER_AUTH_KEY'             =>  'user_auth_key',	// 用户认证SESSION标记
+    'USER_AUTH_KEY'             =>  'supermarket@baidu.com',	// 用户认证SESSION标记
     'ADMIN_AUTH_KEY'			=>  'administrator',
     //本系统用户即是超市员工，所以这里以员工表为验证模型，没有另设User模型
     'USER_AUTH_MODEL'           =>  'Staff',	// 默认验证数据表模型

@@ -46,7 +46,7 @@
 
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary">修改</button>
-                            <button type="reset" class="btn">重置</button>
+                            <button type="reset" class="btn">清空</button>
                         </div>
                     </fieldset>
                 </form>
@@ -69,8 +69,7 @@
             var access_length=access.length;
             if(access_length>0){
                 for(var i=0;i<access_length;i++){
-                    //$("input[type='checkbox'][value='"+access[i]['val']+"']").attr("checked","checked");
-                    $("input[type='checkbox'][value='"+access[i]['val']+"']").parent().addClass("checked");
+                    $("input[type='checkbox'][value='"+access[i]['val']+"']").attr("checked","checked");
                 }
             }
         }
@@ -104,7 +103,7 @@
                 }
             });
             //重置初始状态，勾选错误时恢复
-            $(".reset").click(function(){
+            $('button[type="reset"]').click(function(){
                 setAccess();
             });
             //清空当前已经选中的

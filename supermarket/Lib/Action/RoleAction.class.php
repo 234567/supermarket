@@ -8,38 +8,6 @@
 
 class RoleAction extends BaseAction{
 
-    public function access(){
-        $roleid = $this->_get('roleid','intval',0);
-        if(!$roleid) $this->error('参数错误!');
-        Vendor('Common.Tree');  //导入通用树型类
-
-        $Tree = new Tree();
-        $Tree->icon = array('&nbsp;&nbsp;&nbsp;│ ','&nbsp;&nbsp;&nbsp;├─ ','&nbsp;&nbsp;&nbsp;└─ ');
-        $Tree->nbsp = '&nbsp;&nbsp;&nbsp;';
-
-        $NodeDB = D('Node');
-        $node = $NodeDB->select();
-
-        $AccessDB = D('Access');
-        $access = $AccessDB->field('role_id,node_id,pid,level')->select();
-
-
-        foreach ($node as $n=>$t) {
-            $node[$n]['checked'] = ($AccessDB->is_checked($t,$roleid,$access))? ' checked' : '';
-            $node[$n]['depth'] = $AccessDB->get_level($t['id'],$node);
-            $node[$n]['pid_node'] = ($t['pid'])? ' class="tr lt child-of-node-'.$t['pid'].'"' : '';
-        }
-        $str  = "<tr id='node-\$id' \$pid_node>
-                    <td style='padding-left:30px;'>\$spacer<input type='checkbox' name='nodeid[]' value='\$id' class='radio' level='\$depth' \$checked onclick='javascript:checknode(this);' > \$title (\$name)</td>
-                </tr>";
-
-        $Tree->init($node);
-        $html_tree = $Tree->get_tree(0, $str);
-        $this->assign('html_tree',$html_tree);
-        $this->display();
-    }
-
-
     public function auth(){
 
         //获取角色信息
@@ -99,5 +67,23 @@ class RoleAction extends BaseAction{
             $this->error("权限设置失败，请重试");
         }
         $this->success("权限设置成功！",U("role/index"));
+    }
+
+
+
+    public function staff(){
+        $id = $this->_param("id");
+        if(empty($id)){
+            $this->error("参数错误！");
+        }
+
+        $service = D("Role","Service");
+        //获取分店标识
+        $branchInfo = session("branch_info");
+        $result = $service->getStaffList($id,$branchInfo["id"]);
+
+        $this->list = $result["list"];
+        $this->page = $result["page"];
+        $this->display("Staff:index");
     }
 }
