@@ -3,21 +3,13 @@ $(document).ready(function(){
 	
 	//highlight current / active link
 	$('ul.main-menu li a').each(function(){
-		if($($(this))[0].href==String(window.location)){
+		if($(this).attr("href")===String(window.location)){
 			$(this).parent().addClass('active');
             $("ul.main-menu a.menu-first").removeClass("collapsed");
             $(this).parents("ul").addClass("in collapse");
             //$('a[href="#'+id+'"]').click();
         }
 	});
-    $("a.menu-first").on("click",function(){
-        $("a.menu-first").each(function(){
-            $(this).addClass("collapsed");
-            $($(this).attr("href")).removeClass("in");
-        });
-//        $(this).removeClass("collapsed");
-//        $($(this).attr("href")).addClass("in");
-    });
 
 	//animating menus on hover
 	$('ul.main-menu li:not(.nav-header)').hover(function(){
