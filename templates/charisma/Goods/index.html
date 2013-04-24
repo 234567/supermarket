@@ -50,7 +50,7 @@
                     <between name="vo.goods_alarm" value="5,10">class="warning"</between>
                     <gt name="vo.goods_alarm" value="10">class="success" </gt>
                     */}
-                    <tr id="row{$vo.goods_id}">
+                    <tr>
                         <td class="center">{$vo.barcode}</td>
                         <td class="center"><a href="{:U('goods/edit')}?id={$vo.id}">{$vo.name}</a></td>
                         <td class="center"><eq name="vo.category_id" value="999999">未分类<else/>{$vo.category_id|default="未归类"}</eq></td>
