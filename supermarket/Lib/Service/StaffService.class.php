@@ -48,7 +48,7 @@ class StaffService{
         }
 
         //添加员工为对应的角色，便于权限控制
-        $result = M("RoleStaff")->add(array("role_id" => intval( $_POST["role_id"] ), "staff_id"=> $id ));
+        $result = M("RoleUser")->add(array("role_id" => intval( $_POST["role_id"] ), "user_id"=> $id ));
         if ( false === $result ) {
             $model->rollback();
             throw new ThinkException("指定员工角色出错，请重试！");
@@ -75,11 +75,11 @@ class StaffService{
 
         if(isset( $_POST["role_id"]) ){
             //添加员工为对应的角色，便于权限控制
-            $role = M("RoleStaff");
+            $role = M("RoleUser");
             //删除旧的角色信息
             $role->where(array("staff_id"=> $id ))->delete();
             //重新指定员工位新角色
-            $result = $role->add(array("role_id" => intval( $_POST["role_id"] ), "staff_id"=> $id ));
+            $result = $role->add(array("role_id" => intval( $_POST["role_id"] ), "user_id"=> $id ));
             if ( false === $result ) {
                 $model->rollback();
                 throw new ThinkException("指定员工角色出错，请重试！");

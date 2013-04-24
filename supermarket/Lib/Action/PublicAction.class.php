@@ -64,7 +64,7 @@ class PublicAction extends Action{
             if($authInfo["password"] != md5($password)) {
                 $this->error("密码错误！");
             }
-            dump($authInfo["id"]);
+
             session( C("USER_AUTH_KEY") ,$authInfo["id"]);
             //保存员工姓名
             session("staff_info", $authInfo);
