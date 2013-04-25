@@ -13,8 +13,6 @@
             <a href="{:U('category/add')}" class="btn btn-round btn-info btn-add">
                 <i class="icon-plus"></i>添加商品大类
             </a>
-
-            <div id="dialog"></div>
             <hr/>
             <div id="category_list">
                 <empty name="list">
@@ -27,51 +25,50 @@
 
                     <table class="table table-striped table-bordered table-hover table-condensed">
                         <thead>
-                        <tr>
-                            <td style="width:30px;">展开</td>
-                            <th style="width:60px;">分类编号</th>
-                            <th>分类名称</th>
-                            <th>分类类型</th>
-                            <th>操作</th>
-                        </tr>
+                            <tr>
+                                <td style="width:30px;">展开</td>
+                                <th style="width:60px;">分类编号</th>
+                                <th>分类名称</th>
+                                <th>分类类型</th>
+                                <th>操作</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <volist name="list" id="vo">
-                            <tr>
-                                <td>
-                                    <a class="expand" href="{:U('category/sub_cate')}?pid={$vo.id}">
-                                        <i class="icon-plus"/></i>
-                                    </a>
-                                </td>
-                                <td class="center">{$vo.id}</td>
-                                <td class="center">{$vo.name}</td>
-                                <td class="center">
-                                    <eq name="vo.pid" value="0"><span class='label label-important'>商品大类</span></eq>
-                                    <between name="vo.pid" value="1,100"><span class='label label-warning'>商品中类 </span></between>
-                                    <between name="vo.pid" value="101,1000"><span class='label label-success'>商品小类</span>
-                                    </between>
-                                </td>
-                                <td class="center">
-                                    <between name="vo.pid" value="101,1000">
-                                        <a class="btn btn-primary btn-mini" href="{:U('goods/search')}?cid={$vo.id}"><i
-                                                class="icon-zoom-in icon-white"></i></a>
-                                    </between>
-                                    <a class="btn btn-primary btn-mini btn-add" href="{:U('category/add')}?pid={$vo.id}"><i
-                                            class="icon-circle-arrow-down icon-white"></i></a>
-                                    <a class="btn btn-info btn-mini btn-edit" href="{:U('category/edit')}?id={$vo.id}"><i
-                                            class="icon-edit icon-white"></i></a>
-                                    <a class="btn btn-danger btn-mini btn-delete" href="{:U('category/del')}?id={$vo.id}"><i
-                                            class="icon-trash icon-white"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="more"></td>
-                                <td colspan="4" class="table-inner"></td>
-                            </tr>
-                        </volist>
-                </div>
-                </tbody>
-                </table>
+                            <volist name="list" id="vo">
+                                <tr>
+                                    <td>
+                                        <a class="expand" href="{:U('category/sub_cate')}?pid={$vo.id}">
+                                            <i class="icon-plus"/></i>
+                                        </a>
+                                    </td>
+                                    <td class="center">{$vo.id}</td>
+                                    <td class="center">{$vo.name}</td>
+                                    <td class="center">
+                                        <eq name="vo.pid" value="0"><span class='label label-important'>商品大类</span></eq>
+                                        <between name="vo.pid" value="1,100"><span class='label label-warning'>商品中类 </span></between>
+                                        <between name="vo.pid" value="101,1000"><span class='label label-success'>商品小类</span>
+                                        </between>
+                                    </td>
+                                    <td class="center">
+                                        <between name="vo.pid" value="101,1000">
+                                            <a class="btn btn-primary btn-mini" href="{:U('goods/search')}?cid={$vo.id}"><i
+                                                    class="icon-zoom-in icon-white"></i></a>
+                                        </between>
+                                        <a class="btn btn-primary btn-mini btn-add" href="{:U('category/add')}?pid={$vo.id}"><i
+                                                class="icon-circle-arrow-down icon-white"></i></a>
+                                        <a class="btn btn-info btn-mini btn-edit" href="{:U('category/edit')}?id={$vo.id}"><i
+                                                class="icon-edit icon-white"></i></a>
+                                        <a class="btn btn-danger btn-mini btn-delete" href="{:U('category/del')}?id={$vo.id}"><i
+                                                class="icon-trash icon-white"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="more"></td>
+                                    <td colspan="4" class="table-inner"></td>
+                                </tr>
+                            </volist>
+                        </tbody>
+                    </table>
                 <!--
                 <div id="page" class="pagination pagination-small">{$page}</div>
                 -->
@@ -89,43 +86,6 @@
 
     <script type="text/javascript">
         $(function(){
-          /*  $('.btn-add').on('click',function(){
-                $('#dialog').dialog({title:'添加商品分类'});
-                $('#dialog').load($(this).attr('href'),function(){
-                    $(this).dialog('open');
-                });
-                return false;
-            });
-*/
-         /*   $('.btn-edit').live('click',function(){
-                $('#dialog').dialog({title:'修改商品分类'});
-                $('#dialog').load($(this).attr('href'),function(){
-                    $(this).dialog('open');
-                });
-                return false;
-            });*/
-
-//
-//        $('.btn-delete').on('click',function(){
-//            var btn = $(this);
-//            var url = $(this).attr('href');
-//            $.get(url,function(json){
-//                if(typeof json === 'object' ){
-//                    if(json.status ===1){
-//                        noty({"text":json.info,"layout":"topCenter","type":"success","animateOpen": {"opacity": "show"}});
-//                        //删除成功，隐藏当前行
-//                        $(btn).parents('tr').fadeOut('slow',function(){
-//                            $(this).remove();
-//                        });
-//                    }else{
-//                        noty({"text":json.info,"layout":"topCenter","type":"error","animateOpen": {"opacity": "show"}});
-//                    }
-//                }else{
-//                    noty({"text":"异常错误！","layout":"topCenter","type":"error","animateOpen": {"opacity": "show"}});
-//                }
-//            });
-//            return false;
-//        });
 
             $("table tr:odd").addClass("odd");
             $("table tr:not(.odd)").hide();

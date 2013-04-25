@@ -53,15 +53,13 @@ class SupplierService{
 
     public function del(){
         $id = $_GET["id"];
-        dump($id);
         if(!isset($id)){
           throw new ThinkException("ID错误!");
         }
         $model = D("Supplier");
-
-        $condition = array("id"=>array("eq",$id));
-        $result = $model->where($condition)->relation(true)->select();
-        if($result["goods"] == null){
+        //查询供货商中是否存在商品
+        $goodsCount = M("Supplier_has_goods")->where("supplier_id=".$id)->count();
+        if($goodsCount > 0){
             throw new ThinkException("该供货商有提供商品，不能删除该供货商!");
         }
         //开启事务
@@ -74,7 +72,6 @@ class SupplierService{
             throw new ThinkException("删除失败!");
         }
         $model->commit();
-
     }
 
     public function searchGoods(){

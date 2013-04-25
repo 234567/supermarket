@@ -107,8 +107,8 @@ class StaffService{
             $model->rollback();
             throw new ThinkException("删除失败！");
         }
-
         //添加其他业务逻辑
+
         //比如删除员工，还需要删除与员工相关的一些其他信息
         $model->commit();
     }

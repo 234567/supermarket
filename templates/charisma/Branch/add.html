@@ -1,7 +1,7 @@
 <extend name="Common:base" />
 
 
-<block name="page_title">录入新分店--超市管理系统</block>
+<block name="page_title">录入新分店</block>
 <block name="main">
 
     <div class="box">
@@ -39,12 +39,20 @@
 
 
                     <div class="control-group">
-                        <label class="control-label">负责人：</label>
+                        <label class="control-label" for="selectStaff">负责人：</label>
                         <div class="controls">
-                            <input type="text" name="director_staff_id" value="2"/>
+                            <select id="selectStaff" data-rel="chosen">
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                                <option>Option 3</option>
+                                <option>Option 4</option>
+                                <option>Option 5</option>
+                            </select>
                             <span class="help-inline label label-info" >*请输入</span>
                         </div>
                     </div>
+
+
                     <div class="control-group">
                         <label class="control-label">图片：</label>
                         <div class="controls">
