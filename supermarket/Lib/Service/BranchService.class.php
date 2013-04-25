@@ -23,7 +23,6 @@ class BranchService {
             }
             $result["page"] = $p->show();
         }
-        trace($result["list"]);
         return $result;
     }
 //更新
