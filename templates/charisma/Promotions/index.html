@@ -1,0 +1,53 @@
+<extend name="Common:base"/>
+
+<block name="page_title">发布促销</block>
+<block name="main">
+    <div class="box">
+        <div class="box-header well-small">
+            <h4>发布商品促销</h4>
+        </div>
+        <div class="box-content">
+            <a id="btn-add" href="{:U('supplier/add')}"  class="btn btn-round btn-info">
+                <i class="icon-plus"></i>新增供货商信息
+            </a>
+            <div id="dialog"></div>
+            <hr />
+            <div id="promotions_list">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>条码</th>
+                        <th>分店名</th>
+                        <th>商品名</th>
+                        <th>折扣</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <volist name="list" id="vo">
+                        <tr id="row{$vo.id}">
+                            <td>{$vo.goods_id}</td>
+                            <td class="center">{$vo.branch_name|default="未知"}</td>
+                            <td class="center">{$vo.goods_name|default="未知"}</td>
+                            <td class="center">{$vo.discount|default="暂无折扣"}</td>
+                            <td class="center">{$vo.time_start|default="暂无开始时间"}</td>
+                            <td class="center">{$vo.time_end|default="暂无结束时间"}</td>
+                            <td class="center">
+
+                                <eq name="_SESSION['staff_info']['branch_id']" value="$vo.branch_id">
+                                    <a class="btn btn-info btn-mini btn-edit" href="{:U('promotions/edit')}?id={$vo.id}"><i class="icon-edit icon-white"></i></a>
+                                    <a class="btn btn-danger btn-mini btn-delete" href="{:U('promotions/del')}?id={$vo.id}"><i class="icon-trash icon-white"></i></a>
+                                </eq>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <div id="page" class="pagination pagination-small">{$page}</div>
+            </div>
+        </div>
+    </div>
+</block>

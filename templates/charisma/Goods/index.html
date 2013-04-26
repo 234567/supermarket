@@ -62,7 +62,9 @@
                         <td class="center">{$vo.keyword|default=''}</td>
                         <td class="center">{$vo.desp|default='...'}</td>
                         <td class="center">
+                            <a class="btn btn-success btn-mini" href="{:U('promotions/release')}?goods_id={$vo.id}">发布促销</a>
                             <a class="btn btn-danger btn-mini" href="{:U('goods/del')}?id={$vo.id}"><i class="icon-trash icon-white"></i></a>
+
                         </td>
                     </tr>
                 </volist>
