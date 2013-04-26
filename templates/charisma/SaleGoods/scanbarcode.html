@@ -1,0 +1,63 @@
+<extend name="Common:base" />
+
+
+<block name="page_title">超市管理系统后台首页</block>
+<block name="main">
+    <div class="box">
+        <div class="box-header well-small">
+            <h4>请将商品条码部分放到摄像头前进行扫描</h4>
+        </div>
+        <div class="box-content well">
+            <a href="{:U('SaleGoods/index')}" class="btn btn-info pull-right">取消交易</a>
+                <div id="webcam" style="width:320px;height:240px; margin:0 auto;"></div>
+                <div class="alert alert-info">
+                    <h3>商品清单</h3>
+                    <div id="scanned" style="min-height: 40px;"></div>
+                    <a href="{:U('SaleGoods/showform')}" class="btn btn-primary btn-large">生成购物信息</a>
+                </div>
+
+        </div>
+    </div>
+
+</block>
+
+<block name="other">
+<js href="__ASSETS__/plugins/scanner/scanner.js" />
+
+    <script type="text/javascript">
+    $(function(){
+
+        var codes = [];
+        var goodsList = [];
+        var scanned = $("#scanned");
+        function isScanned(code){
+            for(var i = 0,len=codes.length; i< len; i++){
+                if(codes[i] === code){
+                    return true;
+                }
+            }
+            return false;
+        }
+        var scanner  = new Scanner("webcam",function(code){
+            var html = scanned.html()+"<br/>";
+            //如果已经扫描过
+            if(isScanned(code)){
+                scanned.html(html+"条形码："+code+"已经扫描过！");
+                return ;
+            }
+            codes.push(code);
+            $.get('{:U("SaleGoods/getGoodInfo")}',{"barcode":code},function(json){
+                //说明商品信息不存在
+                if(json.status == 0){
+                    scanned.html(html+"条形码："+code+"的商品信息不存在！");
+                }else{
+                    goodsList.push(json.data);
+                    scanned.html(html+"条形码："+code+"，商品名称："+
+                            json.data.name);
+                }
+            });
+        });
+
+    });
+</script>
+</block>

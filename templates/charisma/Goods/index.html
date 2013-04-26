@@ -19,7 +19,7 @@
             <form class="form-inline" action="{:U('goods/search')}" method="get">
                 商品分类：
                 <!--<front:select id="category_list" name="cid" model="category" selected="999999" />-->
-                <front:category_select id="category_list" name="cid" selected="999999" />
+                <front:select id="category_list" name="cid" selected="999999" model="category"/>
 
                 商品名称：<input type="text" name="name" />
                 <button class="btn" type="submit" >查找</button>

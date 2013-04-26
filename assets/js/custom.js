@@ -8,7 +8,7 @@ $(function(){
     "use strict";
 
     //向导插件
-    $(".wizard").bwizard();
+    //$(".wizard").bwizard();
 
     //返回按钮
     $('a.btn-back').on('click',function(){

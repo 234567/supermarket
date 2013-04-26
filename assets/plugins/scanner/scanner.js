@@ -17,11 +17,12 @@ Scanner = (function(){
         if(container.length ){
             container = container[0];
         }
-        var _width = container.width || 320,
-            _height = container.height || 240,
+
+        var _width = container.style.width || 320,
+            _height = container.style.height || 240,
         //解析成功的回调
             _callback = callback,
-            _FPS = 60,
+            _FPS = 20,
         //扫描延迟时间
             _scanDelay = 2000,
             video = null,
@@ -42,6 +43,8 @@ Scanner = (function(){
                     window.webkitRequestAnimationFrame ||
                     window.msRequestAnimationFrame
                 );
+        _width = parseInt(_width,10);
+        _height = parseInt(_height,10);
 
         function init(){
             //创建一个隐藏的VIDEO。
