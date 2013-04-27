@@ -117,7 +117,7 @@
 
                     }else{
                         setTimeout(function(){
-                            window.location.href = '{:U("goods/edit")}'+'?id='+json.data.id;
+                            window.location.href = '{:U("goods/edit?id='+json.data.id+'")}';
                         },1500);
                     }
                 });

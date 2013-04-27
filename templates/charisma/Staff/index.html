@@ -34,7 +34,7 @@
                     <volist name="list" id="vo">
                         <tr>
                             <td>{$vo.id}</td>
-                            <td><a href="{:U('staff/edit')}?id={$vo.id}">{$vo.name}</a></td>
+                            <td><a href="{:U('staff/edit?id='.$vo['id'])}">{$vo.name}</a></td>
                             <td><eq name="vo.sex" value="1">男<else/>女</eq></td>
                             <td>{$vo.mobile}</td>
                             <td>{$vo.last_login_time|mdate}</td>
@@ -50,13 +50,13 @@
                             </td>
                             <td>
                                 <if condition="($vo.status eq 1)">
-                                    <a class="btn btn-danger btn-mini" href="{:U('staff/forbid')}?id={$vo.id}">禁用</a>
-                                    <a class="btn btn-warning btn-mini" href="{:U('staff/del')}?id={$vo.id}">删除</a>
+                                    <a class="btn btn-danger btn-mini" href="{:U('staff/forbid?id='.$vo['id'])}">禁用</a>
+                                    <a class="btn btn-warning btn-mini" href="{:U('staff/del?id='.$vo['id'])}">删除</a>
                                     <elseif condition="$vo.status eq 0"/>
-                                    <a class="btn btn-success btn-mini" href="{:U('staff/resume')}?id={$vo.id}">恢复</a>
-                                    <a class="btn btn-warning btn-mini" href="{:U('staff/del')}?id={$vo.id}">删除</a>
+                                    <a class="btn btn-success btn-mini" href="{:U('staff/resume?id='.$vo['id'])}">恢复</a>
+                                    <a class="btn btn-warning btn-mini" href="{:U('staff/del?id='.$vo['id'])}">删除</a>
                                     <else />
-                                    <a class="btn btn-inverse btn-mini" href="{:U('staff/recycle')}?id={$vo.id}">还原</a>
+                                    <a class="btn btn-inverse btn-mini" href="{:U('staff/recycle?id='.$vo['id'])}">还原</a>
                                 </if>
                             </td>
                         </tr>

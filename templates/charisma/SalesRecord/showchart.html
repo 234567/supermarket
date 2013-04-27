@@ -11,13 +11,12 @@
             <h4>最近七天销售比较</h4>
         </div>
         <div class="box-content">
-            <a href="{:U('SalesRecord/index')}" class="btn btn-round btn-info">
-                <i class="icon-plus"></i>返回销售记录
-            </a>
+            <a href="{:U('SalesRecord/index')}" class="btn btn-round btn-info">返回销售记录</a>
+            <a href="{:U('SalesRecord/showchart?recent=15')}" class="btn btn-round btn-info">最近半个月</a>
+            <a href="{:U('SalesRecord/showchart?recent=30')}" class="btn btn-round btn-info">最近一个月</a>
+            <a href="{:U('SalesRecord/showchart?recent=90')}" class="btn btn-round btn-info">最近三个月</a>
             <hr />
-            <canvas id="myChart" width="800" height="400"></canvas>
-
-
+            <div id="chart" style="height:500px"></div>
         </div>
     </div>
 </block>
@@ -25,32 +24,70 @@
 <script type="text/javascript" src="__ASSETS__/plugins/chartjs/Chart.js"></script>
 <script type="text/javascript">
     $(function(){
-        //Get the context of the canvas element we want to select
-        var ctx = document.getElementById("myChart").getContext("2d");
 
-        var now = new Date();
+        var arr = JSON.parse('{$data}');
+
+        //For JQuery Flot
+        var plotLabels = [],plotData = [];
 
 
-        var data = {
-            labels : ["星期一","星期二","星期三","星期四","前天","昨天","今天"],
-            datasets : [
-                {
-                    fillColor : "rgba(220,220,220,0.5)",
-                    strokeColor : "rgba(220,220,220,1)",
-                    pointColor : "rgba(220,220,220,1)",
-                    pointStrokeColor : "#fff",
-                    data : [65,59,90,81,56,55,40]
-                },
-                {
-                    fillColor : "rgba(151,187,205,0.5)",
-                    strokeColor : "rgba(151,187,205,1)",
-                    pointColor : "rgba(151,187,205,1)",
-                    pointStrokeColor : "#fff",
-                    data : [28,48,40,19,96,27,100]
+        //遍历获取每一个分店的数据信息
+        var dayList = [];
+        for(var i = 0, len = arr.length; i<len ;i++){
+            plotData.push({data:arr[i].data, label:arr[i].label});
+            plotLabels = arr[i].ticks ;
+        }
+
+        for(var i = 0, len = plotLabels.length; i<len; i++){
+            //保存日期列表
+            dayList.push( plotLabels[i][1]);
+        }
+
+        var plot = $.plot($("#chart"), plotData, {
+                    series: {
+                        lines: { show: true  },
+                        points: { show: true }
+                    },
+                    xaxis: {ticks : plotLabels},
+                    grid: { hoverable: true, clickable: false, backgroundColor: { colors: ["#eee", "#ccc"] } },
+                    colors: ["#539F2E", "#3C67A5"]
+                });
+
+
+
+        //处理浮动查看数据
+        var previousPoint = null;
+        $("#chart").bind("plothover", function (event, pos, item) {
+            if (item) {
+                var idx = item.dataIndex;
+                if (previousPoint != idx) {
+                    previousPoint = idx;
+                    console.log(item);
+                    var price = item.datapoint[1];
+                    $("#tooltip").remove();
+                    showTooltip(item.pageX, item.pageY,
+                            item.series.label  +"在"+dayList[idx]+"这一天的销售额为"+price+"元");
                 }
-            ]
-        };
-        new Chart(ctx).Line(data);
+            }
+            else {
+                $("#tooltip").remove();
+                previousPoint = null;
+            }
+        });
+
+        function showTooltip(x, y, contents) {
+            $('<div id="tooltip">' + contents + '</div>').css( {
+                position: 'absolute',
+                display: 'none',
+                top: y + 5,
+                left: x + 5,
+                color:"#000",
+                border: '1px solid #fdd',
+                padding: '15px',
+                'background-color': "#95c5d6",// '#dfeffc',
+                opacity: 0.80
+            }).appendTo("body").fadeIn(200);
+        }
 
     });
 </script>

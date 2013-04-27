@@ -37,7 +37,7 @@
                             <volist name="list" id="vo">
                                 <tr>
                                     <td>
-                                        <a class="expand" href="{:U('category/sub_cate')}?pid={$vo.id}">
+                                        <a class="expand" href="{:U('category/sub_cate?pid='.$vo['id'])}">
                                             <i class="icon-plus"/></i>
                                         </a>
                                     </td>
@@ -51,15 +51,19 @@
                                     </td>
                                     <td class="center">
                                         <between name="vo.pid" value="101,1000">
-                                            <a class="btn btn-primary btn-mini" href="{:U('goods/search')}?cid={$vo.id}"><i
-                                                    class="icon-zoom-in icon-white"></i></a>
+                                            <a class="btn btn-primary btn-mini" href="{:U('goods/search?cid='.$vo['id'])}">
+                                                <i class="icon-zoom-in icon-white"></i>
+                                            </a>
                                         </between>
-                                        <a class="btn btn-primary btn-mini btn-add" href="{:U('category/add')}?pid={$vo.id}"><i
-                                                class="icon-circle-arrow-down icon-white"></i></a>
-                                        <a class="btn btn-info btn-mini btn-edit" href="{:U('category/edit')}?id={$vo.id}"><i
-                                                class="icon-edit icon-white"></i></a>
-                                        <a class="btn btn-danger btn-mini btn-delete" href="{:U('category/del')}?id={$vo.id}"><i
-                                                class="icon-trash icon-white"></i></a>
+                                        <a class="btn btn-primary btn-mini btn-add" href="{:U('category/add?pid='.$vo['id'])}">
+                                            <i class="icon-circle-arrow-down icon-white"></i>
+                                        </a>
+                                        <a class="btn btn-info btn-mini btn-edit" href="{:U('category/edit?id='.$vo['id'])}">
+                                            <i class="icon-edit icon-white"></i>
+                                        </a>
+                                        <a class="btn btn-danger btn-mini btn-delete" href="{:U('category/del?id='.$vo['id'])}">
+                                            <i class="icon-trash icon-white"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 <tr>

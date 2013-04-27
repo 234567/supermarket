@@ -43,7 +43,7 @@ function mdate($time = NULL) {
     elseif ($t < 60 * 60 * 24)
         $text = floor($t / (60 * 60)) . '小时前'; // 一天内
     elseif ($t < 60 * 60 * 24 * 3)
-        $text = floor($time/(60*60*24)) ==1? '昨天 ' . date('H:i', $time) : '前天 ' . date('H:i', $time) ; //昨天和前天
+        $text = floor($t/(60*60*24)) ==1? '昨天 ' . date('H:i', $time) : '前天 ' . date('H:i', $time) ; //昨天和前天
     elseif ($t < 60 * 60 * 24 * 30)
         $text = date('m月d日 H:i', $time); //一个月内
     elseif ($t < 60 * 60 * 24 * 365)

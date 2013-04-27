@@ -1,38 +1,32 @@
 <extend name="Common:base" />
 
 
-<block name="page_title">供货商商品列表</block>
+<block name="page_title">供货商 {$supplier.real_name} 所供应的商品列表</block>
 
 
 <block name="main">
 
     <div class="box">
         <div class="box-header well-small">
-            <h4>{$supplier.real_name} 供货商->商品列表</h4>
+            <h4>供货商 {$supplier.real_name} 所供应的商品列表</h4>
         </div>
         <div class="box-content">
-            <a class="btn btn-info btn-round pull-right" href="{:U('supplier/index')}">返回供货商列表</a>
-            <div class="clear"></div>
+            <a href="{:U('supplier/index')}" class="btn btn-info pull-right">返回供货商列表</a>
             <hr/>
-            <empty name="goodsList">
-                <div class="alert alert-error">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    该供货商无商品信息！
-                </div>
-                <else/>
-            <table class="table table-striped table-bordered table-hover table-condensed">
+            <div class="alert aler-info">
+                以下是该供应商所提供的货源列表<br/>
+                你可以选择需要进货的商品联系供货商，或者对提供该商品的<strong>供货商之间进行价格对比</strong>
+            </div>
+            <table class="table table-striped table-bordered table-hover ">
                 <thead>
                 <tr>
                     <th>条形码</th>
                     <th class="span2">商品名称</th>
-                    <th>最新价格</th>
+                    <th>最新进货价格</th>
                     <th>规格</th>
                     <th>单位</th>
-                    <th>售价</th>
-                    <th>报警数量</th>
+                    <th>超市售价</th>
                     <th>品牌</th>
-                    <th>关键词</th>
-                    <th>描述信息</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -45,26 +39,21 @@
                     <gt name="vo.goods_alarm" value="10">class="success" </gt>
                     */}
                     <tr id="row{$vo.goods_id}">
-                        <td class="center">{$vo.barcode}</td>
-                        <td class="center"><a href="{:U('goods/edit')}?id={$vo.id}">{$vo.name}</a></td>
-                        <td class="center">{$vo.last_price }</td>
-                        <td class="center">{$vo.specifications}</td>
-                        <td class="center">{$vo.unit}</td>
-                        <td class="center">{$vo.sales_price}</td>
-                        <td class="center">{$vo.alarm}</td>
-                        <td class="center">{$vo.brand|default=''}</td>
-                        <td class="center">{$vo.keyword|default=''}</td>
-                        <td class="center">{$vo.desp|default='...'}</td>
-                        <td class="center">
-                            <a class="btn btn-danger btn-mini" href="{:U('goods/del')}?id={$vo.id}"><i class="icon-trash icon-white"></i></a>
+                        <td>{$vo.barcode}</td>
+                        <td>{$vo.name}</td>
+                        <td>￥{$vo.last_price }</td>
+                        <td>{$vo.specifications}</td>
+                        <td>{$vo.unit}</td>
+                        <td>￥{$vo.sales_price}</td>
+                        <td>{$vo.brand|default=''}</td>
+                        <td>
+                            <a class="btn btn-info btn-mini">比比价</a>
                         </td>
                     </tr>
                 </volist>
                 </tbody>
             </table>
-
             <div id="page" class="pagination pagination-small">{$page}</div>
-            </empty>
 
         </div>
     </div>

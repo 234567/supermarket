@@ -163,6 +163,8 @@ class PublicAction extends Action{
         }
 
         //重置SESSION中的员工信息
+
+        //TODO：更新相关冗余字段
         session("staff_info",$result);
         $this->success("修改个人信息成功！");
     }

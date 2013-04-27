@@ -88,6 +88,7 @@ class SalesRecordService {
         }
 
         //添加其他业务逻辑
+        //TODO：对商品库存量进行减少
 
 
         //一切成功
@@ -97,14 +98,11 @@ class SalesRecordService {
     }
 
 
-
-
-
-
-
-
-
-
+    /**
+     * 获取销售记录
+     * @param array $map    查询条件
+     * @return array    包含列表和分页对象的数组
+     */
     public function getList($map = array()){
         $model = M("SalesRecord");
 
@@ -125,5 +123,78 @@ class SalesRecordService {
             $result["page"] = $p->show();
         }
         return $result;
+    }
+
+
+    /**
+     * 统计任意天数以内的日销售总额
+     * @param int $dayAmount    天数
+     * @return array    包含数据的数组
+     */
+    public function countRecent($dayAmount = 7){
+        //获取起始天数的时间戳
+        $begin = strtotime("-$dayAmount days");
+
+        $SalesRecord = M("SalesRecord");
+        //SQL是 SELECT date_format(FROM_UNIXTIME( `time`),'%Y-%m-%d') AS day,sum(`total_price`) as total
+        //          FROM `sales_record` WHERE `time` >= $begin group by day
+        //
+        $map = array();
+        $map["time"] = array("gt", $begin);
+        $result = $SalesRecord->join("branch ON branch.id = branch_id")->field(array(
+            "branch_id","name", //分店标识、名称
+            "date_format(FROM_UNIXTIME( `time`),'%Y-%m-%d')" => "day",
+            "sum(`total_price`)"=>"total",
+        ))->where($map)->group("name,day")->select();
+
+
+        $data = array();
+        //以分店ID为基准重新进行分组
+        foreach($result as $val){
+            $data[ $val["branch_id"] ]["name"] = $val["name"];
+            $data[ $val["branch_id"] ]["data"][] = array($val["day"] , $val["total"]);
+        }
+
+        $newData = array();
+        foreach($data as $key => &$branch){
+
+            $branchData = $branch["data"];
+
+            //先生成日期标签，并初始化数据
+            $len = $dayAmount;
+            $daysLabel = array();
+
+            $idx = 0;
+            while($len--){
+                $tmp = date("Y-m-d",strtotime("-$len days"));
+                $daysLabel[ $tmp ] = 0;
+                $daysLabel[] = array($idx++,$tmp);
+            }
+
+            //然后用真实数据替换掉
+            foreach($branchData as $val){
+                $daysLabel[ $val[0] ] = $val[1];
+            }
+
+            $len = $dayAmount;
+            $showData = array();
+            $idx = 0;
+            while($len--){
+                $tmp = date("Y-m-d",strtotime("-$len days"));
+                $showData[] = array($idx++ ,$daysLabel[$tmp]  );
+                unset($daysLabel[$tmp]);
+            }
+
+
+            $newData[] = array(
+                //"branch_id"=>$key,
+                "label" => $branch["name"],
+                "ticks" => $daysLabel,
+                "data" => $showData,
+            );
+        }
+
+
+        return $newData;
     }
 }

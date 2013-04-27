@@ -31,16 +31,20 @@
                     <volist name="list" id="vo">
                         <tr id="row{$vo.id}">
                             <td>{$vo.id}</td>
-                            <td class="center">
-                                <a href="{:U('supplier/edit')}?id={$vo.id}">{$vo.real_name|default="这个不留名？"}</a>
-                            </td>
+                            <td class="center">{$vo.real_name|default="这个不留名？"}</td>
                             <td class="center">{$vo.phone_number|default="暂无电话"}</td>
                             <td class="center">{$vo.mobile|default="暂无手机号"}</td>
                             <td class="center">{$vo.address|default="暂无联系地址？"}</td>
                             <td class="center">
-                                <a class="btn btn-success btn-mini btn-add" href="{:U('supplier/searchGoods')}?id={$vo.id}"><i class="icon-zoom-in icon-white"></i></a>
-                               <!-- <a class="btn btn-info btn-mini btn-edit" href="{:U('supplier/edit')}?id={$vo.id}"><i class="icon-edit icon-white"></i></a>-->
-                                <a class="btn btn-danger btn-mini btn-delete" href="{:U('supplier/del')}?id={$vo.id}"><i class="icon-trash icon-white"></i></a>
+                                <a class="btn btn-success btn-mini btn-add" href="{:U('supplier/searchGoods?id='.$vo['id'])}">
+                                    <i class="icon-zoom-in icon-white"></i>
+                                </a>
+                                <a class="btn btn-info btn-mini btn-edit" href="{:U('supplier/edit?id='.$vo['id'])}">
+                                    <i class="icon-edit icon-white"></i>
+                                </a>
+                                <a class="btn btn-danger btn-mini btn-delete" href="{:U('supplier/del?id='.$vo['id'])}">
+                                    <i class="icon-trash icon-white"></i>
+                                </a>
                             </td>
                         </tr>
                     </volist>

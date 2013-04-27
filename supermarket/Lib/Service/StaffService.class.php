@@ -1,8 +1,19 @@
 <?php
 
-
+/**
+ * Class StaffService
+ *
+ * 员工管理相关的一些业务逻辑
+ *
+ *
+ */
 class StaffService{
 
+    /**
+     * 获取员工列表，自动从SESSION获取分店信息
+     * @param $map
+     * @return array
+     */
     public function getList($map){
         //主键ID大于1,因为ID为1的是超级管理员
         $map['id'] = array('gt',1);
@@ -26,6 +37,12 @@ class StaffService{
         return $result;
     }
 
+    /**
+     * 插入员工信息
+     * 通过表单创建对象，然后添加员工信息
+     * 其中整个过程开启事务，使用异常来进行事务处理
+     * @throws ThinkException
+     */
     public function insert(){
         $model = D("Staff");
         $vo = $model->create();
@@ -57,6 +74,11 @@ class StaffService{
         $model->commit();
     }
 
+    /**
+     * 更新员工信息
+     *
+     * @throws ThinkException
+     */
     public function update(){
         $model = D("Staff");
         $vo = $model->create();
@@ -86,11 +108,18 @@ class StaffService{
             }
         }
         //添加其他业务逻辑
+        //TODO：更新相关冗余字段
 
         //提交事务
         $model->commit();
     }
 
+
+    /**
+     * 删除员工信息
+     *
+     * @throws ThinkException
+     */
     public function del(){
         $model = D("Staff");
         $id = $_GET["id"];
@@ -107,9 +136,10 @@ class StaffService{
             $model->rollback();
             throw new ThinkException("删除失败！");
         }
-        //添加其他业务逻辑
-
+        //TODO：添加其他业务逻辑
         //比如删除员工，还需要删除与员工相关的一些其他信息
+
+
         $model->commit();
     }
 
