@@ -101,5 +101,34 @@ class BranchService {
 
     }
 
+
+    /**
+     * 获取指定分店的商品库存信息
+     * @param $branchId     分店标识
+     * @param array $map   过滤条件
+     * @return array    包含商品列表以及分页对象的数组
+     */
+    public function getGoodsStock($branchId,$map = array()){
+        $Goods  = M("Goods");
+
+        //使用右连结查询分店的商品库存信息
+        $joinStr = "JOIN branch_has_goods bhg ON goods.id = bhg.goods_id and bhg.branch_id = ".$branchId;
+
+        $count = $Goods->join($joinStr)->where($map)->count();
+
+        $result = array();
+        if($count > 0){
+            import("@.ORG.Util.Page");
+            $p = new Page($count,15);
+            //添加以下这个SQL，防止报错
+            //问题解决：http://tech.it168.com/a2012/0808/1382/000001382732.shtml
+            
+            $Goods->query("SET sql_mode='NO_UNSIGNED_SUBTRACTION';");
+            $result["list"] = $Goods->join($joinStr)->where($map)->limit($p->firstRow.','.$p->listRows)->order("bhg.amount - goods.alarm")->select();
+            $result["page"] = $p->show();
+        }
+        return $result;
+    }
+
 }
 

@@ -18,8 +18,7 @@
                 <div class="row ">
                     <volist name="list" id="vo" key="idx" mod="3">
                         <div class="box span3">
-
-                            <div class="box-header well-small" data-original-title="">
+                            <div class="box-header well-small">
                                 <h4>{$vo.name}</h4>
                                 <div class="box-icon">
                                     <a href="#" class=" btn-minimize btn-mini"><i class="icon-chevron-up"></i></a>
@@ -33,10 +32,9 @@
                                 <p>负责人姓名：{$vo.director_name}</p>
                                 <p>负责人手机：{$vo.director_mobile}</p>
                                 <p>
-                                    <a href="#" class="btn">商品</a>
-                                    <a href="#" class="btn">销售</a>
-                                    <a href="{:U('branch/edit')}?id={$vo.id}" class="btn btn-info btn-round">修改</a>
-                                    <a href="{:U('branch/del')}?id={$vo.id}" class="btn btn-info btn-round">删除</a>
+                                    <a href="{:U('branch/goodsstock?branchId='.$vo['id'])}" class="btn">查看商品库存</a>
+                                    <a href="{:U('branch/edit?id='.$vo['id'])}" class="btn btn-info btn-round">修改</a>
+                                    <a href="{:U('branch/del?id='.$vo['id'])}" class="btn btn-info btn-round">删除</a>
                                 </p>
                             </div>
                         </div>

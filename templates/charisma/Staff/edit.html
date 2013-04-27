@@ -10,7 +10,7 @@
         </div>
         <div class="box-content">
 
-            <form class="form-horizontal" method="post" action="{:U('staff/update')}">
+            <form class="form-horizontal" method="post" action="{:U('staff/resetpwd')}">
                 <input type="hidden" name="id" value="{$vo.id}"/>
                 <fieldset>
                     <legend>重置密码<a class="btn btn-info pull-right" href="{:U('staff/index')}">返回员工列表</a></legend>
@@ -18,28 +18,32 @@
                         <label class="control-label">新密码：</label>
                         <div class="controls">
                             <div class="input-append">
-                                <input type="text" />
-                                <a class="btn" type="button">重置</a>
+                                <input type="text" name="password" />
+                                <button class="btn" type="submit">重置</button>
                             </div>
                         </div>
                     </div>
                 </fieldset>
-
+            </form>
+            <form class="form-horizontal" method="post" action="{:U('staff/update')}">
+                <input type="hidden" name="id" value="{$vo.id}"/>
                 <fieldset>
                     <legend>员工基本信息</legend>
                     <div class="control-group">
                         <label class="control-label">所属分店：</label>
                         <div class="controls">
-                            <front:select name="branch_id" model="branch" selected="$vo.branch_id"/>
+                            <input type="hidden" name="branch_id" value="{$vo.branch_id}"/>
+                            <input type="text" value="{$branchInfo.name}" readonly/>
+                            <!--<front:select name="branch_id" model="branch"/>-->
                         </div>
                     </div>
 
-                    <div class="control-group">
-                        <label class="control-label">用户组：</label>
-                        <div class="controls">
-                            <front:select name="role_id" model="role" disabled="1" />
-                        </div>
-                    </div>
+                    <!--<div class="control-group">-->
+                        <!--<label class="control-label">用户组：</label>-->
+                        <!--<div class="controls">-->
+                            <!--<front:select name="role_id" model="role" disabled="1" />-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="control-group">
                         <label class="control-label">员工姓名：</label>
                         <div class="controls">

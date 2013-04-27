@@ -7,7 +7,6 @@
  */
 class SalesRecordService {
 
-
     /**
      * @param $staffInfo        员工信息
      * @param $goodsList    商品列表，包含商品数量
@@ -95,5 +94,36 @@ class SalesRecordService {
         //提交事务
         $record->commit();
         return $recordData;
+    }
+
+
+
+
+
+
+
+
+
+
+    public function getList($map = array()){
+        $model = M("SalesRecord");
+
+        //取出员工所属的分店信息
+        $branchInfo = session("branch_info");
+        $map["branch_id"] = $branchInfo["id"];
+        if( session( C("ADMIN_AUTH_KEY") ) == true ){
+            //如果是管理员
+            unset($map["branch_id"]);
+        }
+
+        $count = $model->where($map)->count('id');
+        $result = array();
+        if($count > 0){
+            import("@.ORG.Util.Page");
+            $p = new Page($count,10);
+            $result["list"] = $model->where($map)->limit($p->firstRow.','.$p->listRows)->select();
+            $result["page"] = $p->show();
+        }
+        return $result;
     }
 }

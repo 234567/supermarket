@@ -1,0 +1,51 @@
+<extend name="Common:base" />
+
+
+<block name="page_title">销售记录</block>
+
+
+<block name="main">
+
+    <div class="box">
+        <div class="box-header well-small">
+            <h4>销售记录</h4>
+        </div>
+        <div class="box-content">
+            <a href="{:U('SaleGoods/index')}" class="btn btn-round btn-info">
+                <i class="icon-plus"></i>我也要销售
+            </a>
+            <a href="{:U('SalesRecord/showchart')}" class="btn btn-inverse btn-success">查看统计图</a>
+            <hr />
+            <div id="branch_list">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>分店</th>
+                        <th>员工姓名</th>
+                        <th>时间</th>
+                        <th>商品总量</th>
+                        <th>商品总额</th>
+                        <th>总共节省</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <volist name="list" id="vo">
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td>{$vo.branch_id}</td>
+                            <td>{$vo.staff_name}</td>
+                            <td>{$vo.time|mdate}</td>
+                            <td>{$vo.total_amount}</td>
+                            <td>￥{$vo.total_price}元</td>
+                            <td>￥{$vo.total_saving}元</td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <div id="page" class="pagination pagination-small">{$page}</div>
+            </div>
+        </div>
+    </div>
+</block>

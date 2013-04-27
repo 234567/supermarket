@@ -1,6 +1,28 @@
 <?php
-// 后台用户模块
+/**
+ * Class StaffAction
+ * 后台用户模块
+ */
 class StaffAction extends BaseAction {
+
+    public function edit(){
+        $id = $this->_param( "id" );
+        if(empty($id)){
+            $this->error("参数错误！");
+        }
+        $model = M("Staff");
+        $vo = $model->getById($id);
+        $this->vo = $vo;
+
+        $branchId = $vo["branch_id"];
+        $branchInfo = M("Branch")->getById($branchId);
+        if(empty($branchInfo)){
+            $this->error("系统错误，找不到员工对应的分店信息！");
+        }
+        $this->branchInfo =$branchInfo;
+        $this->display();
+    }
+
 
     // 检查帐号
     public function checkAccount() {
@@ -20,11 +42,13 @@ class StaffAction extends BaseAction {
     }
 
 
-    //重置密码
+    /**
+     * 重置密码
+     */
     public function resetPwd() {
         $id  =  $_POST['id'];
         $password = $_POST['password'];
-        if(''== trim($password)) {
+        if(''=== trim($password)) {
             $this->error('密码不能为空！');
         }
         $Staff = M('Staff');
@@ -32,7 +56,7 @@ class StaffAction extends BaseAction {
         $Staff->id			=	$id;
         $result	=	$Staff->save();
         if(false !== $result) {
-            $this->success("密码修改为$password");
+            $this->success("密码修改成功，新密码为：$password");
         }else {
             $this->error('重置密码失败！');
         }

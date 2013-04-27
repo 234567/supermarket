@@ -32,13 +32,6 @@ class BaseAction extends Action{
                 }
             }
         }
-
-        //取出员工所属的分店信息
-        $branchInfo = session("branch_info");
-        ///如果既不是管理员，又不是员工，则发生错误！
-        if( session( C("ADMIN_AUTH_KEY") ) != true && empty($branchInfo) ){
-            $this->error("登陆信息出错！",U("public/logout"));
-        }
     }
 
 

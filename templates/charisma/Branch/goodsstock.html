@@ -1,0 +1,72 @@
+<extend name="Common:base" />
+
+
+<block name="page_title">{$branchInfo["name"]} 的商品库存情况</block>
+
+
+<block name="main">
+
+    <div class="box">
+        <div class="box-header well-small">
+            <h4>{$branchInfo["name"]} 的商品库存情况</h4>
+        </div>
+        <div class="box-content">
+            <hr/>
+
+            <empty name="list">
+                <div class="alert alert-error">没有该分店的任何商品库存信息！！</div>
+                <else/>
+                <form class="form-inline" method="get"
+                      action="{:U('branch/goodsstock')}">
+                    <input type="hidden" name="branchId" value="{$branchInfo.id}"/>
+                    商品分类：
+                    <!--<front:select id="category_list" name="cid" model="category" selected="999999" />-->
+                    <front:select id="category_list" name="cid" selected="999999" model="category"/>
+                    商品名称：<input type="text" name="name" />
+                    <button class="btn" type="submit" >查找</button>
+                </form>
+                <div class="alert alert-info">温馨提示：商品列表默认以（库存量-提醒量）进行排序，以优先显示库存不足的商品</div>
+            </empty>
+
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>条形码</th>
+                    <th class="span2">商品名称</th>
+                    <th>分类</th>
+                    <th>规格</th>
+                    <th>品牌</th>
+                    <th>描述信息</th>
+                    <th>售价</th>
+                    <th>库存量</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="list" id="vo">
+                    <tr>
+                        <td class="center">{$vo.barcode}</td>
+                        <td class="center"><a href="{:U('goods/edit')}?id={$vo.id}">{$vo.name}</a></td>
+                        <td class="center"><eq name="vo.category_id" value="999999">未分类<else/>{$vo.category_id|default="未归类"}</eq></td>
+                        <td class="center">{$vo.specifications}</td>
+                        <td class="center">{$vo.brand|default=''}</td>
+                        <td class="center">{$vo.desp|default='...'}</td>
+                        <td class="center">￥{$vo.sales_price}</td>
+                        <td class="center"><span class="label label-info">{$vo.amount} {$vo.unit}</span></td>
+                        <td class="center">
+                            <if condition="($vo['amount'] gt $vo['alarm'])">
+                                <span class="label label-success">库存充足！</span>
+                                <else/>
+                                <a class="btn btn-mini btn-primary">商品采购</a>
+                            </if>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+            <div id="page" class="pagination pagination-small">{$page}</div>
+
+        </div>
+    </div>
+
+</block>

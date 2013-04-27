@@ -5,3 +5,7 @@
    RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
 </IfModule>
 
+<Files *.html>
+Order Allow,Deny
+Deny from all
+</Files>
