@@ -11,8 +11,15 @@
             <h4>{$supplier.real_name} 供货商->商品列表</h4>
         </div>
         <div class="box-content">
-            <h4></h4>
+            <a class="btn btn-info btn-round pull-right" href="{:U('supplier/index')}">返回供货商列表</a>
+            <div class="clear"></div>
             <hr/>
+            <empty name="goodsList">
+                <div class="alert alert-error">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    该供货商无商品信息！
+                </div>
+                <else/>
             <table class="table table-striped table-bordered table-hover table-condensed">
                 <thead>
                 <tr>
@@ -55,7 +62,9 @@
                 </volist>
                 </tbody>
             </table>
+
             <div id="page" class="pagination pagination-small">{$page}</div>
+            </empty>
 
         </div>
     </div>

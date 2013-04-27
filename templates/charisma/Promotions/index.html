@@ -19,6 +19,8 @@
                         <th>条码</th>
                         <th>分店名</th>
                         <th>商品名</th>
+                        <th>折扣价</th>
+                        <th>原价</th>
                         <th>折扣</th>
                         <th>开始时间</th>
                         <th>结束时间</th>
@@ -30,15 +32,24 @@
                     <volist name="list" id="vo">
                         <tr id="row{$vo.id}">
                             <td>{$vo.goods_id}</td>
-                            <td class="center">{$vo.branch_name|default="未知"}</td>
+                            <td class="center">
+                                <eq name="_SESSION['staff_info']['branch_id']" value="$vo.branch_id">
+                                     <a  href="{:U('promotions/edit')}?id={$vo.id}">{$vo.branch_name|default="未知"}</a>
+                               <else/>
+                                   <a>{$vo.branch_name|default="未知"}</a>
+                                </eq>
+
+                            </td>
                             <td class="center">{$vo.goods_name|default="未知"}</td>
-                            <td class="center">{$vo.discount|default="暂无折扣"}</td>
-                            <td class="center">{$vo.time_start|default="暂无开始时间"}</td>
-                            <td class="center">{$vo.time_end|default="暂无结束时间"}</td>
+                            <td class="center">{$vo["sales_price"]*$vo["discount"]/10}￥</td>
+                            <td class="center">{$vo.sales_price}￥</td>
+                            <td class="center">{$vo.discount|default="暂无折扣"}折</td>
+                            <td class="center">{$vo.time_start|toDate='Y-m-d'}</td>
+                            <td class="center">{$vo.time_end|toDate='Y-m-d'}</td>
                             <td class="center">
 
                                 <eq name="_SESSION['staff_info']['branch_id']" value="$vo.branch_id">
-                                    <a class="btn btn-info btn-mini btn-edit" href="{:U('promotions/edit')}?id={$vo.id}"><i class="icon-edit icon-white"></i></a>
+                                  <!--  <a class="btn btn-info btn-mini btn-edit" href="{:U('promotions/edit')}?id={$vo.id}"><i class="icon-edit icon-white"></i></a>-->
                                     <a class="btn btn-danger btn-mini btn-delete" href="{:U('promotions/del')}?id={$vo.id}"><i class="icon-trash icon-white"></i></a>
                                 </eq>
                             </td>

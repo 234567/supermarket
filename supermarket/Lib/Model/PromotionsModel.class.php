@@ -18,7 +18,8 @@ class PromotionsModel extends CommonModel{
     );
     //自动完成
     protected $_auto = array(
-
+        array("time_start","strtotime",Model::MODEL_BOTH,"function"),
+        array("time_end","strtotime",Model::MODEL_BOTH,"function"),
     );
     //自动验证
     protected $_validate = array(

@@ -61,16 +61,16 @@ class BaseAction extends Action{
     }
 
     public function edit(){
-        $name = $this->getActionName();
-        $model = M($name);
-        $id = $this->_param( $model->getPk());
-        if(empty($id)){
-            $this->error("参数错误！");
-        }
-        $vo = $model->getById($id);
-        $this->vo = $vo;
-        $this->display();
+    $name = $this->getActionName();
+    $model = M($name);
+    $id = $this->_param( $model->getPk());
+    if(empty($id)){
+        $this->error("参数错误！");
     }
+    $vo = $model->getById($id);
+    $this->vo = $vo;
+    $this->display();
+  }
 
     public function update(){
         $service = D($this->getActionName(),"Service");

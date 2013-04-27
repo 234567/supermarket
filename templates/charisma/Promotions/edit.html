@@ -10,6 +10,7 @@
             <form class="form-horizontal" action="{:U('promotions/update')}" method="post">
                 <fieldset>
                     <legend>促销信息</legend>
+                    <input type="hidden" name="id" value="{$promotions.id}"/>
                     <input type="hidden" name="branch_id" value="{$promotions.branch_id}"/>
                     <input type="hidden" name="goods_id" value="{$promotions.goods_id}"/>
                     <div class="control-group">
@@ -29,44 +30,20 @@
                         <label class="control-label">折扣</label>
                         <div class="controls">
                             <input  type="text" name="discount" value="{$promotions.discount}"/>
-                              <!--  <select id="selectError" data-rel="chosen" class="span1" >
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
-                                    <option>8</option>
-                                    <option>9</option>
-                                </select>                             .
-                                <select id="selectError1" data-rel="chosen" class="span1"
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
-                                    <option>8</option>
-                                    <option>9</option>
-                                </select>-->
-                                <span>折</span>
+                            <span>折</span>
                         </div>
                     </div>
 
                      <div class="control-group">
                         <label class="control-label">开始时间</label>
                         <div class="controls">
-                            <input type="text" name="time_start" value="{$promotions.time_start}"/>
+                            <input type="text" name="time_start" class="datepicker" value="{$promotions.time_start|toDate='Y-m-d'}"/>
                         </div>
                     </div>
                      <div class="control-group">
                         <label class="control-label">结束时间</label>
                         <div class="controls">
-                            <input type="text" name="time_start" valu="{$promotions.time_end}"/>
+                            <input type="text" name="time_end" class="datepicker" value="{$promotions.time_end|toDate='Y-m-d'}"/>
                         </div>
                     </div>
                     <div class="form-actions">
