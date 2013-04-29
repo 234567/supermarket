@@ -20,17 +20,19 @@ class StaffService{
         $model = M("Staff");
 
         //取出员工所属的分店信息
+        //取出员工所属的分店信息
         $branchInfo = session("branch_info");
-        if(isset($branchInfo)){
-            //如果是分店负责人，则只能管理分店所属的员工
-            $map["branch_id"] = $branchInfo["id"];
+        $map["branch_id"] = $branchInfo["id"];
+        if( session( C("ADMIN_AUTH_KEY") ) == true ){
+            //如果是管理员
+            unset($map["branch_id"]);
         }
 
         $count = $model->where($map)->count('id');
         $result = array();
         if($count > 0){
             import("@.ORG.Util.Page");
-            $p = new Page($count,5);
+            $p = new Page($count,10);
             $result["list"] = $model->where($map)->limit($p->firstRow.','.$p->listRows)->select();
             $result["page"] = $p->show();
         }

@@ -114,12 +114,15 @@ class SalesRecordService {
             unset($map["branch_id"]);
         }
 
+        $fields = "sales_record.*,branch.name as branch_name";
+        $join = "branch ON branch.id = branch_id";
         $count = $model->where($map)->count('id');
         $result = array();
         if($count > 0){
             import("@.ORG.Util.Page");
             $p = new Page($count,10);
-            $result["list"] = $model->where($map)->limit($p->firstRow.','.$p->listRows)->select();
+            $result["list"] = $model->field($fields)->join($join)->order("time desc")->
+                where($map)->limit($p->firstRow.','.$p->listRows)->select();
             $result["page"] = $p->show();
         }
         return $result;
