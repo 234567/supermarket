@@ -32,9 +32,9 @@
                             <td>{$vo.goods_id}</td>
                             <td class="center">{$vo.branch_name|default="未知"}</td>
                             <td class="center">{$vo.goods_name|default="未知"}</td>
-                            <td class="center">{$vo.discount|default="暂无折扣"}</td>
-                            <td class="center">{$vo.time_start|default="暂无开始时间"}</td>
-                            <td class="center">{$vo.time_end|default="暂无结束时间"}</td>
+                            <td class="center">{$vo['discount']*10}折</td>
+                            <td class="center">{$vo.time_start|mdate}</td>
+                            <td class="center">{$vo.time_end|mdate}</td>
                             <td class="center">
 
                                 <eq name="_SESSION['staff_info']['branch_id']" value="$vo.branch_id">

@@ -11,7 +11,7 @@
             <h4>供货商 {$supplier.real_name} 所供应的商品列表</h4>
         </div>
         <div class="box-content">
-            <a href="{:U('supplier/index')}" class="btn btn-info pull-right btn-round btn-mini">返回供货商列表</a>
+            <a href="{:U('supplier/index')}" class="btn btn-info pull-right">返回供货商列表</a>
 
 
             <hr/>
@@ -58,7 +58,7 @@
                             <td>￥{$vo.sales_price}</td>
                             <td>{$vo.brand|default='暂无'}</td>
                             <td>
-                                <a href="{:U('supplier/goodscompare')}?goods_id={$vo.goods_id}&supplier_id={$vo.supplier_id}" class="btn btn-info btn-mini">比比价</a>
+                                <a href="{:U('supplier/goodscompare?goods_id='.$vo['goods_id'].'&supplier_id='.$vo['supplier_id'])}" class="btn btn-info btn-mini">比比价</a>
                             </td>
                         </tr>
                     </volist>

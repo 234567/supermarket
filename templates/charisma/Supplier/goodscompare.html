@@ -11,12 +11,12 @@
             <h4>比价列表</h4>
         </div>
         <div class="box-content">
-            <a href="{:U('supplier/index')}" class="btn btn-info pull-right btn-round btn-mini">返回供货商列表</a>
+            <a href="{:U('supplier/index')}" class="btn btn-info pull-right">返回供货商列表</a>
             <hr/>
             <empty name="goods">
                 <div class="alert alert-error">没有对比的商品</div>
                 <else/>
-                <div class="alert alert-success">对比的商品信息：</div>
+                <div class="alert alert-info">对比的商品信息：</div>
                 <table class="table table-bordered table-hover">
                     <thead>
                         <th class="span1">条形码</th>
@@ -44,7 +44,7 @@
                 <empty name="list">
                     <div class="alert alert-error">没有对应的供货商</div>
                     <else/>
-                    <div class="alert ">供货商商品价格对比</div>
+                    <div class="alert alert-info">供货商商品价格对比</div>
                     <table class="table table-bordered">
                         <thead>
                         <th class="span1">供货商</th>
@@ -58,23 +58,25 @@
                             <volist name="list" id="vo">
 
                                 <eq name="i" value="1">
-                                    <tr class="alert-danger">
+                                    <tr class="alert-success">
                                     <else/>
                                     <tr>
                                 </eq>
 
                                      <td class="center">{$vo.real_name}</td>
-                                     <td class="center ">{$vo.last_price}</td>
+                                     <td class="center ">￥{$vo.last_price}</td>
                                      <td class="center">{$vo.phone_number}</td>
                                      <td class="center">{$vo.mobile}</td>
                                      <td class="center">{$vo.address}</td>
                                      <td class="center">
-                                         <if condition="$i eq 1">
-                                             价格最优
-                                             <else /> 其他
-                                         </if>
-                                         <if condition="($vo.supplier_id eq $current_supplier_id)">
+                                         <if condition="($i eq 1) && ($vo.supplier_id eq $current_supplier_id)">
+                                             当前供货商 价格最优
+                                             <elseif condition="($vo.supplier_id eq $current_supplier_id)" />
                                              当前供货商
+                                             <elseif condition="$i eq 1"/>
+                                             价格最优
+                                             <else/>
+                                             其他供货商
                                          </if>
                                      </td>
                                  </tr>
