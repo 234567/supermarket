@@ -11,6 +11,8 @@
             <h4>{$branchInfo["name"]} 的商品库存情况</h4>
         </div>
         <div class="box-content">
+           <!-- <a href="{:U('goods/add')}" class="btn btn-info btn-round btn-mini"><i class="icon-plus"></i>商品入库</a>-->
+            <a href="{:U('branch/index')}" class="btn btn-info pull-right btn-round btn-mini">返回分店列表</a>
             <hr/>
 
             <empty name="list">
@@ -26,7 +28,7 @@
                     <button class="btn" type="submit" >查找</button>
                 </form>
                 <div class="alert alert-info">温馨提示：商品列表默认以（库存量-提醒量）进行排序，以优先显示库存不足的商品</div>
-            </empty>
+
 
             <table class="table table-striped table-bordered table-hover">
                 <thead>
@@ -69,7 +71,7 @@
                 </tbody>
             </table>
             <div id="page" class="pagination pagination-small">{$page}</div>
-
+         </empty>
         </div>
     </div>
 

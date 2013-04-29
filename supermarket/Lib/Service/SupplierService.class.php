@@ -7,6 +7,8 @@
 //供货商业务逻辑
 class SupplierService{
     public function getList($map){
+        //status 状态：1表示正常，0表示不可用，-1表示已删除
+        $map = array("status"=>array("eq",1));
         $model = D("Supplier");
         $result = array();
         $totalRows = $model->where($map)->count();
@@ -54,7 +56,7 @@ class SupplierService{
     public function del(){
         $id = $_GET["id"];
         if(!isset($id)){
-          throw new ThinkException("ID错误!");
+            throw new ThinkException("供货商ID出错");
         }
         $model = D("Supplier");
         //查询供货商中是否存在商品
@@ -64,9 +66,9 @@ class SupplierService{
         }
         //开启事务
         $model->startTrans();
-        //不是真正的删除，而是将其隐藏
-       /* $del = $model->where($condition)->setField("status",-1);*/
-        $del = $model->delete($id);
+        $condition = array("id"=>array("eq",$id));
+        //不是真正的删除，而是将其隐藏,status 状态：1表示正常，0表示不可用，-1表示已删除
+         $del = $model->where($condition)->setField("status",-1);
         if(false == $del){
             $model->rollback();
             throw new ThinkException("删除失败!");
@@ -98,5 +100,34 @@ class SupplierService{
         }
        return $result;
     }
+
+    public function goodscompare(){
+        $goods_id = $_GET["goods_id"];
+        $supplier_id = $_GET["supplier_id"];
+        if(!isset($goods_id)){
+            throw new ThinkException("商品id错误!");
+        }
+        $result = array();
+        //更加商品id获取拥有该商品的供货商列表
+       $result["current_supplier_id"]=$supplier_id;
+        $count = M("Goods")->where("id=".$goods_id)->count("id");
+        //存在该商品信息
+        if($count>0){
+            //列举提供该商品的供货商列表，
+            import("@.ORG.Util.Page");
+            //获取商品信息
+            $result["goods"] = M("Goods")->getById($goods_id);
+            //获提供该商品的供货商列表，并对其价格进行对比
+            $page = new Page($count,5);
+            //链表查询条件
+            $condition = "shg.supplier_id = s.id and shg.goods_id='".$goods_id."'";
+/*            $fields = "s.id as s_id,s.real_name,shg.last_price";*/
+            //分页查询商品列表
+            $result["list"] = M()->table("supplier_has_goods as shg,supplier as s")->where($condition)->order("shg.last_price asc")->limit($page->firstRow,$page->listRows)->select();
+            $result["page"] = $page->show();
+        }
+        return $result;
+    }
+
 
 }

@@ -12,13 +12,14 @@ class BranchModel extends RelationModel{
         'phone',//分店联系电话
         'director_staff_id',//负责人ID（根据id ，获取负责人名字，联系电话）
         'photo',//分店照片
+        'status',//status 状态：1表示正常，0表示不可用，-1表示已删除
         '_pk' => 'id',
         '_autoinc' => true
     );
 
     //自动完成
     protected $_auto = array(
-
+        array("status","1",Model::MODEL_BOTH)
     );
     //自动验证 待完善
     protected $_validate = array(

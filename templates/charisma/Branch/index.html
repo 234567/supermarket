@@ -34,7 +34,12 @@
                                 <p>
                                     <a href="{:U('branch/goodsstock?branchId='.$vo['id'])}" class="btn">查看商品库存</a>
                                     <a href="{:U('branch/edit?id='.$vo['id'])}" class="btn btn-info btn-round">修改</a>
-                                    <a href="{:U('branch/del?id='.$vo['id'])}" class="btn btn-info btn-round">删除</a>
+                                    <eq name="vo.id" value="1">
+                                        <else/>
+                                        <a href="{:U('branch/del?id='.$vo['id'])}" class="btn btn-info btn-round">删除</a>
+
+                                    </eq>
+
                                 </p>
                             </div>
                         </div>

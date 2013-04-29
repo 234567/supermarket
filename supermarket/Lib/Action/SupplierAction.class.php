@@ -17,9 +17,24 @@ class SupplierAction extends  BaseAction{
         }catch (Exception $e){
             $this->error($e->getMessage());
         }
-        trace($result);
         $this->goodsList = $result["goodsList"];
         $this->supplier = $result["supplier"];
+        $this->page = $result["page"];
+        $this->display();
+    }
+
+    public function goodscompare(){
+        $service = D($this->getActionName(),"Service");
+        //无过滤条件获取列表
+        try{
+            $result = $service->goodscompare();
+        }catch (Exception $e){
+            $this->error($e->getMessage());
+        }
+        trace($result);
+        $this->current_supplier_id = $result["current_supplier_id"];
+        $this->goods = $result["goods"];
+        $this->list = $result["list"];
         $this->page = $result["page"];
         $this->display();
     }

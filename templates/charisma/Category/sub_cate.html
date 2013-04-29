@@ -21,19 +21,26 @@
         <volist name="list" id="vo">
             <tr>
                 <td>
-                    <a class="expand" href="{:U('category/sub_cate')}?pid={$vo.id}">
-                        <i class="icon-plus"/></i>
-                    </a>
+                   <between name="vo.pid" value="101,999999">
+                       <a class="expand">
+                           <i class="icon-plus"/></i>
+                       </a>
+                       <else/>
+                       <a class="expand" href="{:U('category/sub_cate')}?pid={$vo.id}">
+                           <i class="icon-plus"/></i>
+                       </a>
+                   </between>
+
                 </td>
                 <td class="center">{$vo.id}</td>
                 <td class="center">{$vo.name}</td>
                 <td class="center">
                     <eq name="vo.pid" value="0"><span class='label label-important'>商品大类</span></eq>
                     <between name="vo.pid" value="1,100"><span class='label label-warning'>商品中类 </span></between>
-                    <between name="vo.pid" value="101,1000"><span class='label label-success'>商品小类</span></between>
+                    <between name="vo.pid" value="101,999999"><span class='label label-success'>商品小类</span></between>
                 </td>
                 <td class="center">
-                    <between name="vo.pid" value="101,1000">
+                    <between name="vo.pid" value="101,999999">
                         <a class="btn btn-primary btn-mini" href="{:U('goods/search?cid='.$vo['id'])}"><i
                             class="icon-zoom-in icon-white"></i></a>
                     </between>

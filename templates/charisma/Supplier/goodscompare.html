@@ -1,0 +1,91 @@
+<extend name="Common:base" />
+
+
+<block name="page_title">比价列表</block>
+
+
+<block name="main">
+
+    <div class="box">
+        <div class="box-header well-small">
+            <h4>比价列表</h4>
+        </div>
+        <div class="box-content">
+            <a href="{:U('supplier/index')}" class="btn btn-info pull-right btn-round btn-mini">返回供货商列表</a>
+            <hr/>
+            <empty name="goods">
+                <div class="alert alert-error">没有对比的商品</div>
+                <else/>
+                <div class="alert alert-success">对比的商品信息：</div>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <th class="span1">条形码</th>
+                        <th class="span2">商品名称</th>
+                        <th>售价</th>
+                        <th>分类</th>
+                        <th>规格</th>
+                        <th>品牌</th>
+                        <th>描述信息</th>
+
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="center">{$goods.barcode}</td>
+                            <td class="center">{$goods.name}</td>
+                            <td class="center">￥{$goods.sales_price}</td>
+                            <td class="center"><eq name="vo.category_id" value="999999">未分类<else/>{$vo.category_id|default="未归类"}</eq></td>
+                            <td class="center">{$goods.specifications}</td>
+                            <td class="center">{$goods.brand|default='暂无'}</td>
+                            <td class="center">{$goods.desp|default='暂无'}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <empty name="list">
+                    <div class="alert alert-error">没有对应的供货商</div>
+                    <else/>
+                    <div class="alert ">供货商商品价格对比</div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <th class="span1">供货商</th>
+                        <th class="span2">最新价格</th>
+                        <th class="span2">电话号码</th>
+                        <th class="span2">手机号码</th>
+                        <th class="span2">联系地址</th>
+                        <th class="span2">其他</th>
+                        </thead>
+                        <tbody>
+                            <volist name="list" id="vo">
+
+                                <eq name="i" value="1">
+                                    <tr class="alert-danger">
+                                    <else/>
+                                    <tr>
+                                </eq>
+
+                                     <td class="center">{$vo.real_name}</td>
+                                     <td class="center ">{$vo.last_price}</td>
+                                     <td class="center">{$vo.phone_number}</td>
+                                     <td class="center">{$vo.mobile}</td>
+                                     <td class="center">{$vo.address}</td>
+                                     <td class="center">
+                                         <if condition="$i eq 1">
+                                             价格最优
+                                             <else /> 其他
+                                         </if>
+                                         <if condition="($vo.supplier_id eq $current_supplier_id)">
+                                             当前供货商
+                                         </if>
+                                     </td>
+                                 </tr>
+                            </volist>
+                        </tbody>
+                    </table>
+                </empty>
+                <div id="page" class="pagination pagination-small">{$page}</div>
+            </empty>
+
+        </div>
+    </div>
+
+</block>

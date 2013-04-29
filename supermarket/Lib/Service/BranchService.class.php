@@ -7,6 +7,17 @@
 //分店业务逻辑
 class BranchService {
     public function getList($map){
+        //status 状态：1表示正常，0表示不可用，-1表示已删除
+        $map = array("status"=>array("eq",1));
+
+        //取出员工所属的分店信息
+        $branchInfo = session("branch_info");
+        $map["branch_id"] = $branchInfo["id"];
+        if( session( C("ADMIN_AUTH_KEY") ) == true ){
+            //如果是管理员
+            unset($map["branch_id"]);
+        }
+
         $model = D('Branch');
         $totalRows = $model->where($map)->count('id');
         $result = array();
@@ -65,7 +76,8 @@ class BranchService {
     public function del(){
         $model = D('Branch');
         $id = $_GET['id'];
-        if(!isset($id)){
+        //id为1标识总公司 ，总公司 是不允许删除的
+        if(!isset($id) || $id == 1){
             throw new ThinkException("请指定删除分店ID");
         }
         //开启事务
@@ -82,17 +94,15 @@ class BranchService {
             //分店中存在员工，将该分店中的员工转移到总公司去（目前暂时）
            //查询出要删除分店的所有员工
             $staffList = $staff->where($staffCondition)->select();
-            dump($staffList);
-            //查询总公司的信息
-            $Corporation = $model->where("name like '"."%总公司"."'")->find();
+
             //将分店员工移动到总公司中
             foreach($staffList as $value){
-              $staff->where("id=".$value["id"])->setField("branch_id",$Corporation["id"]);
+              $staff->where("id=".$value["id"])->setField("branch_id",1);
             }
         }
-        //根据条件删除分店，这里的分店是将status设置为-1
-       /*$result = $model->where($branchCondition)->setField('status',-1);*/
-        $result = $model->where($branchCondition)->delete();
+        //根据条件删除分店，这里的分店是将status设置为-1:status 状态：1表示正常，0表示不可用，-1表示已删除
+       $result = $model->where($branchCondition)->setField('status',-1);
+      /*  $result = $model->where($branchCondition)->delete();*/
         if(false == $result){
             $model->rollback();
             throw new ThinkException("分店删除失败！");
