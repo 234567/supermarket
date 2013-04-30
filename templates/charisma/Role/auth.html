@@ -10,20 +10,54 @@
         </div>
         <div class="box-content">
 
+            <!--<table class="table table-bordered">
+                <tbody>
+                <volist name="nodeList" id="project">
+                    <tr>
+                        <td style="width:11px;min-width: 10px;">
+                        <strong>[项目名]</strong>{$project.title}
+                        <input type="checkbox" name="data[]"  data-no-uniform="true" class="project" value="{$project.id}:1:0"/>
+                        </td>
+                        <td style="padding:0px;">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <volist name="project.data" id="module">
+                                        <tr>
+                                            <td>
+                                                <strong>[模块名]</strong>{$module.title}
+                                                <input type="checkbox" name="data[]" data-no-uniform="true"
+                                                       class="module" value="{$module.id}:2:{$module.pid}"/>
+                                            </td>
+                                            <td>
+                                                <volist name="module.data" id="action">
+                                                    {$action.title}<input type="checkbox" name="data[]" data-no-uniform="true"
+                                                                                 class="action" value="{$action.id}:3:{$action.pid}"/>
+                                                    &nbsp;&nbsp;
+                                                </volist>
+                                            </td>
+                                        </tr>
+                                    </volist>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>-->
+
             <form class="form-horizontal well" method="post" action="{:U('role/updateAccess')}">
                 <fieldset>
                     <legend>详细权限信息<a class="btn btn-info pull-right" href="{:U('role/index')}">返回角色列表</a></legend>
                     <input type="hidden" name="id" value="{$info.id}"/>
-
                     <volist name="nodeList" id="project">
-                        <div class="row">
-                            <div class="alert alert-info" style="margin-left: 18px;">
+                        <div class="row-fluid">
+                            <div class="alert span1">
                             <strong>[项目名]</strong>{$project.title}
                                 <input type="checkbox" name="data[]"  data-no-uniform="true" class="project" value="{$project.id}:1:0"/>
                             </div>
 
                             <volist name="project.data" id="module">
-                                <div class="alert alert-info" style="margin-left:40px;">
+                                <div class="row-fluid" >
                                     <strong>[模块名]</strong>{$module.title}
                                     <input type="checkbox" name="data[]" data-no-uniform="true"
                                            class="module" value="{$module.id}:2:{$module.pid}"/>

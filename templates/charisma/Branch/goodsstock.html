@@ -63,7 +63,7 @@
                             <if condition="($vo['amount'] gt $vo['alarm'])">
                                 <span class="label label-success">库存充足！</span>
                                 <else/>
-                                <a class="btn btn-mini btn-primary">商品采购</a>
+                                <a href="{:U('supplier/goodscompare?goods_id='.$vo['id'])}" class="btn btn-mini btn-primary">商品采购</a>
                             </if>
                         </td>
                     </tr>

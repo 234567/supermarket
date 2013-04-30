@@ -9,30 +9,30 @@
         <div class="box-content">
             <form class="form-horizontal" method="post" action="{:U('supplier/update')}">
                 <fieldset>
-                    <legend>供货商信息<a  href="{:U('/supplier')}" class="btn btn-info pull-right">返回供货商列表</a></legend>
+                    <legend>供货商信息<a  href="{:U('supplier/index')}" class="btn btn-info pull-right">返回供货商列表</a></legend>
                     <input type="hidden" name="id" value="{$vo.id}"/>
                     <div class="control-group">
                         <label class="control-label "> 姓名：</label>
                         <div class="controls">
-                            <input type="text" name="real_name" class="span3" value="{$vo.real_name}">
+                            <input type="text" name="real_name" value="{$vo.real_name}">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label ">  电话：</label>
                         <div class="controls">
-                            <input type="text" name="phone_number" class="span3" value="{$vo.phone_number}">
+                            <input type="text" name="phone_number" value="{$vo.phone_number}">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label">手机：</label>
                         <div class="controls">
-                            <input type="text" name="mobile" class="span3" value="{$vo.mobile}">
+                            <input type="text" name="mobile" value="{$vo.mobile}">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label">地址：</label>
                         <div class="controls">
-                            <input type="text" name="address" class="span3" value="{$vo.address}">
+                            <input type="text" name="address" value="{$vo.address}">
                         </div>
                     </div>
                     <div class="form-actions">
