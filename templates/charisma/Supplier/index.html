@@ -9,53 +9,48 @@
             <h4>供应商列表</h4>
         </div>
         <div class="box-content">
-            <a id="btn-add" href="{:U('supplier/add')}"  class="btn btn-round btn-info">
-                <i class="icon-plus"></i>新增供货商信息
-            </a>
-            <div id="dialog"></div>
+            <a href="{:U('supplier/add')}"  class="btn btn-info">新增供货商信息</a>
             <hr />
-            <div id="supplier_list">
-                <table class="table table-striped table-bordered table-hover table-condensed">
-                    <thead>
-                    <tr>
-                        <th>编号</th>
-                        <th>姓名</th>
-                        <th>电话号码</th>
-                        <th>手机</th>
-                        <th>联系地址</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+            <table class="table table-striped table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>姓名</th>
+                    <th>电话号码</th>
+                    <th>手机</th>
+                    <th>联系地址</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
 
-                    <volist name="list" id="vo">
-                        <tr id="row{$vo.id}">
-                            <td>{$vo.id}</td>
-                            <td class="center">
-                                <a class="" href="{:U('supplier/edit?id='.$vo['id'])}">
-                                    {$vo.real_name|default="这个不留名？"}
-                                </a>
-                            </td>
-                            <td class="center">{$vo.phone_number|default="暂无电话"}</td>
-                            <td class="center">{$vo.mobile|default="暂无手机号"}</td>
-                            <td class="center">{$vo.address|default="暂无联系地址？"}</td>
-                            <td class="center">
-                                <a class="btn btn-success btn-mini btn-add" href="{:U('supplier/searchGoods?id='.$vo['id'])}">
-                                    <i class="icon-zoom-in icon-white"></i>
-                                </a>
-                               <!-- <a class="btn btn-info btn-mini btn-edit" href="{:U('supplier/edit?id='.$vo['id'])}">
-                                    <i class="icon-edit icon-white"></i>
-                                </a>-->
-                                <a class="btn btn-danger btn-mini btn-delete" href="{:U('supplier/del?id='.$vo['id'])}">
-                                    <i class="icon-trash icon-white"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </volist>
-                    </tbody>
-                </table>
-                <div id="page" class="pagination pagination-small">{$page}</div>
-            </div>
+                <volist name="list" id="vo">
+                    <tr id="row{$vo.id}">
+                        <td>{$vo.id}</td>
+                        <td class="center">
+                            <a class="" href="{:U('supplier/edit?id='.$vo['id'])}">
+                                {$vo.real_name|default="这个不留名？"}
+                            </a>
+                        </td>
+                        <td class="center">{$vo.phone_number|default="暂无电话"}</td>
+                        <td class="center">{$vo.mobile|default="暂无手机号"}</td>
+                        <td class="center">{$vo.address|default="暂无联系地址？"}</td>
+                        <td class="center">
+                            <a class="btn btn-success btn-mini btn-add" href="{:U('supplier/searchGoods?id='.$vo['id'])}">
+                                <i class="icon-zoom-in icon-white"></i>
+                            </a>
+                            <!-- <a class="btn btn-info btn-mini btn-edit" href="{:U('supplier/edit?id='.$vo['id'])}">
+                                 <i class="icon-edit icon-white"></i>
+                             </a>-->
+                            <a class="btn btn-danger btn-mini btn-delete" href="{:U('supplier/del?id='.$vo['id'])}">
+                                <i class="icon-trash icon-white"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+            <div id="page" class="pagination">{$page}</div>
         </div>
     </div>
 </block>

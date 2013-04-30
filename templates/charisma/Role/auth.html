@@ -1,82 +1,50 @@
 <extend name="Common:base"/>
 
 
-<block name="page_title">角色组列表</block>
+<block name="page_title">角色权限控制</block>
 <block name="main">
 
     <div class="box">
         <div class="box-header well-small">
-            <h4>权限列表</h4>
+            <h4>角色权限控制</h4>
         </div>
         <div class="box-content">
 
-            <!--<table class="table table-bordered">
-                <tbody>
-                <volist name="nodeList" id="project">
-                    <tr>
-                        <td style="width:11px;min-width: 10px;">
-                        <strong>[项目名]</strong>{$project.title}
-                        <input type="checkbox" name="data[]"  data-no-uniform="true" class="project" value="{$project.id}:1:0"/>
-                        </td>
-                        <td style="padding:0px;">
-                            <table class="table table-bordered">
-                                <tbody>
-                                    <volist name="project.data" id="module">
-                                        <tr>
-                                            <td>
-                                                <strong>[模块名]</strong>{$module.title}
-                                                <input type="checkbox" name="data[]" data-no-uniform="true"
-                                                       class="module" value="{$module.id}:2:{$module.pid}"/>
-                                            </td>
-                                            <td>
-                                                <volist name="module.data" id="action">
-                                                    {$action.title}<input type="checkbox" name="data[]" data-no-uniform="true"
-                                                                                 class="action" value="{$action.id}:3:{$action.pid}"/>
-                                                    &nbsp;&nbsp;
-                                                </volist>
-                                            </td>
-                                        </tr>
-                                    </volist>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </volist>
-                </tbody>
-            </table>-->
-
-            <form class="form-horizontal well" method="post" action="{:U('role/updateAccess')}">
+            <form class="form-horizontal" method="post" action="{:U('role/updateAccess')}">
                 <fieldset>
-                    <legend>详细权限信息<a class="btn btn-info pull-right" href="{:U('role/index')}">返回角色列表</a></legend>
+                    <legend>{$role.name} 的详细权限<a class="btn btn-info pull-right" href="{:U('role/index')}">返回角色列表</a></legend>
                     <input type="hidden" name="id" value="{$info.id}"/>
-                    <volist name="nodeList" id="project">
-                        <div class="row-fluid">
-                            <div class="alert span1">
-                            <strong>[项目名]</strong>{$project.title}
-                                <input type="checkbox" name="data[]"  data-no-uniform="true" class="project" value="{$project.id}:1:0"/>
-                            </div>
 
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr><th>项目</th><th>模块</th><th>操作</th></tr>
+                        </thead>
+                        <tbody>
+                    <volist name="nodeList" id="project">
+                        <tr>
+                            <td rowspan="20">{$project.title}
+                                <input type="checkbox" name="data[]"  data-no-uniform="true" class="project" value="{$project.id}:1:0"/>
+                            </td>
                             <volist name="project.data" id="module">
-                                <div class="row-fluid" >
-                                    <strong>[模块名]</strong>{$module.title}
-                                    <input type="checkbox" name="data[]" data-no-uniform="true"
-                                           class="module" value="{$module.id}:2:{$module.pid}"/>
-                                        <div class="row-fluid">
-                                            <strong>[操作名]</strong>
-                                            <volist name="module.data" id="action">
-                                                <span class="label" style="margin-left: 14px;">{$action.title}
-                                                    <input type="checkbox" name="data[]" data-no-uniform="true"
-                                                           class="action" value="{$action.id}:3:{$action.pid}"/>
-                                                </span>
-                                            </volist>
-                                        </div>
-                                </div>
+                                <tr>
+                                    <td>
+                                        {$module.title}<input type="checkbox" name="data[]" data-no-uniform="true"
+                                                              class="module" value="{$module.id}:2:{$module.pid}"/>
+                                    </td>
+                                    <empty name="module.data"><td colspan="100"></td></empty>
+                                    <volist name="module.data" id="action">
+                                        <td>{$action.title}
+                                            <input type="checkbox" name="data[]" data-no-uniform="true"
+                                                   class="action" value="{$action.id}:3:{$action.pid}"/>
+                                        </td>
+                                    </volist>
+                                </tr>
                             </volist>
 
-
-                        </div>
+                        </tr>
                     </volist>
-
+                        </tbody>
+                    </table>
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">修改</button>
                         <button type="reset" class="btn">重置</button>
@@ -109,10 +77,10 @@
             //为项目时候全选本项目所有操作
             $("input.project").on("click",function () {
                 //找到当前项目所在行DIV
-                var row = $(this).parents(".row");
+                var row = $(this).parents("tr");
                 //找到项目下所有多选框，并切换选中状态
                 //选中状态与当前项目选中相关
-                $('input[type="checkbox"]', row).prop("checked", $(this).prop("checked"));
+                $('input[type="checkbox"]').prop("checked", $(this).prop("checked"));
             });
 
             //为模块时候全选本模块所有操作
@@ -121,7 +89,7 @@
                 var checked = $(this).prop("checked");
 
                 //找到与当前模块紧挨的操作行
-                var row = $(this).next(".row-fluid");
+                var row = $(this).parent().nextAll();
 
                 //将该行下面的选中框切换状态
                 $('input[type="checkbox"]',row).prop("checked", checked);
@@ -129,7 +97,7 @@
                 //如果是选中，那么上级的项目也必须选中才行！
                 if (checked) {
                     //找到项目所在行，然后在行下面找到项目的勾选框
-                    $(this).parents("div.row").find("input.project").prop("checked", "checked");
+                    $("input.project").prop("checked", "checked");
                 }
             });
 
@@ -138,11 +106,11 @@
             $("input.action").on("click",function () {
                 if ($(this).prop('checked')) {
                     //先往上找到模块选中
-                    var module = $(this).parents("div.row-fluid").prev("input.module");
+                    var module = $(this).parents("tr").find("input.module");
                     module.prop("checked", "checked");
 
                     //然后找项目
-                    $(module).parents("div.row").find("input.project").prop("checked", "checked");
+                    $("input.project").prop("checked", "checked");
                 }
             });
 

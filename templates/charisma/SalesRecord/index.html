@@ -11,9 +11,7 @@
             <h4>销售记录</h4>
         </div>
         <div class="box-content">
-            <a href="{:U('SaleGoods/index')}" class="btn btn-round btn-info">
-                <i class="icon-plus"></i>我也要销售
-            </a>
+            <a href="{:U('SaleGoods/index')}" class="btn btn-info">我也要销售</a>
             <a href="{:U('SalesRecord/showchart')}" class="btn btn-inverse btn-success">查看统计图</a>
             <hr />
             <div id="branch_list">
@@ -44,7 +42,7 @@
                     </volist>
                     </tbody>
                 </table>
-                <div id="page" class="pagination pagination-small">{$page}</div>
+                <div id="page" class="pagination">{$page}</div>
             </div>
         </div>
     </div>

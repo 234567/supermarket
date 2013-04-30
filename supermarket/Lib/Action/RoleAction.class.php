@@ -11,7 +11,7 @@ class RoleAction extends BaseAction{
     public function auth(){
 
         //获取角色信息
-        $role = M("role")->where(array( "id" => $this->_get("id","intval")) )->find();
+        $role = M("role")->getById($this->_get("id","intval"));
         if (empty($role['id'])) {
             $this->error("不存在该用户组", U('role/index'));
         }
@@ -28,6 +28,7 @@ class RoleAction extends BaseAction{
         foreach ($datas as $k => $v) {
             $map['level'] = 2;
             $map['pid'] = $v['id'];
+            $map['status'] = 1;
             $datas[$k]['data'] = $nodeModel->where($map)->select();
             foreach ($datas[$k]['data'] as $k1 => $v1) {
                 $map['level'] = 3;
@@ -35,7 +36,8 @@ class RoleAction extends BaseAction{
                 $datas[$k]['data'][$k1]['data'] = $nodeModel->where($map)->select();
             }
         }
-        $this->assign("nodeList", $datas);
+        $this->role = $role;
+        $this->nodeList = $datas;
         $this->display();
     }
 

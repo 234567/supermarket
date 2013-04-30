@@ -9,7 +9,7 @@
         <div class="box-content">
             <form class="form-horizontal" action="{:U('promotions/insert')}" method="post">
                 <fieldset>
-                    <legend>促销信息</legend>
+                    <legend>促销信息<a href="{:U('promotions/index')}" class="btn btn-info pull-right">返回促销商品列表</a></legend>
                     <input type="hidden" name="branch_id" value="{$branch.id}"/>
                     <input type="hidden" name="goods_id" value="{$goods.id}"/>
                     <div class="control-group">
@@ -70,8 +70,8 @@
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-info btn-round">确定</button>
-                        <a href="javascript:history.back(-1)"  class="btn btn-round">返回</a>
+                        <button type="submit" class="btn btn-primary">确定</button>
+                        <button type="reset" class="btn">重置</button>
                     </div>
                 </fieldset>
             </form>

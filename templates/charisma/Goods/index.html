@@ -11,10 +11,8 @@
             <h4>所有商品列表</h4>
         </div>
         <div class="box-content">
-            <a href="{:U('goods/add')}" class="btn btn-round btn-info">
-                <i class="icon-plus"></i>录入新商品
-            </a>
-            <a href="{:U('promotions/index')}" class="btn btn-round btn-info">查看商品折扣信息
+            <a href="{:U('goods/add')}" class="btn btn-info">录入新商品</a>
+            <a href="{:U('promotions/index')}" class="btn btn-info">查看促销商品
             </a>
             <hr/>
             <form class="form-inline" action="{:U('goods/search')}" method="get">
@@ -57,7 +55,7 @@
                         <td>{$vo.keyword|default=''}</td>
                         <td>{$vo.desp|default='...'}</td>
                         <td>
-                            <a class="btn btn-success btn-mini" href="{:U('promotions/release?goods_id='.$vo['id'])}">发布促销</a>
+                            <a class="btn btn-success btn-mini" href="{:U('promotions/release?goods_id='.$vo['id'])}">促销</a>
                             <a class="btn btn-danger btn-mini" href="{:U('goods/del?id='.$vo['id'])}"><i class="icon-trash icon-white"></i></a>
 
                         </td>
@@ -65,7 +63,7 @@
                 </volist>
                 </tbody>
             </table>
-            <div id="page" class="pagination pagination-small">{$page}</div>
+            <div id="page" class="pagination">{$page}</div>
 
         </div>
     </div>

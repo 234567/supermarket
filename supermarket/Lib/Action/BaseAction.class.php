@@ -45,8 +45,7 @@ class BaseAction extends Action{
         //无过滤条件获取列表
         $result = $service->getList(array());
         $this->list = $result['list'];
-        trace($result["list"]);
-        $this->page = $result['page'];
+        $this->page = isset($result['page']) ? $result['page'] : null;
         $this->display();
     }
 

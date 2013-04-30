@@ -23,7 +23,6 @@ class PromotionsAction extends  BaseAction{
     public function edit(){
         $service = D($this->getActionName(),"Service");
         $result = $service->edit();
-        trace($result);
         if(false === $result["goods"]){
             $this->error("无权限删除其他分公司折扣信息!",U("promotions/index"));
         }

@@ -9,10 +9,7 @@
             <h4>角色组列表</h4>
         </div>
         <div class="box-content">
-            <a id="btn-add" href="{:U('role/add')}" class="btn btn-round btn-info ">
-                <i class="icon-plus"></i>新增角色
-            </a>
-            <div id="dialog"></div>
+            <a href="{:U('role/add')}" class="btn btn-info">新增角色</a>
             <hr />
             <div id="branch_list">
 
@@ -63,7 +60,7 @@
                     </volist>
                     </tbody>
                 </table>
-                <div id="page" class="pagination pagination-small">{$page}</div>
+                <div id="page" class="pagination">{$page}</div>
             </div>
         </div>
     </div>

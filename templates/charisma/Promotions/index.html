@@ -7,10 +7,7 @@
             <h4>促销商品列表</h4>
         </div>
         <div class="box-content">
-            <a id="btn-add" href="{:U('promotions/release')}"  class="btn btn-round btn-info">
-                <i class="icon-plus"></i>新增商品折扣信息
-            </a>
-            <div id="dialog"></div>
+            <a href="{:U('promotions/release')}"  class="btn btn-info">发布商品折扣</a>
             <hr />
             <div id="promotions_list">
                 <table class="table table-striped table-bordered table-hover table-condensed">
@@ -50,7 +47,7 @@
                     </volist>
                     </tbody>
                 </table>
-                <div id="page" class="pagination pagination-small">{$page}</div>
+                <div id="page" class="pagination">{$page}</div>
             </div>
         </div>
     </div>

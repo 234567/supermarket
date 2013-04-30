@@ -44,7 +44,8 @@ class CategoryAction extends BaseAction{
 
 
 
-    public function edit($id){
+    public function edit(){
+        $id = $this->_param("id","intval");
         if (empty($id)) {
             $this->error('请指定要修改的分类！');
         }

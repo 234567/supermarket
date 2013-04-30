@@ -19,26 +19,26 @@
 {//导入顶部固定导航栏，如此导入，如需使用不同导航，可重定义 }
 <block name="nav-top"><include file="Common:nav_top"/></block>
 
-{//左侧的导航内容 }
-<block name="left-menu"><include file="Common:left_menu"/></block>
 
 <div class="container-fluid">
     <div class="row-fluid">
 
-        <div class="span10" style="min-height: 500px;">
+        {//左侧的导航内容 }
+        <block name="left-menu"><include file="Common:left_menu"/></block>
+
+
+        <div class="span10">
             {/*
             面包屑导航
             */}
-            <!--
-            <ul class="breadcrumb">
+<!--            <ul class="breadcrumb">
             <block name="breadcrumb">
                 <li>
                     <a href="{:U('/index')}">后台首页</a>
                     <span class="divider">/</span>
                 </li>
             </block>
-            </ul>
-            -->
+            </ul>-->
 
             {//主体的内容部分}
             <block name="main"></block>

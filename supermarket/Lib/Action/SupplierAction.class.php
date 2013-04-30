@@ -31,7 +31,6 @@ class SupplierAction extends  BaseAction{
         }catch (Exception $e){
             $this->error($e->getMessage());
         }
-        trace($result);
         $this->current_supplier_id = $result["current_supplier_id"];
         $this->goods = $result["goods"];
         $this->list = $result["list"];
