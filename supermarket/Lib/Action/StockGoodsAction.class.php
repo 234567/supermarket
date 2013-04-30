@@ -160,7 +160,22 @@ class StockGoodsAction extends BaseAction{
         $map["branch_id"] = $staffInfo["branch_id"];
         $result = D("StockRecord","Service")->getList($map);
         $this->list = $result["list"];
+        $this->staff = $result["staff"];
         $this->page = $result["page"];
         $this->display();
+    }
+
+    //查看入库记录详细
+    public function detail(){
+        $service = D("StockRecord","Service");
+        try{
+            $result = $service->detail();
+        }catch (Exception $e){
+            $this->error("查看入库详细出差".$e->getMessage());
+        }
+       $this->list = $result["list"];
+       $this->supplier = $result["supplier"];
+        trace($result);
+       $this->display();
     }
 }

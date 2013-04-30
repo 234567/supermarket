@@ -13,11 +13,39 @@ class StockRecordService{
         if($count > 0){
             import("@.ORG.Util.Page");
             $p = new Page($count,5);
-            $result["list"] = $model->where($map)->limit($p->firstRow.','.$p->listRows)->select();
+            $field = array(
+             "stock_record.id","total_amount","total_cost","time","supplier.id"=>"sid","supplier.real_name","phone_number","mobile","address"
+            );
+            $result["list"] = $model->join("supplier on stock_record.supplier_id = supplier.id ")->where($map)->field($field)->order("time desc")->limit($p->firstRow.','.$p->listRows)->select();
+            $result["staff"]= D("Staff")->getById($_SESSION["staff_info"]["id"]);
             $result["page"] = $p->show();
         }
         return $result;
     }
+
+    //查看入库记录详细
+    public function detail(){
+        //从页面获取入库记录id
+        $model = D("StockItem");
+        $recordId = $_GET["recordId"];
+        $supplierId = $_GET["supplierId"];
+
+        if(false === $recordId){
+            throw new ThinkException("入库记录ID为空！");
+        }
+        //查询入库记录详细
+        $result = array();
+        $count = $model->where("stock_record_id=".$recordId)->count("id");
+        if($count > 0){
+            $field = array(
+                "stock_item.id as itemId","actual_cost","amount","remark ","goods.*"
+            );
+            $result["list"] =$model->join("goods on stock_item.goods_id = goods.id")->field($field)->where("stock_record_id=".$recordId)->select();
+        }
+        $result["supplier"] = M("Supplier")->getById($supplierId);
+        return $result;
+    }
+
 
 
     /**
