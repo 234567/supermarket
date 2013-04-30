@@ -50,7 +50,6 @@ class StockGoodsAction extends BaseAction{
         if(empty($info)){
             $this->error("不存在对应的商品信息！");
         }
-
         $this->ajaxReturn($info,'获取商品信息成功！',1);
     }
 
@@ -59,6 +58,7 @@ class StockGoodsAction extends BaseAction{
         $barcode = $this->_param("barcode");
         $actual_cost = $this->_param("actual_cost");
         $amount = $this->_param("amount");
+        $remark = $this->_param("remark");
         if(empty($barcode) || empty($actual_cost) || empty($amount)){
             $this->error("请填写完整的商品信息");
         }
@@ -66,6 +66,7 @@ class StockGoodsAction extends BaseAction{
         $goods = M("Goods")->getByBarcode($barcode);
         $goods["actual_cost"] = floatval( $actual_cost );
         $goods["amount"] = intval( $amount );
+        $goods["remark"] =  $remark;
 
         //加入入库清单
         $_SESSION["stock_list"][] = $goods;
@@ -141,12 +142,10 @@ class StockGoodsAction extends BaseAction{
         $service = D("StockRecord","Service");
 
         try{
-            $result = $service->doStock($staffInfo,$stock_list);
+           $service->doStock($staffInfo,$stock_list);
         }catch (Exception $e){
             $this->error("入库发生错误！".$e->getMessage());
         }
-
-
         $this->success("入库成功！",U("StockGoods/index"));
     }
 

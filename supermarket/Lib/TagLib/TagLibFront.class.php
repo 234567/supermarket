@@ -151,9 +151,18 @@ class TagLibFront extends TagLib {
                 $sel = $v['id'] == $selected ? ' selected="selected"' : "";
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>'. $v['id']  .$v['fullname']. '</option>';
             }
-        }else{
+        }else if($model === 'supplier'){
 
             $list = M($model)->select();
+            trace($list);
+            foreach ($list as $k => $v) {
+                $dis = $v['id'] == $disabled ? ' disabled="disabled"' : "";
+                $sel = $v['id'] == $selected ? ' selected="selected"' : "";
+                $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>' . $v['real_name'].'</option>';
+            }
+        }else{
+            $list = M($model)->select();
+            trace($list);
             foreach ($list as $k => $v) {
                 $dis = $v['id'] == $disabled ? ' disabled="disabled"' : "";
                 $sel = $v['id'] == $selected ? ' selected="selected"' : "";
