@@ -73,6 +73,12 @@ class SalesRecordService {
                 $record->rollback();
                 throw new ThinkException($items->getError());
             }
+
+            //对商品库存量进行减少
+            M("BranchHasGoods")->where(array(
+                "branch_id" =>$staffInfo["branch_id"],
+                "goods_id" => $goods["id"],
+            ))->setDec('amount',$goods["amount"]);
         }
 
         $recordData["id"] = $recordId;
@@ -88,7 +94,6 @@ class SalesRecordService {
         }
 
         //添加其他业务逻辑
-        //TODO：对商品库存量进行减少
 
 
         //一切成功

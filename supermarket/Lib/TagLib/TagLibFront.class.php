@@ -101,13 +101,12 @@ class TagLibFront extends TagLib {
         //把标签的所有属性解析到$tag数组里面
         $tag = $this->parseXmlAttr($attr, 'select');
         //得到标签里面的属性
-        $id = $tag['id'] ? $tag['id'] : "";
-        $name = $tag['name'] ? $tag['name'] : "";
+        $id = isset($tag['id']) ? $tag['id'] : "";
+        $name = isset($tag['name']) ? $tag['name'] : "";
         $model = $tag['model'];
         $selected = isset($tag['selected']) ? $tag['selected'] : 0;
         $disabled = isset($tag['disabled']) ? $tag['disabled'] : 0;
         $style= isset($tag['style']) ? $tag['style'] : "";
-
         $parsestr = '<select id="'.$id.'"  name="'.$name.'" class="'.$style.'" data-rel="chosen"> ';
 
         if($model === 'level'){
@@ -125,9 +124,9 @@ class TagLibFront extends TagLib {
             $list = $cat->getList();               //获取分类结构
             $parsestr .= '<option value="0" level="-1">根节点</option>';
             foreach ($list as $k => $v) {
-                $dis = $v['level'] == $disabled ? ' disabled="disabled"' : "";
-                $sel = $v['id'] == $selected ? ' selected="selected"' : "";
-                    $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '  level="' . $v['level'] .  '" >' . $v['fullname'].'('.$v['title'].')'.'</option>';
+                $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
+                $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
+                $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '  level="' . $v['level'] .  '" >' . $v['fullname'].'('.$v['title'].')'.'</option>';
             }
         }elseif($model === 'role'){
 
@@ -136,8 +135,8 @@ class TagLibFront extends TagLib {
 //            $cat->add(array("id"=>-1,"pid"=>0,"name"=>"无"));
             $list = $cat->getList();               //获取分类结构
             foreach ($list as $k => $v) {
-                $dis = $v['id'] == $disabled ? ' disabled="disabled"' : "";
-                $sel = $v['id'] == $selected ? ' selected="selected"' : "";
+                $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
+                $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>' . $v['fullname'].'</option>';
             }
         }else if($model === "category"){
@@ -147,13 +146,13 @@ class TagLibFront extends TagLib {
 //            $cat->add(array("id"=>-1,"pid"=>0,"name"=>"无"));
             $list = $cat->getList();               //获取分类结构
             foreach ($list as $k => $v) {
-                $dis = $v['id'] == $disabled ? ' disabled="disabled"' : "";
-                $sel = $v['id'] == $selected ? ' selected="selected"' : "";
+                $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
+                $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>'. $v['id']  .$v['fullname']. '</option>';
             }
         }else if($model === 'supplier'){
-
-            $list = M($model)->select();
+            trace($selected);
+            $list = M($model)->where("status=1")->select();
             trace($list);
             foreach ($list as $k => $v) {
                 $dis = $v['id'] == $disabled ? ' disabled="disabled"' : "";
@@ -164,8 +163,8 @@ class TagLibFront extends TagLib {
             $list = M($model)->select();
             trace($list);
             foreach ($list as $k => $v) {
-                $dis = $v['id'] == $disabled ? ' disabled="disabled"' : "";
-                $sel = $v['id'] == $selected ? ' selected="selected"' : "";
+                $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
+                $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>' . $v['name'].'</option>';
             }
         }

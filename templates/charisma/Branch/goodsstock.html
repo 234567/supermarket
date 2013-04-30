@@ -21,8 +21,7 @@
                       action="{:U('branch/goodsstock')}">
                     <input type="hidden" name="branchId" value="{$branchInfo.id}"/>
                     商品分类：
-                    <!--<front:select id="category_list" name="cid" model="category" selected="999999" />-->
-                    <front:select id="category_list" name="cid" selected="999999" model="category"/>
+                    <front:select id="category_list" name="cid" model="category"/>
                     商品名称：<input type="text" name="name" />
                     <button class="btn" type="submit" >查找</button>
                 </form>

@@ -1,34 +1,76 @@
 {/*
 
         所有JS插件
-
+大多是都是一些JQuery相关的插件、或者是与Bootstrap融合的插件
 */}
+{//}
+<!-- jQuery -->
+<js href="__ASSETS__/js/jquery-1.8.3.min.js" />
+
 {// bootstrap 的js}
 <js href="__ASSETS__/bootstrap/js/bootstrap.js" />
 
-{// jquery ui  bootstrap 的js }
+{/* jquery ui  bootstrap 的js，好像没多少用到的地方。。
+        来源:http://addyosmani.github.com/jquery-ui-bootstrap/
+*/}
 <js href="__ASSETS__/jquery-ui-bootstrap/jquery-ui-1.9.2.custom.min.js" />
 
 {// 以下是插件js }
-<js href="__ASSETS__/charisma/js/jquery.chosen.min.js" />
 
-{//图表绘制插件 }
-<js href="__ASSETS__/charisma/js/jquery.flot.min.js" />
-<js href="__ASSETS__/charisma/js/jquery.flot.pie.min.js" />
-<js href="__ASSETS__/charisma/js/jquery.flot.resize.min.js" />
-<js href="__ASSETS__/charisma/js/jquery.flot.stack.js" />
+{/*下拉选项
+        来源:http://davidwalsh.name/jquery-chosen
+*/}
+<js href="__ASSETS__/plugins/chosen/jquery.chosen.min.js" />
 
-{//表单美化}
-<js href="__ASSETS__/charisma/js/jquery.uniform.min.js" />
+{/*图表绘制插件
+        来源:http://www.flotcharts.org/
+*/}
+<js href="__ASSETS__/plugins/flot/jquery.flot.min.js" />
+<js href="__ASSETS__/plugins/flot/jquery.flot.pie.min.js" />
+<js href="__ASSETS__/plugins/flot/jquery.flot.resize.min.js" />
+<js href="__ASSETS__/plugins/flot/jquery.flot.stack.js" />
 
-{//主题}
+{/*表单美化
+        来源:http://uniformjs.com/
+*/}
+<js href="__ASSETS__/plugins/uniform/jquery.uniform.min.js" />
+
+{/*主题，暂时不需要了，基本上整合到了项目的自定义JS文件了。
 <js href="__ASSETS__/charisma/js/charisma.js" />
+*/}
 
-{//JQuery Form插件，可ajax提交表单 }
+{/*JQuery Form插件，可ajax提交表单
+        来源:http://www.malsup.com/jquery/form/
+*/}
 <js href="__ASSETS__/plugins/jquery-form/jquery.form.js" />
 
-{//向导插件 }
+{//向导插件,TABLE的插件,暂时不需要
 <js href="__ASSETS__/plugins/bwizard/bwizard.js" />
+<js href="__ASSETS__/plugins/tableclothjs/jquery.tablecloth.js" />
+<js href="__ASSETS__/plugins/tableclothjs/jquery.tablesorter.js" />
+}
+
+{/*表格排序插件
+        来源:http://tablesorter.com/docs/
+*/}
+<js href="__ASSETS__/plugins/tablesorter/jquery.tablesorter.min.js" />
+
+{/*Bootstrap日期+时间选择控件
+        来源:http://tarruda.github.io/bootstrap-datetimepicker/
+*/}
+<js href="__ASSETS__/plugins/datetimepicker/js/bootstrap-datetimepicker.js" />
+
+{/*输入感知插件
+        来源:http://averagemarcus.github.io/Bootstrap-AcknowledgeInputs/
+*/}
+<js href="__ASSETS__/plugins/acknowledgeinput/bootstrap-acknowledgeinput.min.js" />
+
+
+{/*表单验证插件
+        来源:http://reactiveraven.github.io/jqBootstrapValidation
+*/}
+<js href="__ASSETS__/plugins/jqBootstrapValidation/jqBootstrapValidation.js" />
+
 
 {//自定义全局js }
 <js href="__ASSETS__/js/custom.js" />
