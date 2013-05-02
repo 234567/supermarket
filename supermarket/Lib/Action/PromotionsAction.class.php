@@ -18,6 +18,7 @@ class PromotionsAction extends  BaseAction{
         }
         $this->branch = $result["branch"];
         $this->goods = $result["goods"];
+        trace($result["goods"]);
         $this->display();
     }
     public function edit(){

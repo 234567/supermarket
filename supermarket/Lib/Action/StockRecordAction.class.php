@@ -14,11 +14,7 @@ class StockRecordAction extends BaseAction{
         }catch (Exception $e){
             $this->error($service->getError());
         }
-      /*  $this->staff = $result["staff"];
-        $this->record = $result["record"];
-        $this->page = $result["page"];*/
         $this->list = $result;
-        trace($result);
         $this->display();
     }
 

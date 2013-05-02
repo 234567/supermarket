@@ -12,17 +12,44 @@
                     <legend>促销信息<a href="{:U('promotions/index')}" class="btn btn-info pull-right">返回促销商品列表</a></legend>
                     <input type="hidden" name="id" value="{$promotions.id}"/>
                     <input type="hidden" name="branch_id" value="{$promotions.branch_id}"/>
-                    <input type="hidden" name="goods_id" value="{$promotions.goods_id}"/>
+                    <input type="hidden" name="goods_id" value="{$goods.id}"/>
+
                     <div class="control-group">
                         <label class="control-label">促销条码</label>
                         <div class="controls">
-                            <input type="text" name="goods_id" value="{$goods.id}" disabled/>
+                            <input type="text" name="barcode"  value="{$goods.id}" disabled/>
                         </div>
                     </div>
+
                     <div class="control-group">
-                        <label class="control-label">促销条商品</label>
-                        <div class="controls">
-                            <input type="text" value="{$goods.name}" disabled />
+                        <div id="goodsInfo">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <td>名称</td>
+                                <td>分类</td>
+                                <td>规格</td>
+                                <td>单位</td>
+                                <td>原售价</td>
+                                <td>报警数</td>
+                                <td>品牌</td>
+                                <td>关键词</td>
+                                <td>描述信息</td>
+                                </thead>
+                                <tbody>
+                                <tr id="goodslist">
+                                    <td>{$goods.name}</td>
+                                    <td>{$goods.category_id}</td>
+                                    <td>{$goods.specifications}</td>
+                                    <td>{$goods.unit}</td>
+                                    <td>￥{$goods.sales_price}</td>
+                                    <td>{$goods.alarm}</td>
+                                    <td>{$goods.brand}</td>
+                                    <td>{$goods.keyword}</td>
+                                    <td>{$goods.desp}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
 

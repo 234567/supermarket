@@ -85,8 +85,6 @@ class StockRecordService{
                 }
                 $i++;
             }
-
-
         }
         return $result;
     }

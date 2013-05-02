@@ -11,48 +11,49 @@
                 <fieldset>
                     <legend>促销信息<a href="{:U('promotions/index')}" class="btn btn-info pull-right">返回促销商品列表</a></legend>
                     <input type="hidden" name="branch_id" value="{$branch.id}"/>
-                    <input type="hidden" name="goods_id" value="{$goods.id}"/>
+                    <empty name="goods">
+                        <input type="hidden" name="goods_id" value="{$goods.id}"/>
+                        <else/>
+                        <input type="hidden" name="goods_id"/>
+                    </empty>
+
                     <div class="control-group">
                         <label class="control-label">促销条码</label>
                         <div class="controls">
-                            <input type="text" name="goods_id" value="{$goods.id}" disabled/>
+                            <input type="text" name="barcode" /><a id="getGoodsInfo" class="btn">获取商品信息</a>
                         </div>
                     </div>
+
                     <div class="control-group">
-                        <label class="control-label">促销条商品</label>
-                        <div class="controls">
-                            <input type="text" value="{$goods.name}" disabled />
+                        <div id="goodsInfo" style="display: none">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <td>名称</td>
+                                <td>分类</td>
+                                <td>规格</td>
+                                <td>单位</td>
+                                <td>原售价</td>
+                                <td>报警数</td>
+                                <td>品牌</td>
+                                <td>关键词</td>
+                                <td>描述信息</td>
+                                </thead>
+                                <tbody>
+                                <tr id="goodslist">
+
+                                </tr>
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
+
 
                     <div class="control-group">
                         <label class="control-label">折扣</label>
                         <div class="controls">
                             <input  type="text" name="discount"/>
-                              <!--  <select id="selectError" data-rel="chosen" class="span1" >
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
-                                    <option>8</option>
-                                    <option>9</option>
-                                </select>                             .
-                                <select id="selectError1" data-rel="chosen" class="span1"
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
-                                    <option>8</option>
-                                    <option>9</option>
-                                </select>-->
+
                                 <span>折</span>
                         </div>
                     </div>
@@ -82,4 +83,74 @@
             </form>
         </div>
     </div>
+</block>
+
+
+<block name="other">
+    <js href="__ASSETS__/plugins/scanner/scanner.js" />
+    <script type="text/javascript">
+        $(function(){
+            var scanner  = new Scanner("webcam",function(code){
+                $('input[name="barcode"]').val(code);
+                showTips("识别到条形码<strong>"+code+"</strong>，请录入商品数量并添加到入库商品清单。");
+                //防止重复添加
+                if(isScanned(code)){
+                    showTips("<strong>注意！</strong>条形码："+code+"已经添加过！");
+                }else{
+                    $.get('{:U("StockGoods/getInfo")}',{"barcode":code},function(json){
+                        if(json.status == 0){
+                            showTips("找不到条形码"+code+"的商品信息！");
+                            $('#goods_name').addClass("noinfo").html("");
+                        }else{
+                            $('#goods_name').removeClass("noinfo").html(json.data.name);
+                        }
+                    });
+                }
+            });
+
+            $("#getGoodsInfo").on("click",function(){
+                var code = $("input[name='barcode']").val();
+                $.get('{:U("StockGoods/getInfo")}',{"barcode":code},function(json){
+                    if(json.status == 0){
+                        showTips("找不到条形码"+code+"的商品信息！");
+                        $('#goods_name').addClass("noinfo").html("");
+                    }else{
+                        //将商品id传递到页面中
+                        $("input[name='goods_id']").val(json.data["id"]);
+                        /* console(json.data);*/
+                        var list  = " <td>"+json.data["name"]+"</td>"+
+                                " <td>"+json.data["category_id"]+"</td>"+
+                                " <td>"+json.data["specifications"]+"</td>"+
+                                " <td>"+json.data["unit"]+"</td>"+
+                                " <td>￥"+json.data["sales_price"]+"</td>"+
+                                " <td>"+json.data["alarm"]+"</td>"+
+                                " <td>"+json.data["brand"]+"</td>"+
+                                " <td>"+json.data["keyword"]+"</td>"+
+                                " <td>"+json.data["desp"]+"</td>";
+
+                        $("#goodslist").html(list);
+
+                        $('#goodsInfo').removeClass("noinfo").show();
+                    }
+                });
+
+            });
+
+            var codes = [];
+            function isScanned(code){
+                for(var i = 0,len=codes.length; i< len; i++){
+                    if(codes[i] === code){
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function showTips(msg){
+                $("#formtips").html(msg);
+            }
+
+        });
+    </script>
+
 </block>

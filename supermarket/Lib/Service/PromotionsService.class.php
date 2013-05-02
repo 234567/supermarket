@@ -14,11 +14,11 @@ class PromotionsService{
         $count = $model->where($map)->count("id");
         $table = "promotions as p,goods as g,branch as b";
         $result = array();
-        $fields = "p.*,g.name as goods_name,g.id as goods_id,g.sales_price,b.name as branch_name";
+        $fields = "p.*,g.name as goods_name,g.sales_price,b.name as branch_name";
         if($count > 0 ){
             import("@.ORG.Util.Page");
             $page = new Page($count,5);
-            $result["list"] = $model->table($table)->field($fields)->where("p.goods_id=g.id and p.branch_id=b.id")->order("p.time_end desc")->limit($page->firstRow,$page->listRows)->select();
+            $result["list"] = $model->table($table)->field($fields)->where("p.goods_id=g.id and p.branch_id=b.id")->order("p.time_end desc")->limit($page->firstRow.','.$page->listRows)->select();
             $result["page"] = $page->show();
         }
         return $result;
@@ -36,9 +36,10 @@ class PromotionsService{
         //查询该商品在此期间是否存在折扣，存在则不允许在添加折扣，否则添加
         $goods = D("Promotions")->where("goods_id=".$goods_id)->find();
         $result = array();
+        trace($goods);
         if(false == $goods){
             $result["branch"] = M("Branch")->getById($branch_id);
-            $result["goods"] = M("Goods")->getById($goods_id);
+            $result["goods"] = M("Goods")->getById($goods_id["id"]);
             if(false == $result["branch"] && false == $result["goods"]){
                 throw new ThinkException("分店不存在或没有打折的商品!");
             }
