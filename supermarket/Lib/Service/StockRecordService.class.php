@@ -9,27 +9,92 @@ class StockRecordService{
     public function getList($map){
         $model = D("StockRecord");
         $result =array();
-        $count = $model->where($map)->count();
+        $staff_info = $_SESSION["staff_info"];
+        if(false === $staff_info){
+            throw new ThinkException("请先登录！");
+        }
+        $staff_id =$staff_info["id"];
+        $isAdmin = $staff_info["account"];
+        //登录的用户时管理员 给予权限查看所有入库记录
+        if($isAdmin === "admin"){
+            $count = $model->where($map)->count("id");
+        }else{
+            //不是管理员，而是入库人员，只能查看本人入库记录
+            if(false === $staff_id){
+                throw new ThinkException("员工ID错误！");
+            }
+            $map = array("staff_id"=>array("eq",$staff_id));
+            $count = $model->where($map)->count("id");
+        }
+        //查询入库记录
         if($count > 0){
             import("@.ORG.Util.Page");
             $p = new Page($count,5);
             $field = array(
-             "stock_record.id","total_amount","total_cost","time","supplier.id"=>"sid","supplier.real_name","phone_number","mobile","address"
+                "stock_record.id","total_amount","total_cost","time","supplier.id"=>"sid","supplier.real_name","phone_number","mobile","address"
             );
             $result["list"] = $model->join("supplier on stock_record.supplier_id = supplier.id ")->where($map)->field($field)->order("time desc")->limit($p->firstRow.','.$p->listRows)->select();
-            $result["staff"]= D("Staff")->getById($_SESSION["staff_info"]["id"]);
+            $result["staff"]= D("Staff")->getById($staff_id);
             $result["page"] = $p->show();
+        }
+        trace($result);
+        return $result;
+    }
+
+    //后台管理人员查看入库记录
+    public function adminList($map){
+        $model = D("StockRecord");
+        //存放数据的数组
+        $result =array();
+        $staff_info = $_SESSION["staff_info"];
+        if(false === $staff_info){
+            throw new ThinkException("请先登录！");
+        }
+        $isAdmin = $staff_info["account"];
+        //登录的用户时管理员 给予权限查看所有入库记录
+        if($isAdmin != "admin"){
+            throw new ThinkException("该用户无权限执行以下操作！");
+        }
+        $staffCount = $model->count();
+        //存在记录
+        if($staffCount >0){
+
+            //分组查询入库记录的员工id
+            $staffList = $model->field("staff_id")->distinct(true)->order("staff_id")->select();
+            //循环变量
+            $i =0;
+            //根据入库员工ID，分别查询该入库员的入库记录
+            foreach($staffList as $staff){
+                /**
+                 * 1.根据入库员工ID在员工表中查询员工信息,并存放到result["staff"]中
+                 * 2.根据入库员工ID在入库记录中查询该员工的入库记录，并 存放到result["record"]中
+                 */
+                $staff_id = $staff["staff_id"];
+                $result[$i]["staff"] = D("Staff")->getById($staff_id);
+                $map = array("staff_id"=>array("eq",$staff_id));
+                $count = $model->where($map)->count("id");
+                //存在记录
+                if($count > 0){
+                    import("@.ORG.Util.Page");
+                    $p = new Page($count,5);
+                    $field = array(
+                        "stock_record.id","total_amount","total_cost","time","supplier.id"=>"sid","supplier.real_name","phone_number","mobile","address"
+                    );
+                    $result[$i]["record"] = $model->join("supplier on stock_record.supplier_id = supplier.id ")->where($map)->field($field)->order("time desc")->limit($p->firstRow.','.$p->listRows)->select();
+                    $result[$i]["page"] = $p->show();
+                }
+                $i++;
+            }
+
+
         }
         return $result;
     }
 
     //查看入库记录详细
-    public function detail(){
+        public function detail($recordId,$supplierId){
         //从页面获取入库记录id
         $model = D("StockItem");
-        $recordId = $_GET["recordId"];
-        $supplierId = $_GET["supplierId"];
-
         if(false === $recordId){
             throw new ThinkException("入库记录ID为空！");
         }
