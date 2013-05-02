@@ -121,7 +121,7 @@ class TagLibFront extends TagLib {
 
             import("@.ORG.Category");
             $cat = new Category($model, array('id', 'pid', 'name', 'fullname'));
-            $list = $cat->getList();               //获取分类结构
+            $list = $cat->getList("status=1");               //获取分类结构
             $parsestr .= '<option value="0" level="-1">根节点</option>';
             foreach ($list as $k => $v) {
                 $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
@@ -133,7 +133,7 @@ class TagLibFront extends TagLib {
             import("@.ORG.Category");
             $cat = new Category($model, array('id', 'pid', 'name', 'fullname'));
 //            $cat->add(array("id"=>-1,"pid"=>0,"name"=>"无"));
-            $list = $cat->getList();               //获取分类结构
+            $list = $cat->getList("status=1");               //获取分类结构
             foreach ($list as $k => $v) {
                 $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
                 $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
@@ -144,16 +144,14 @@ class TagLibFront extends TagLib {
             import("@.ORG.Category");
             $cat = new Category($model, array('id', 'pid', 'name','fullname'));
 //            $cat->add(array("id"=>-1,"pid"=>0,"name"=>"无"));
-            $list = $cat->getList();               //获取分类结构
+            $list = $cat->getList("status=1");               //获取分类结构
             foreach ($list as $k => $v) {
                 $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
                 $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>'. $v['id']  .$v['fullname']. '</option>';
             }
         }else if($model === 'supplier'){
-            trace($selected);
             $list = M($model)->where("status=1")->select();
-            trace($list);
             foreach ($list as $k => $v) {
                 $dis = $v['id'] == $disabled ? ' disabled="disabled"' : "";
                 $sel = $v['id'] == $selected ? ' selected="selected"' : "";
@@ -161,7 +159,6 @@ class TagLibFront extends TagLib {
             }
         }else{
             $list = M($model)->select();
-            trace($list);
             foreach ($list as $k => $v) {
                 $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
                 $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';

@@ -22,23 +22,30 @@ class SaleGoodsAction extends BaseAction{
         $this->display();
     }
 
-    //获取商品信息，并保存到SESSION。
-    public function getGoodInfo(){
+    /**
+     * 根据商品条码获取商品信息
+     */
+    public function getInfo(){
         $barcode = $this->_param("barcode");
-        if(!empty($barcode)){
-            $info = M("Goods")->getByBarcode($barcode);
-        }else{
+        if(empty($barcode)){
             $this->error("参数错误");
         }
-
+        $info = M("Goods")->getByBarcode($barcode);
         if(empty($info)){
             $this->error("不存在对应的商品信息！");
         }
 
-
-        $info["amount"] = 1;
-        //将商品信息保存到SESSION
-        $_SESSION["goods_list"][] = $info;
+        $map["branch_id"] = $_SESSION["staff_info"]["branch_id"];
+        $now = time();
+        //应该处于有效期内
+        $map["time_start"] = array("elt",$now);
+        $map["time_end"] = array("egt",$now);
+        $map["goods_id"] = intval($info["id"]);
+        $promotion = M("Promotions")->where($map)->find();
+        //增加商品的促销信息
+        if(!empty($promotion)){
+            $info["promotions"] = $promotion;
+        }
 
         $this->ajaxReturn($info,'获取商品信息成功！',1);
     }
