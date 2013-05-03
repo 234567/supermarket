@@ -1,0 +1,57 @@
+<extend name="SaleGoods:base"/>
+
+
+<block name="page_title">商品销售详细信息</block>
+
+
+<block name="main">
+
+    <div class="box">
+        <div class="box-header well-small">
+            <h4>商品销售详细信息</h4>
+        </div>
+        <div class="box-content">
+            <a href="{:U('SaleGoods/history')}" class="btn btn-info">返回我的销售记录</a>
+            <hr/>
+            <div class="alert alert-success">
+                <strong>销售员：</strong>{$record.staff_name}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>时间：</strong>{//$record.time|toDate='Y-m-d h#i#s'} {$record.time|mdate}
+            </div>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>详细编号</th>
+                    <th>商品条码</th>
+                    <th>商品名称</th>
+                    <th>规格</th>
+                    <th>商品售价</th>
+                    <th>折扣</th>
+                    <th>实际售价</th>
+                    <th>商品数量</th>
+                    <th>小计</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="items" id="vo">
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.barcode}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.specifications}</td>
+                        <td>￥{$vo.price_sales}元</td>
+                        <td>{$vo['price_real']/$vo['price_sales']  }折</td>
+                        <td>￥{$vo.price_real}元</td>
+                        <td>{$vo.amount } {$vo.unit}</td>
+                        <td>￥{$vo['price_real']*$vo['amount']}元</td>
+                    </tr>
+                </volist>
+                <tr>
+                    <td colspan="100">
+                        <strong>商品总量：</strong>{$record.total_amount} 件<br/>
+                        <strong>商品总额：</strong>￥{$record.total_price}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</block>

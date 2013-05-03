@@ -1,0 +1,90 @@
+<extend name="SaleGoods:base" />
+
+
+<block name="page_title">前台销售页面</block>
+<block name="main">
+
+
+    <div class="box">
+        <div class="box-header well-small">
+            <h4>小票信息</h4>
+        </div>
+        <div class="box-content well">
+            <div class="alert alert-success"><h3>恭喜！销售成功！</h3></div>
+            <a id="print" class="btn btn-success btn-large"><i class="icon-print icon-large"></i>打印小票信息</a>
+            <a href="{:U('SaleGoods/index')}" class="btn btn-primary btn-large">返回前台</a>
+            <hr/>
+            <div class="ticket row-fluid">
+            <table class="table table-striped table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>售货员：{$Think.session.staff_info.name}</th>
+                    <th>时间：{$time}</th>
+                </tr>
+                <tr>
+                    <th>商品条码</th>
+                    <th>商品名称</th>
+                    <th>销售价</th>
+                    <th>折扣</th>
+                    <th>实际价格</th>
+                    <th>商品数量</th>
+                    <th>总计金额</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                    <empty name="list">
+                        <div class="alert alert-warning">当前未添加任何商品!</div>
+                        <else/>
+                        <volist name="list" id="vo">
+                            <tr>
+                                <td>{$vo.barcode}</td>
+                                <td>{$vo.name}</td>
+                                <td>￥{$vo.sales_price}</td>
+                                <td><empty name="vo.promotions">无<else/>{$vo['promotions']['discount']*10} 折</empty></td>
+                                <td>￥<span class="real_price">{$vo.real_price}</span></td>
+                                <td>{$vo.amount}</td>
+                                <td>￥<span class="total_price">{$vo["amount"] * $vo["real_price"]}</span></td>
+                            </tr>
+                        </volist>
+                    </empty>
+                    <tr>
+                        <td colspan="7">
+                            订单总额：<span class="totalprice">{$recordInfo.total_price}</span>元<br/>
+                            商品总量：<span class="totalamount">{$recordInfo.total_amount}</span>件<br/>
+                            总共节省：<span class="totalsave">{$recordInfo.total_saving}</span>元<br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+
+</block>
+
+<block name="other">
+    <script type="text/javascript">
+        $(function(){
+            function printdiv()
+            {
+                var headstr = "<html><head><title></title></head><body>";
+                var footstr = "</body>";
+                var newstr = document.all.item(printpage).innerHTML;
+                var oldstr = document.body.innerHTML;
+                document.body.innerHTML = headstr+newstr+footstr;
+                window.print();
+                document.body.innerHTML = oldstr;
+                return false;
+            }
+            $("#print").on("click",function(e){
+                e.preventDefault();
+                var ticket = $("div.ticket").html();
+                var html = $("body").html();
+                $("body").html(ticket);
+                window.print();
+                $("body").html(html);
+            });
+        });
+    </script>
+</block>

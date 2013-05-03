@@ -205,4 +205,29 @@ class SalesRecordService {
 
         return $newData;
     }
+
+
+    public function getDetail($recordId){
+        //查询入库记录详细
+        $result = array();
+
+        //获取销售记录
+        $salesRecord = M("SalesRecord")->getById($recordId);
+        if(false === $salesRecord){
+            throw new ThinkException("找不到指定的销售记录！");
+        }
+
+        $itemModel = M("SalesItem");
+        $count = $itemModel->where(array("sales_record_id"=>$recordId))->count("id");
+        if($count > 0){
+            $field = array(
+                "sales_item.*,goods.barcode,goods.name,goods.specifications,goods.unit"
+            );
+            $result["items"] =$itemModel->field($field)->join("goods ON sales_item.goods_id = goods.id")->where(array("sales_record_id"=>$recordId))->select();
+        }
+
+        $result["record"] = $salesRecord;
+//        dump($result);
+        return $result;
+    }
 }

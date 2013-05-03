@@ -107,13 +107,15 @@ class TagLibFront extends TagLib {
         $selected = isset($tag['selected']) ? $tag['selected'] : 0;
         $disabled = isset($tag['disabled']) ? $tag['disabled'] : 0;
         $style= isset($tag['style']) ? $tag['style'] : "";
-        $parsestr = '<select id="'.$id.'"  name="'.$name.'" class="'.$style.'" data-rel="chosen"> ';
+        $other= isset($tag['other']) ? $tag['other'] : "";
+        $parsestr = '<select id="'.$id.'"  name="'.$name.'" class="'.$style.'" data-rel="chosen" '.$other.'> ';
 
         if($model === 'level'){
 
             $arr = array("请选择", "项目", "模块", "操作");
             for ($i = 1; $i < 4; $i++) {
-                $sel = ( $selected == $i ) ? " selected='selected'" : "";
+//                $sel = ( $selected == $i ) ? " selected='selected'" : "";
+                $sel = '<?php if( '.$i.' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
                 $parsestr .='<option value="' . $i . '" ' . $sel . '>' . $arr[$i] . '</option>';
             }
 
@@ -122,7 +124,7 @@ class TagLibFront extends TagLib {
             import("@.ORG.Category");
             $cat = new Category($model, array('id', 'pid', 'name', 'fullname'));
             $list = $cat->getList("status=1");               //获取分类结构
-            $parsestr .= '<option value="0" level="-1">根节点</option>';
+            $parsestr .= '<option value="0" level="0">根节点</option>';
             foreach ($list as $k => $v) {
                 $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
                 $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
@@ -140,7 +142,6 @@ class TagLibFront extends TagLib {
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>' . $v['fullname'].'</option>';
             }
         }else if($model === "category"){
-
             import("@.ORG.Category");
             $cat = new Category($model, array('id', 'pid', 'name','fullname'));
 //            $cat->add(array("id"=>-1,"pid"=>0,"name"=>"无"));

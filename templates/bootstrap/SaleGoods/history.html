@@ -1,0 +1,48 @@
+<extend name="SaleGoods:base" />
+
+
+<block name="page_title">我的销售记录</block>
+
+
+<block name="main">
+
+    <div class="box">
+        <div class="box-header well-small">
+            <h4>我的销售记录</h4>
+        </div>
+        <div class="box-content">
+            <a href="{:U('SaleGoods/index')}" class="btn btn-info">返回首页</a>
+            <hr/>
+            <div class="alert alert-info"><i class="icon-info-sign"></i>以下是你最近的销售记录</div>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>销售时间</th>
+                    <th>商品总量</th>
+                    <th>商品总额</th>
+                    <th>折扣节省</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <volist name="list" id="vo">
+                    <tr>
+                        <td>{$i}</td>
+                        <td>{$vo.time|mdate}</td>
+                        <td>{$vo.total_amount}件</td>
+                        <td>￥{$vo.total_price}元</td>
+                        <td>￥{$vo.total_saving}元</td>
+                        <td>
+                            <a class="btn btn-mini" href="{:U('SaleGoods/detail?id='.$vo['id'])}">查看详细</a>
+                            <a class="btn btn-mini" href="{:U('SaleGoods/showticket?id='.$vo['id'])}"><i class="icon-print"></i></a>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+            <div id="page" class="pagination">{$page}</div>
+        </div>
+    </div>
+</block>

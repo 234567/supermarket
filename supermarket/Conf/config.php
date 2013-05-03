@@ -12,8 +12,8 @@ return array(
     'DB_PREFIX'             => '',    // 数据库表前缀
 
     //启用主题
-    'DEFAULT_THEME' => 'charisma',      //默认主题
-    'THEME_LIST' => 'charisma',            //主题列表
+    'DEFAULT_THEME' => 'bootstrap',      //默认主题
+    'THEME_LIST' => 'bootstrap',            //主题列表
     'TMPL_DETECT_THEME' => 	true, // 自动侦测模板主题
     //模板替换
     'TMPL_PARSE_STRING'  =>array(

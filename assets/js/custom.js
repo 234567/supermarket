@@ -20,17 +20,10 @@ $(document).ready(function(){
 
     //animating menus on hover
     $('ul.main-menu li:not(.nav-header)').hover(function(){
-            $(this).animate({'margin-left':'+=5'},400);
-        },
-        function(){
-            $(this).animate({'margin-left':'-=5'},400);
-        });
-
-
-
-    //prevent # links from moving to top
-    $('a[href="#"][data-top!=true]').click(function(e){
-        e.preventDefault();
+        $(this).animate({'margin-left':'+=5'},400);
+    },
+    function(){
+        $(this).animate({'margin-left':'-=5'},400);
     });
 
 
@@ -38,23 +31,9 @@ $(document).ready(function(){
     $("input:checkbox, input:radio, input:file").not('[data-no-uniform="true"],#uniform-is-ajax').uniform();
 
     //chosen - improves select
-    $('[data-rel="chosen"],[rel="chosen"]').data("placeholder","请选择").chosen();
-
-    //tabs
-    $('#myTab a:first').tab('show');
-    $('#myTab a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-    });
-
-    //makes elements soratble, elements that sort need to have id attribute to save the result
-    $('.sortable').sortable({
-        revert:true,
-        cancel:'.btn,.box-content,.nav-header',
-        update:function(event,ui){
-            //line below gives the ids of elements, you can make ajax call here to save it to the database
-            //console.log($(this).sortable('toArray'));
-        }
+    $('[data-rel="chosen"],[rel="chosen"]').data("placeholder","请选择").chosen({
+        allow_single_deselect:true,
+        no_results_text:"没有匹配的结果！"
     });
 
     //tooltip
@@ -150,11 +129,11 @@ $(function(){
     /**
      * 表单验证插件
      */
-    $("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
+    $("input,select,textarea").not("[type=submit]").jqBootstrapValidation({});
 
-    $("select[name*='category'] option").each(function(){
-        if( parseInt($(this).val() ,10) < 10000 ){
-            $(this).attr('disabled',true);
-        }
-    });
+//    $("select[name*='category'] option").each(function(){
+//        if( parseInt($(this).val() ,10) < 10000 ){
+//            $(this).attr('disabled',true);
+//        }
+//    });
 });

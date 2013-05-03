@@ -1,0 +1,27 @@
+<extend name="SaleGoods:base" />
+
+
+<block name="page_title">前台销售页面</block>
+<block name="main">
+
+    <div class="row-fluid">
+        <div class="alert alert-info span5">
+            <h2>商品销售</h2>
+            <p>步骤如下：</p>
+            <p>1、连续扫描商品条形码（同时提供数量）</p>
+            <p>2、系统自动获取商品销售信息以及折扣信息，生成订单</p>
+            <p>3、售货员完成订单确认，并收取现金以及找零</p>
+            <a class="btn btn-primary btn-large pull-right" href="{:U('SaleGoods/begin')}">开始销售</a>
+        </div>
+
+        <div class="alert alert-info span5">
+            <h2>退货</h2>
+            <p>暂时未实现！</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <a class="btn btn-primary btn-large pull-right">有货要退</a>
+        </div>
+    </div>
+
+</block>

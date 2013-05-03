@@ -49,7 +49,7 @@ class BranchService {
         if(false == $branch){
             //回滚事务
             $model->rollback();
-            throw new ThinkException("修改员工信息出错！".$model->getError());
+            throw new ThinkException($model->getError());
         }
         //提交事务
         $model->commit();

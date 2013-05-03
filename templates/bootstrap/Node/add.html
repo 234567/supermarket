@@ -1,0 +1,118 @@
+<extend name="Common:base" />
+
+
+<block name="page_title">新增节点</block>
+<block name="main">
+
+    <div class="box">
+        <div class="box-header well-small">
+            <h4><i class="icon-edit"></i>添加新节点</h4>
+        </div>
+        <div class="box-content">
+
+            <form class="form-horizontal" method="post" action="{:U('node/insert')}">
+                <fieldset>
+                    <legend>节点信息<a class="btn btn-info pull-right" href="{:U('node/index')}">返回节点列表</a></legend>
+                    <div class="control-group">
+                        <label class="control-label">名称：</label>
+                        <div class="controls">
+                            <input type="text" name="name"
+                                   required="required"
+                                   data-validation-english-regex="[a-zA-Z]+"
+                                   data-validation-english-message="只能输入大小写英文字母"
+                                    />
+                            <span class="inline-help">模块的名称，对应代码的名称</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">显示名：</label>
+                        <div class="controls">
+                            <input type="text" name="title"
+                                   data-validation-chinese-regex="[\\u4e00-\\u9fa5a-zA-Z]+"
+                                   data-validation-chinese-message="只能输入英文或者中文"
+                                    />
+                            <span class="inline-help">可以输入中英文名，显示时显示这个</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">状态：</label>
+                        <div class="controls">
+                            <select name="status" data-rel="chosen" required="required">
+                                <option value="1">启用</option>
+                                <option value="0" selected="selected">禁用</option>
+                            </select>
+                            <span class="inline-help">默认处于禁用状态</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">类型：</label>
+                        <div class="controls">
+                            <front:select name="level" model="level" selected="1"/>
+                            <span class="inline-help">一般来说主要是模块和操作</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">父级组ID：</label>
+                        <div class="controls">
+                            <front:select name="pid" model="node" selected="0"/>
+                            <span class="inline-help">上级所属的节点信息</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">显示排序：</label>
+                        <div class="controls">
+                            <input type="text" name="sort" value="0"
+                                   maxlength="10"
+                                   data-validation-maxlength-message="长度有限制！"
+                                   data-validation-sortnumber-regex="\\d+"
+                                   data-validation-sortnumber-message="只能输入数字0-9"
+                                    />
+                            <span class="inline-help">用于排序，数值越大越靠前</span>
+                        </div>
+                    </div>
+
+
+                    <div class="control-group">
+                        <label class="control-label">描述：</label>
+                        <div class="controls">
+                            <textarea  name="remark" class="autogrow" ></textarea>
+                            <span class="inline-help">这个可以没有，不过有最好</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">确定</button>
+                        <button type="reset" class="btn">清空</button>
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+    </div>
+
+</block>
+<block name="other">
+<script type="text/javascript">
+    $(function(){
+        $("select[name=level]").on("change",function(){
+            var level = $(this).val();
+            $("select[name=pid] > option").each(function(){
+                $(this).attr("disabled",false);
+                if($(this).attr("level") != level-1){
+                    $(this).attr("disabled",true);
+                }
+            });
+            $("select[name=pid] > option:enabled").first().attr("selected",true);
+            $("select[name=pid]").trigger("liszt:updated");
+        });
+
+        //初始化时触发一次
+        $("select[name=level]").trigger("change");
+    });
+</script>
+</block>

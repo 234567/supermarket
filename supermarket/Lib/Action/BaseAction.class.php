@@ -83,9 +83,13 @@ class BaseAction extends Action{
 
 
     public function del(){
+        $id = $this->_param("id");
+        if(empty($id)){
+            $this->error("参数错误！");
+        }
         $service = D($this->getActionName(),"Service");
         try{
-            $service->del();
+            $service->del($id);
         }catch (Exception $e){
             $this->error($e->getMessage());
         }

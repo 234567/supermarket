@@ -1,0 +1,17 @@
+<extend name="SaleGoods:base" />
+
+
+<block name="page_title">前台销售页面</block>
+<block name="main">
+
+    <div class="row" style="margin:100px 0px;">
+
+        <div class="alert alert-info span10">
+            <h2>上一次销售尚未结束！</h2>
+            <p><strong>购物车内尚有未结算的商品清单，是否继续上一次的销售？</strong></p>
+            <a class="btn btn-primary btn-large pull-right" href="{:U('SaleGoods/showcart')}">进入购物车</a>
+            <a class="btn btn-primary btn-large pull-right" href="{:U('SaleGoods/cancel')}">重新开始新的销售</a>
+        </div>
+    </div>
+
+</block>

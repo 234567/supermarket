@@ -1,26 +1,28 @@
 <?php
-/**
- * User: simplewind
- * Date: 4/20/13
- * Time: 7:40 PM
- * 修改这里的注释内容
- */
 
+/**
+ * Class RoleAction
+ *
+ * 用户角色相关模块
+ * 包括基本的角色管理，查看角色下的用户列表、对角色的详细权限控制等
+ */
 class RoleAction extends BaseAction{
 
     public function auth(){
+        $id = $this->_param("id","intval");
+        if(empty($id)){
+            $this->error("非法参数！");
+        }
 
         //获取角色信息
-        $role = M("role")->getById($this->_get("id","intval"));
-        if (empty($role['id'])) {
+        $role = M("role")->getById($id);
+        if (empty($role)) {
             $this->error("不存在该用户组", U('role/index'));
         }
 
         //获取角色的访问权限
         $access =  M("Access")->field("CONCAT(`node_id`,':',`level`,':',`pid`) as val")->where(array("role_id" =>$role['id']) )->select();
         $role['access'] = count($access) > 0 ? json_encode($access) : json_encode(array());
-        $this->assign("info", $role);
-
 
         //获取节点信息
         $nodeModel = M("node");
@@ -36,38 +38,28 @@ class RoleAction extends BaseAction{
                 $datas[$k]['data'][$k1]['data'] = $nodeModel->where($map)->select();
             }
         }
+
         $this->role = $role;
         $this->nodeList = $datas;
         $this->display();
     }
 
+    /**
+     * 更新角色的权限访问信息
+     *
+     */
     public function updateAccess(){
-        $accessModel = M("access");
+
         $roleId = $this->_post("id","intval");
         $data = $this->_post("data");
 
-        $accessModel->where(array("role_id" => $roleId))->delete();
-
-        if(0 === count($data)){
-            $this->success("权限已全部清空！",U("role/index"));
+        $service = D("Role","Service");
+        try{
+            $service->updateAccess($roleId,$data);
+        }catch (Exception $e){
+            $this->error($e->getMessage());
         }
 
-        $accessData = array();
-
-        foreach($data as $key => $val){
-            //拆分数据
-            $items = explode(":" , $val);
-            $accessData[$key]['role_id'] = $roleId;
-            $accessData[$key]['node_id'] = $items[0];
-            $accessData[$key]['level'] = $items[1];
-            $accessData[$key]['pid'] = $items[2];
-        }
-
-        $result = $accessModel->addAll($accessData);
-
-        if(false === $result){
-            $this->error("权限设置失败，请重试");
-        }
         $this->success("权限设置成功！",U("role/index"));
     }
 
@@ -80,12 +72,17 @@ class RoleAction extends BaseAction{
         }
 
         $service = D("Role","Service");
-        //获取分店标识
-        $branchInfo = session("branch_info");
-        $result = $service->getStaffList($id,$branchInfo["id"]);
+        if(session( C("ADMIN_AUTH_KEY") ) === true){
+            $result = $service->getStaffList($id);
+        }else{
+            //获取分店标识
+            $branchInfo = session("branch_info");
+            $result = $service->getStaffList($id,$branchInfo["id"]);
+        }
 
+        $this->role = $result["role"];
         $this->list = $result["list"];
         $this->page = $result["page"];
-        $this->display("Staff:index");
+        $this->display();
     }
 }
