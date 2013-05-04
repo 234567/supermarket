@@ -47,14 +47,16 @@
                             </if>
                         </td>
                         <td>
-                            <if condition="($vo.status eq 1)">
+                            <if condition="($vo.status eq 1) && ($Think.session.staff_info.id neq $vo['id'])">
                                 <a class="btn btn-danger btn-mini" href="{:U('staff/forbid?id='.$vo['id'])}">禁用</a>
                                 <a class="btn btn-warning btn-mini" href="{:U('staff/del?id='.$vo['id'])}">删除</a>
-                                <elseif condition="$vo.status eq 0"/>
+                                <elseif condition="($vo.status eq 0)&& ($Think.session.staff_info.id neq $vo['id'])"/>
                                 <a class="btn btn-success btn-mini" href="{:U('staff/resume?id='.$vo['id'])}">恢复</a>
                                 <a class="btn btn-warning btn-mini" href="{:U('staff/del?id='.$vo['id'])}">删除</a>
-                                <else />
-                                <a class="btn btn-inverse btn-mini" href="{:U('staff/recycle?id='.$vo['id'])}">还原</a>
+                                <elseif condition="($Think.session.staff_info.id neq $vo['id'])" />
+                                    <a class="btn btn-inverse btn-mini" href="{:U('staff/recycle?id='.$vo['id'])}">还原</a>
+                                <else/>
+                                <span class="label label-info">不可操作</span>
                             </if>
                         </td>
                     </tr>
