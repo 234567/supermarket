@@ -51,8 +51,6 @@ abstract class Action {
      * @access public
      */
     public function __construct() {
-    	include_once('MinHTML.class.php');
-    	
         tag('action_begin',$this->config);
         //控制器初始化
         if(method_exists($this,'_initialize'))
@@ -154,18 +152,12 @@ abstract class Action {
      * @return string
      */
     protected function buildHtml($htmlfile='',$htmlpath='',$templateFile='') {
-    	
-    	
         $content = $this->fetch($templateFile);
         $htmlpath   = !empty($htmlpath)?$htmlpath:HTML_PATH;
         $htmlfile =  $htmlpath.$htmlfile.C('HTML_FILE_SUFFIX');
         if(!is_dir(dirname($htmlfile)))
             // 如果静态目录不存在 则创建
             mkdir(dirname($htmlfile),0755,true);
-            //HTML压缩
-            if (class_exists(Minify_HTML)&&C('MIN')) {
-            	$content=Minify_HTML::minify($content, array());
-            }
         if(false === file_put_contents($htmlfile,$content))
             throw_exception(L('_CACHE_WRITE_ERROR_').':'.$htmlfile);
         return $content;

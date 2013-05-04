@@ -1,13 +1,15 @@
 <?php
 /**
- * Created by JetBrains PhpStorm.
- * User: corn-s
- * Date: 13-4-24
- * Time: 下午10:06
- * To change this template use File | Settings | File Templates.
+ * Class SupplierAction
+ *
+ * 供货商管理模块
+ * 负责处理供货商相关功能
  */
 class SupplierAction extends  BaseAction{
 
+    /**
+     * 搜索供货商能够提供的商品列表
+     */
     public function searchGoods(){
         //实例化Service
         $service = D($this->getActionName(),"Service");
@@ -23,6 +25,9 @@ class SupplierAction extends  BaseAction{
         $this->display();
     }
 
+    /**
+     * 供货商之间进行价格比较
+     */
     public function goodscompare(){
         $service = D($this->getActionName(),"Service");
         //无过滤条件获取列表

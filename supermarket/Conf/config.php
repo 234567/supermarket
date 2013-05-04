@@ -71,5 +71,9 @@ return array(
     'APP_AUTOLOAD_PATH'         =>  '@.TagLib',
     'TAGLIB_PRE_LOAD' => 'Front' ,
     'SHOW_PAGE_TRACE' => 1,
+
+
+    //压缩HTML输出
+    'MIN'=>true,
 );
 ?>

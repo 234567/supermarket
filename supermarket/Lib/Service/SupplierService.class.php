@@ -1,12 +1,18 @@
 <?php
+
 /**
- * User: corn-s
- * Date: 13-4-24
- * Time: 下午10:06
+ * Class SupplierService
+ *
+ * 供货商业务逻辑处理类
  */
-//供货商业务逻辑
 class SupplierService{
-    public function getList($map){
+
+    /**
+     * 通过指定条件获取供货商列表
+     * @param $map  条件
+     * @return array    列表和分页对象
+     */
+    public function getList($map=array()){
         //status 状态：1表示正常，0表示不可用，-1表示已删除
         $map = array("status"=>array("eq",1));
         $model = D("Supplier");
@@ -21,6 +27,11 @@ class SupplierService{
         return $result;
     }
 
+
+    /**
+     * 增加供货商信息
+     * @throws ThinkException
+     */
     public function insert(){
         $model = D("Supplier");
         $vo = $model->create();
@@ -37,27 +48,32 @@ class SupplierService{
         $model->commit();
     }
 
+    /**
+     * 更新供货商信息
+     * @throws ThinkException
+     */
     public function update(){
         $model = D("Supplier");
         $vo = $model->create();
         if(false == $vo){
-            throw new ThinkException("表单验证失败!");
+            throw new ThinkException($model->getError());
         }
         //开启事务
         $model->startTrans();
         $result = $model->save();
         if(false == $result){
             $model->rollback();
-            throw new ThinkException("数据更新失败!");
+            throw new ThinkException($model->getError());
         }
         $model->commit();
     }
 
-    public function del(){
-        $id = $_GET["id"];
-        if(!isset($id)){
-            throw new ThinkException("供货商ID出错");
-        }
+    /**
+     * 删除指定ID的供货商信息
+     * @param $id       供货商编号
+     * @throws ThinkException
+     */
+    public function del($id){
         $model = D("Supplier");
         //查询供货商中是否存在商品
         $goodsCount = M("Supplier_has_goods")->where("supplier_id=".$id)->count();

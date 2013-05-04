@@ -66,11 +66,7 @@ class CategoryService{
     }
 
     //删除
-    public function del(){
-        $id = $_GET['id'];
-        if (empty($id)) {
-            throw new ThinkException("ID错误！");
-        }
+    public function del($id){
         $category = D('Category');
         //如果当前分类下有子分类，则不能删除
         if($category->where(array('pid'=>$id))->count()  >  0){
@@ -93,10 +89,5 @@ class CategoryService{
         }
         //提交
         $category->commit();
-    }
-
-    public function listSub(){
-        $list = M("Category")->select();
-        return genTree($list);
     }
 }

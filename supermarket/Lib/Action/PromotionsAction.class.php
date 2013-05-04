@@ -1,14 +1,15 @@
 <?php
 /**
- * Created by JetBrains PhpStorm.
- * User: corn-s
- * Date: 13-4-26
- * Time: 下午1:48
- * To change this template use File | Settings | File Templates.
+ * Class PromotionsAction
+ *
+ * 商品促销模块
  */
-
 class PromotionsAction extends  BaseAction{
-    //发布折扣
+
+
+    /**
+     * 发布折扣
+     */
     public function release(){
         //实例化Service
         $service = D($this->getActionName(),"Service");
@@ -21,15 +22,36 @@ class PromotionsAction extends  BaseAction{
         trace($result["goods"]);
         $this->display();
     }
+
+
+    /**
+     * 修改折扣信息
+     */
     public function edit(){
+        $id = $this->_param("id","intval");
+        $branchId = $_SESSION["staff_info"]["branch_id"];
         $service = D($this->getActionName(),"Service");
-        $result = $service->edit();
+
+        $result = $service->edit($branchId,$id);
+
         if(false === $result["goods"]){
             $this->error("无权限删除其他分公司折扣信息!",U("promotions/index"));
         }
         $this->promotions = $result["promotions"];
         $this->goods = $result["goods"];
         $this->display();
+    }
+
+    public function del(){
+        $id = $this->_param("id","intval");
+        $branchId = $_SESSION["staff_info"]["branch_id"];
+        $service = D("Promotions","Service");
+        try{
+            $service->del($branchId,$id);
+        }catch (Exception $e){
+            $this->error($e->getMessage());
+        }
+        $this->success("删除成功！");
     }
 
 }

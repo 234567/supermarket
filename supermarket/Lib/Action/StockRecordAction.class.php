@@ -12,7 +12,7 @@ class StockRecordAction extends BaseAction{
         try{
             $result = $service->adminList();
         }catch (Exception $e){
-            $this->error($service->getError());
+            $this->error($e->getMessage());
         }
         $this->list = $result;
         $this->display();
@@ -24,7 +24,7 @@ class StockRecordAction extends BaseAction{
         try{
             $result = $service->detail();
         }catch (Exception $e){
-            $this->error("查看入库详细出差".$e->getMessage());
+            $this->error("查看入库详细出错".$e->getMessage());
         }
         $this->list = $result["list"];
         $this->supplier = $result["supplier"];

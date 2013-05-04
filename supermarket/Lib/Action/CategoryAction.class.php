@@ -1,12 +1,17 @@
 <?php
 /**
- * User: corn-s
- * Date: 13-4-23
- * Time: 下午6:29
+ * Class CategoryAction
+ *
+ *
+ * 商品分类模块
  */
-//商品分类模块
 class CategoryAction extends BaseAction{
 
+    /**
+     * 根据父分类编号获取子分类列表
+     *
+     * @param $pid     父分类编号
+     */
     public function sub_cate($pid){
         $category = D('Category');
         $list = $category->where(array('pid'=>$pid,))->select();
@@ -15,7 +20,9 @@ class CategoryAction extends BaseAction{
         $this->display();
     }
 
-
+    /**
+     * 添加分类信息
+     */
     public function add(){
         $pid = $this->_get('pid');
         if(!empty($pid) && $pid > 0){
@@ -42,8 +49,9 @@ class CategoryAction extends BaseAction{
         $this->display();
     }
 
-
-
+    /**
+     * 编辑分类信息
+     */
     public function edit(){
         $id = $this->_param("id","intval");
         if (empty($id)) {
@@ -71,20 +79,4 @@ class CategoryAction extends BaseAction{
         }
     }
 
-    public function listAll(){
-        $default = $this->_get("d");
-        if(empty($default)){
-            $default = 1;
-        }
-        $category = D('Category');
-        $this->category_default = $default;
-        $this->list = $category->listAll();
-        $this->display();
-    }
-
-    public function listSub(){
-        $category = D('Category');
-        $this->category_list = $category->listSub();
-        $this->display();
-    }
 }

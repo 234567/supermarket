@@ -13,7 +13,19 @@
             </a>
             <a class="brand">超市管理系统</a>
 
-            <!-- user dropdown starts -->
+
+
+            <div class="top-nav nav-collapse">
+                <ul class="nav" style="margin-left: 50px;">
+                    <li><a href="{:U('index/index')}">管理首页</a></li>
+                    <li><a href="{:U('SaleGoods/index')}">前台销售</a></li>
+                    <li><a href="{:U('StockGoods/index')}">后台入库</a></li>
+                </ul>
+            </div>
+
+
+
+            <!-- 用户个人信息相关 -->
             <div class="btn-group pull-right" >
                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="icon-user"></i><span class="hidden-phone">{$Think.session.staff_info.name}</span>

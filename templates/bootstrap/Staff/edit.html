@@ -32,18 +32,18 @@
                     <div class="control-group">
                         <label class="control-label">所属分店：</label>
                         <div class="controls">
-                            <input type="hidden" name="branch_id" value="{$vo.branch_id}"/>
-                            <input type="text" value="{$branchInfo.name}" readonly/>
+                            <!--<input type="hidden" name="branch_id" value="{$vo.branch_id}"/>-->
+                            <!--<input type="text" value="{$branchInfo.name}" readonly/>-->
                             <front:select name="branch_id" model="branch" selected="$vo['branch_id']"/>
                         </div>
                     </div>
 
-                    <!--<div class="control-group">
+                    <div class="control-group">
                         <label class="control-label">用户组：</label>
                         <div class="controls">
                             <front:select name="role_id" model="role" disabled="1" selected="$vo['role_id']"/>
                         </div>
-                    </div>-->
+                    </div>
                     <div class="control-group">
                         <label class="control-label">员工姓名：</label>
                         <div class="controls">

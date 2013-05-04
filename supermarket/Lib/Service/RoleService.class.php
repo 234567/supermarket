@@ -124,4 +124,8 @@ class RoleService{
         }
         return $result;
     }
+
+    public function getRoleType($staffId){
+        return M("RoleUser")->join("role ON role_user.role_id = role.id")->where(array("user_id"=>$staffId))->find();
+    }
 }

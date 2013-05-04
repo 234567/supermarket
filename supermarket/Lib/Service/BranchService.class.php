@@ -1,14 +1,24 @@
 <?php
 /**
- * User: corn-s
- * Date: 13-4-24
- * Time: 上午10:59
+ * Class BranchService
+ *
+ * 分店业务逻辑
+ * 包括：
+ * 获取分店列表（区分员工）
+ *
+ *
  */
-//分店业务逻辑
 class BranchService {
-    public function getList($map){
+
+    /**
+     * 获取连锁分店列表
+     * @param $map  查询条件
+     * @return array
+     */
+    public function getList($map=array()){
+
         //status 状态：1表示正常，0表示不可用，-1表示已删除
-        $map = array("status"=>array("eq",1));
+        $map["status"] = array("eq",1);
 
         //取出员工所属的分店信息
         $branchInfo = session("branch_info");
@@ -36,7 +46,12 @@ class BranchService {
         }
         return $result;
     }
-//更新
+
+
+    /**
+     * 更新分店信息
+     * @throws ThinkException
+     */
     public function update(){
         $model = D('Branch');
         $vo = $model->create();
@@ -55,7 +70,10 @@ class BranchService {
         $model->commit();
     }
 
-    //插入
+    /**
+     * 插入分店信息
+     * @throws ThinkException
+     */
     public function insert(){
         $model = D('Branch');
         $vo = $model->create();
@@ -69,13 +87,29 @@ class BranchService {
             $model->rollback();
             throw new ThinkException($model->getError());
         }
+
+        //指定选择的员工为负责人
+        $role = M("RoleUser");
+        //先删除旧的角色
+        $role->where(array("user_id"=>$vo["director_staff_id"]))->delete();
+        //升职为店长～
+        $result = $role->data(array("role_id"=>2,"user_id"=>$vo["director_staff_id"]))->add();
+        if(false === $result){
+            $model->rollback();
+            throw new ThinkException("指定负责人出错！".$model->getError());
+        }
+
         $model->commit();
     }
 
-    //删除
-    public function del(){
+    /**
+     * 删除指定分店的信息
+     * @param $id   分店标识
+     * @throws ThinkException
+     */
+    public function del($id){
         $model = D('Branch');
-        $id = $_GET['id'];
+
         //id为1标识总公司 ，总公司 是不允许删除的
         if(!isset($id) || $id == 1){
             throw new ThinkException("请指定删除分店ID");

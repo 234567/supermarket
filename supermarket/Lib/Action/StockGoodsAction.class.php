@@ -4,6 +4,7 @@
  * Class StockGoodsAction
  *
  * 商品入库模块
+ * 可以进行超市的商品入库、对商品进行依次扫描、录入信息，然后显示清单
  *
  */
 class StockGoodsAction extends BaseAction{
@@ -12,15 +13,19 @@ class StockGoodsAction extends BaseAction{
      * 入库人员首页
      */
     public function index(){
-
         $this->display();
     }
 
+    /**
+     * 开始进行入库操作
+     */
     public function begin(){
-
         $this->display();
     }
 
+    /**
+     * 可以在入库中途进行入库暂停、待完成
+     */
     public function pause(){
         //TODO：实现商品入库记录的暂停
 
@@ -30,7 +35,6 @@ class StockGoodsAction extends BaseAction{
 
     /**
      * 取消本次入库操作
-     *
      */
     public function cancel(){
         //清空入库商品列表
@@ -54,6 +58,9 @@ class StockGoodsAction extends BaseAction{
     }
 
 
+    /**
+     * 将扫描到的入库商品信息录入到入库商品清单
+     */
     public function addToList(){
         $barcode = $this->_param("barcode");
         $actual_cost = $this->_param("actual_cost");
@@ -165,7 +172,9 @@ class StockGoodsAction extends BaseAction{
         $this->display();
     }
 
-    //查看入库记录详细
+    /**
+     * 查看入库记录详细
+     */
     public function detail(){
         $service = D("StockRecord","Service");
         $recordId = $this->_param("recordId");

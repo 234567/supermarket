@@ -89,10 +89,6 @@ class View {
         header('Cache-control: '.C('HTTP_CACHE_CONTROL'));  // 页面缓存控制
         header('X-Powered-By:ThinkPHP');
         // 输出模板文件
-        include_once('MinHTML.class.php');
-    	if (class_exists(Minify_HTML)&&C('MIN')) {
-            $content=Minify_HTML::minify($content, array());
-        }
         echo $content;
     }
 

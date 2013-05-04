@@ -13,7 +13,7 @@
             <form class="form-horizontal" method="post" action="{:U('branch/update')}">
                 <input type="hidden" name="id" value="{$vo.id}"/>
                 <fieldset>
-                    <legend>{$vo.name} 分店信息</legend>
+                    <legend>{$vo.name} 分店信息 <a href="{:U('/branch')}" class="btn btn-info pull-right">返回分店列表</a></legend>
 
                     <div class="control-group">
                         <label class="control-label">分店名称：</label>
@@ -70,10 +70,9 @@
                         </div>
                     </div>
 
-
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">确定修改</button>
-                        <a class="btn btn-back" >返回</a>
+                        <button type="submit" class="btn btn-primary">修改</button>
+                        <button type="reset" class="btn">重置</button>
                     </div>
                 </fieldset>
             </form>

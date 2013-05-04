@@ -122,12 +122,8 @@ class StaffService{
      *
      * @throws ThinkException
      */
-    public function del(){
+    public function del($id){
         $model = D("Staff");
-        $id = $_GET["id"];
-        if(!isset($id)){
-            throw new ThinkException("参数错误！");
-        }
 
         $model->startTrans();
         //根据传过来的ID参数，有可能是批量删除，也就是删除多个ID，默认以,分割

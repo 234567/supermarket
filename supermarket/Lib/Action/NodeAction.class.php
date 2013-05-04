@@ -6,7 +6,6 @@ class NodeAction extends BaseAction {
     }
 
     public function index(){
-//        $this->list = genTree();
         $Node = D('node')->select();
         $array = array();
         // 构建生成树中所需的数据

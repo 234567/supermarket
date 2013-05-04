@@ -61,21 +61,18 @@ class GoodsService{
         $model->commit();
     }
 
-    public function del(){
+    public function del($id){
         $model = D("Goods");
-        $id = $_GET["id"];
-        if(!isset($id)){
-            throw new ThinkException("参数错误！");
-        }
-
         $model->startTrans();
         //根据传过来的ID参数，有可能是批量删除，也就是删除多个ID，默认以,分割
         $condition = array("id" => array("in" ,explode(",",$id)));
         //这里的删除并不是真正的删除操作，只是将信息标记为删除状态
-        $result = $model->where($condition)->delete();
+//        $result = $model->where($condition)->delete();
+        //将状态设置为-1表示已删除状态
+        $result = $model->where($condition)->setField("status",-1);
         if(false == $result){
             $model->rollback();
-            throw new ThinkException("删除失败！");
+            throw new ThinkException($model->getError());
         }
         //TODO:添加其他业务逻辑
 

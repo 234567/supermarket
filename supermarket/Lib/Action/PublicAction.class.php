@@ -74,45 +74,61 @@ class PublicAction extends Action{
             $this->error("帐号不存在!!");
         }elseif($authInfo["status"] == 0 ) {
             $this->error("帐号已被禁用，请联系管理员！");
-        }else{
-            if($authInfo["password"] != md5($password)) {
-                $this->error("密码错误！");
-            }
-
-            session( C("USER_AUTH_KEY") ,$authInfo["id"]);
-            //保存员工姓名
-            session("staff_info", $authInfo);
-
-            //获取分店信息
-            $branchInfo = M("Branch")->where( array("id"=>$authInfo["branch_id"]) )->find();
-            if(false === $branchInfo || null === $branchInfo){
-                //不存在的分店信息
-                $this->error("不存在的分店信息，你肯定不是本超市的员工！");
-            }
-            //保存分店信息
-            session("branch_info" , $branchInfo );
-
-            //如果是超级管理员
-            if($authInfo["account"] === "admin") {
-                session( C("ADMIN_AUTH_KEY") , true);
-            }
-
-            //保存登录信息
-            $Staff	=	M("Staff");
-            $ip		=	get_client_ip();
-            $time	=	time();
-            $data = array();
-            $data["id"]	=	$authInfo["id"];
-            $data["last_login_time"]	=	$time;
-            $data["login_count"]	=	array("exp","login_count+1");
-            $data["last_login_ip"]	=	$ip;
-            $Staff->save($data);
-
-
-            // 缓存访问权限
-            RBAC::saveAccessList();
-            $this->success("登录成功！",U("index/index"));
         }
+
+        //继续验证
+        if($authInfo["password"] != md5($password)) {
+            $this->error("密码错误！");
+        }
+
+        session( C("USER_AUTH_KEY") ,$authInfo["id"]);
+        //保存员工姓名
+        session("staff_info", $authInfo);
+
+        //获取分店信息
+        $branchInfo = M("Branch")->where( array("id"=>$authInfo["branch_id"]) )->find();
+        if(false === $branchInfo || null === $branchInfo){
+            //不存在的分店信息
+            $this->error("不存在的分店信息，你肯定不是本超市的员工！",U("public/logout"));
+        }
+        //保存分店信息
+        session("branch_info" , $branchInfo );
+
+        //如果是超级管理员
+        if($authInfo["account"] === "admin") {
+            session( C("ADMIN_AUTH_KEY") , true);
+        }else{
+            //获取员工的角色标识，如果小于2,说明是负责人以上的等级，有更多的权限
+            //否则就只能处于销售前台或者入库前台
+            $result = M("RoleUser")->where(array("user_id" => $authInfo["id"]) )->find();
+            if(empty($result)){
+                $this-error("找不到员工的角色信息！",U("public/logout"));
+            }
+            $roleType = intval($result["role_id"]);
+            session("role_type",$roleType);
+        }
+
+        //保存登录信息
+        $Staff	=	M("Staff");
+        $ip		=	get_client_ip();
+        $time	=	time();
+        $data = array();
+        $data["id"]	=	$authInfo["id"];
+        $data["last_login_time"]	=	$time;
+        $data["login_count"]	=	array("exp","login_count+1");
+        $data["last_login_ip"]	=	$ip;
+        $Staff->save($data);
+
+
+        // 缓存访问权限
+        RBAC::saveAccessList();
+        $url = U("index/index");
+        if($roleType ===3){
+            $url = U("SaleGoods/index");
+        }else if($roleType ===4){
+            $url = U("StockGoods/index");
+        }
+        $this->success("登录成功！",$url);
     }
 
     /**

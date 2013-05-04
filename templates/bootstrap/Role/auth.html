@@ -22,7 +22,7 @@
                         <tbody>
                     <volist name="nodeList" id="project">
                         <tr>
-                            <td rowspan="20">{$project.title}
+                            <td rowspan="100">{$project.title}
                                 <input type="checkbox" name="data[]"  data-no-uniform="true" class="project" value="{$project.id}:1:0"/>
                             </td>
                             <volist name="project.data" id="module">
@@ -31,13 +31,15 @@
                                         {$module.title}<input type="checkbox" name="data[]" data-no-uniform="true"
                                                               class="module" value="{$module.id}:2:{$module.pid}"/>
                                     </td>
-                                    <empty name="module.data"><td colspan="100"></td></empty>
-                                    <volist name="module.data" id="action">
+                                    <!--<empty name="module.data"><td colspan="100"></td></empty>-->
+                                    <volist name="module.data" id="action" mod="10">
                                         <td>{$action.title}
                                             <input type="checkbox" name="data[]" data-no-uniform="true"
                                                    class="action" value="{$action.id}:3:{$action.pid}"/>
                                         </td>
+                                        <eq name="mod" value="9"></tr><tr><td></td></eq>
                                     </volist>
+                                    <td colspan="100"></td>
                                 </tr>
                             </volist>
 

@@ -23,9 +23,9 @@
             </button>
             <a class="brand">分店：{$Think.session.branch_info.name}</a>
             <div class="nav-collapse">
-                <ul class="nav">
+                <ul class="nav" style="margin-left: 50px;">
                     <li>
-                        <a href="{:U('SaleGoods/index')}">首页</a>
+                        <a href="{:U('SaleGoods/index')}">销售前台</a>
                     </li>
                     <li>
                         <a href="{:U('SaleGoods/begin')}">商品销售</a>
@@ -33,6 +33,9 @@
                     <li>
                         <a href="{:U('SaleGoods/history')}">我的销售记录</a>
                     </li>
+                    <if condition="($Think.session.administrator eq true) || ($Think.session.role_type elt 2) ">
+                        <li><a href="{:U('index/index')}">管理首页</a></li>
+                    </if>
                 </ul>
             </div>
             <div class="btn-group pull-right" >

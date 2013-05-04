@@ -54,6 +54,11 @@ class GoodsAction extends BaseAction{
         $this->ajaxReturn($info,'获取商品信息成功！',1);
     }
 
+
+    /**
+     * 检测条形码对应的商品是否已经添加
+     * （配合表单验证插件进行输入验证）
+     */
     public function checkBarcode(){
         $barcode = $this->_param("value");
         if(empty($barcode)){

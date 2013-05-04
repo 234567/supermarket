@@ -1,30 +1,34 @@
 <?php
 /**
  * Class StaffAction
+ *
  * 后台用户模块
  */
 class StaffAction extends BaseAction {
 
+    /**
+     * 修改员工信息（管理员修改）
+     */
     public function edit(){
         $id = $this->_param( "id" );
         if(empty($id)){
             $this->error("参数错误！");
         }
-        $model = M("Staff");
-        $vo = $model->getById($id);
-        $this->vo = $vo;
-
-        $branchId = $vo["branch_id"];
-        $branchInfo = M("Branch")->getById($branchId);
-        if(empty($branchInfo)){
-            $this->error("系统错误，找不到员工对应的分店信息！");
+        $vo = M("Staff")->getById($id);
+        $result =  M("RoleUser")->getByUserId($vo["id"]);
+        if(empty($result) ){
+            $this->error("员工信息异常！");
         }
-        $this->branchInfo =$branchInfo;
+        $vo["role_id"] = $result["role_id"];
+
+        $this->vo = $vo;
         $this->display();
     }
 
 
-    // 检查帐号
+    /**
+     * 检查帐号是否可用
+     */
     public function checkAccount() {
         $name  =  $this->_param("account");
 
@@ -43,11 +47,11 @@ class StaffAction extends BaseAction {
 
 
     /**
-     * 重置密码
+     * 重置密码（管理员重置指定帐号的密码
      */
     public function resetPwd() {
-        $id  =  $_POST['id'];
-        $password = $_POST['password'];
+        $id  =  $this->_param('id',"intval");
+        $password = $this->_param('password');
         if(''=== trim($password)) {
             $this->error('密码不能为空！');
         }
