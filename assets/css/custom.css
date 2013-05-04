@@ -45,16 +45,34 @@ h1,h2,h3,h4,h5,h6{
     padding-bottom:5px;*/
 }
 
-
-
-.sidebar-nav {
-    padding: 9px 0;
+ul.ajax-loaders li{
+    display:inline-block;
+    list-style:none;
+    padding:10px;
 }
-.affix {
-    position: fixed;
-    top:70px;
-    left:10px;
+ul.ajax-loaders{
+    min-height:80px;
 }
+.bs-icons li{
+    list-style:none;
+}
+#for-is-ajax{
+    padding-left: 12px;
+    font-size:10px !important;
+    cursor:pointer;
+}
+#loading{
+    margin-top: 20px;
+    width:128px;
+    font-weight: bold;
+}
+#loading div.center{
+    margin-top:10px;
+    height:15px;
+    width:128px;
+    background:url(../images/ajax-loader-6.gif);
+}
+
 
 
 .sidebar-nav{
@@ -67,7 +85,6 @@ h1,h2,h3,h4,h5,h6{
     -moz-border-radius: 5px;
     margin-bottom: 0;
     padding-bottom:0;
-    /*margin-right:14px;*/
 }
 .sidebar-nav > ul > li:not(.nav-header){
     margin-right:-2px;
@@ -79,7 +96,27 @@ h1,h2,h3,h4,h5,h6{
         padding:0;
         margin-bottom:0;
     }
+    .theme-text{
+        display:none;
+    }
 }
+@media (min-width: 768px) and (max-width: 979px) {
+    .box-icon{
+        display:none;
+    }
+    .box-header h2{
+        font-size:13px !important;
+    }
+    .box-header h3{
+        font-size:11px !important;
+    }
+    .main-menu-span{
+        width:6.2% !important;
+        margin-right:4%;
+    }
+}
+
+
 
 /*
 分店盒子高度
@@ -88,55 +125,6 @@ h1,h2,h3,h4,h5,h6{
     min-height: 310px;
 }
 
-
-/*左侧菜单*/
-.sidebar-menu{
-    border-right: 1px solid #c4c8cb;
-}
-
-
-/*一级菜单*/
-.menu-first{
-    font-size: 11px !important;
-    height:13px;
-    line-height:16px;
-    border-top: 1px solid #efefef;
-    border-bottom: 1px solid #e1e1e1;
-    padding: 0;
-    font-size: 14px;
-}
-/*一级菜单鼠标划过状态*/
-.menu-first:hover{
-    text-decoration: none;
-    background-color: #d6d4d5;
-    border-top: 1px solid #b7b7b7;
-    border-bottom: 1px solid #acacac;
-}
-
-/*二级菜单*/
-.menu-second li a{
-    height:22px;
-    line-height:22px;
-    border-top: 1px solid #efefef;
-    border-bottom: 1px solid #efefef;
-    font-size: 11px !important;
-    text-align: center;
-}
-/*二级菜单鼠标划过样式*/
-.menu-second li a:hover {
-    text-decoration: none;
-    background-color: #66c3ec;
-    border-top: 1px solid #83ceed;
-    border-bottom: 1px solid #83ceed;
-    border-right: 3px solid #f8881c;
-    border-left: 3px solid #66c3ec;
-}
-
-/*覆盖bootstrap的样式*/
-.nav-list,.nav-list li a{
-    padding: 0px;
-    margin: 0px;
-}
 
 
 .box{
@@ -346,4 +334,12 @@ h1,h2,h3,h4,h5,h6{
 }
 .yellow {
     color: #F99406;
+}
+th.headerSortUp {
+    background: url(../images/asc.gif) no-repeat center right;
+    background-color: #3399FF;
+}
+th.headerSortDown {
+    background: url(../images/desc.gif)  no-repeat center right;
+    background-color: #3399FF;
 }

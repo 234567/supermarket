@@ -4,34 +4,41 @@
 
 */}
 
-<div class="well nav-collapse sidebar-nav span1" style="margin-left:20px;width:120px;">
+{/*
+另一种方式
+<volist name="menu" id="item" >
+    <neq name="item['name']|strtolower" value="public" >
+        <neq name="item['name']|strtolower" value="index" >
+            <eq name="item['access']" value="1" >
+                <li>
+                    <a  class="nav-header menu-first collapsed" href="{:U($item['name'].'/index')}" >{$item['title']}</a>
+                </li>
+            </eq>
+        </neq>
+    </neq>
+</volist>
+*/}
+
+<div class="span2 main-menu-span">
+<div class="nav-collapse sidebar-nav">
     <ul class="nav nav-tabs nav-stacked main-menu">
-        <li class="nav-header">功能列表</li>
-        {/*
-        另一种方式
-        <volist name="menu" id="item" >
-            <neq name="item['name']|strtolower" value="public" >
-                <neq name="item['name']|strtolower" value="index" >
-                    <eq name="item['access']" value="1" >
-                        <li>
-                            <a  class="nav-header menu-first collapsed" href="{:U($item['name'].'/index')}" >{$item['title']}</a>
-                        </li>
-                    </eq>
-                </neq>
-            </neq>
-        </volist>
-        */}
+        <li class="nav-header hidden-tablet">功能列表
+            <span id="for-is-ajax" class="hidden-tablet" for="is-ajax">
+                <input id="is-ajax" type="checkbox" data-no-uniform="true">AJAX
+            </span>
+        </li>
+        <volist name="menu" id="item">
+            <empty name="item.url">
+                <li class="nav-header hidden-tablet">{$item.title}</li>
+                <else/>
 
-        <volist name="menu" id="header" key="idx">
-            <li>
-                <a href="#menu{$idx}" class="nav-header menu-first collapsed" data-toggle="collapse">{$key}</a>
-                <ul id="menu{$idx}" class="nav nav-list collapse menu-second">
-                    <volist name="header" id="item">
-                        <li><a href="{:U($key)}">{$item}<!--${item.icon} {$item.title}--></a></li>
-                    </volist>
-                </ul>
-            </li>
+                <li>
+                    <a class="ajax-link" href="{:U( $item['url'] )}">
+                        <i class="{$item.icon}"></i>
+                        <span class="hidden-tablet">{$item.title}</span></a>
+                </li>
+            </empty>
         </volist>
-
     </ul>
+</div>
 </div>
