@@ -18,9 +18,9 @@
             <form class="form-inline" action="{:U('goods/search')}" method="get">
                 商品分类：
                 <!--<front:select id="category_list" name="cid" model="category" selected="999999" />-->
-                <front:select name="cid" model="category"/>
+                <front:select name="cid" model="category" selected="$cid"/>
 
-                商品名称：<input type="text" name="name" />
+                商品名称：<input type="text" name="name" value="{$searchname}"/>
                 <button class="btn" type="submit" >查找</button>
             </form>
 
@@ -46,10 +46,11 @@
                 <volist name="list" id="vo">
                         <td >{$vo.barcode}</td>
                         <td><a href="{:U('goods/edit?id='.$vo['id'])}">{$vo.name}</a></td>
-                        <td><eq name="vo.category_id" value="999999">未分类<else/>{$vo.category_id|default="未归类"}</eq></td>
+                        <!--<td><eq name="vo.category_id" value="999999">未分类<else/>{$vo.category_id|default="未归类"}</eq></td>-->
+                        <td><a href="{:U('Goods/search?cid='.$vo['category_id'])}">{$vo.category_name}</a></td>
                         <td>{$vo.specifications}</td>
                         <td>{$vo.unit}</td>
-                        <td>{$vo.sales_price}</td>
+                        <td>￥{$vo.sales_price}</td>
                         <td>{$vo.alarm}</td>
                         <td>{$vo.brand|default=''}</td>
                         <td>{$vo.keyword|default=''}</td>

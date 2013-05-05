@@ -20,12 +20,14 @@ class GoodsAction extends BaseAction{
         }
 
         if(!empty($name)){
-            $map["name"] = array("like", "%".$name."%");
+            $map["goods.name"] = array("like", "%".$name."%");
         }
 
         //通过条件获取商品列表
         $service = D("Goods","Service");
         $result = $service->getList($map);
+        $this->cid = $cid;
+        $this->searchname = $name;
         $this->list = $result['list'];
         $this->page = $result['page'];
         $this->display("index");

@@ -11,7 +11,7 @@ class GoodsService{
         if($count > 0){
             import("@.ORG.Util.Page");
             $p = new Page($count,20);
-            $result["list"] = $model->where($map)->limit($p->firstRow.','.$p->listRows)->select();
+            $result["list"] = $model->field("goods.*,category.name as category_name")->where($map)->join("category ON category.id = category_id")->limit($p->firstRow.','.$p->listRows)->select();
             $result["page"] = $p->show();
         }
         return $result;
