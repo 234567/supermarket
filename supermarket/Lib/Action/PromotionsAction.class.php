@@ -14,7 +14,7 @@ class PromotionsAction extends  BaseAction{
         //实例化Service
         $service = D($this->getActionName(),"Service");
         $result = $service->release();
-        if(false == $result){
+       if(false == $result){
             $this->error("该商品已存在折扣信息，不能重复添加折扣信息！",$this->getReturnUrl());
         }
         $this->branch = $result["branch"];

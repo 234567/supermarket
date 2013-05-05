@@ -2,19 +2,29 @@
 
 /**
  * Class PromotionsService
- *
  * 商品促销相关业务逻辑
+ * 促销功能的操作者：1：超级管理员，2：分店负责人，（其他人员不能执行该功能）
  */
 class PromotionsService{
-
     /**
-     *
      * 获取促销列表
      * @param $map
      * @return array
      */
     public function getList($map){
-
+        /*
+         * 1：超级管理员：可以查看所有分店的促销信息
+         * 2：分店负责人：只可以查看本分店的促销信息，即在查询时带入分店id进行查询
+         */
+        //取出员工所属的分店信息
+        $branchInfo = session("branch_info");
+        //是分店负责人，带上分店ID查询
+        $map["branch.id"] = $branchInfo["id"];
+        //如果是管理员，可惜查询所有促销信息
+        if( session( C("ADMIN_AUTH_KEY") ) == true ){
+            //如果是管理员
+            unset($map["branch.id"]);
+        }
         $model = D("Promotions");
         $count = $model->where($map)->count("id");
         $table = "promotions as p,goods as g,branch as b";
@@ -28,7 +38,6 @@ class PromotionsService{
         }
         return $result;
     }
-
     /**
      * 商品列表下发布折扣
      * @return array
@@ -40,19 +49,29 @@ class PromotionsService{
         if(!isset($goods_id) && !isset($branch_id)){
             throw new ThinkException("分店ID出错或商品ID出错!");
         }
-
         //查询该商品在此期间是否存在折扣，存在则不允许在添加折扣，否则添加
         $goods = D("Promotions")->where("goods_id=".$goods_id)->find();
         $result = array();
-        trace($goods);
-        if(false == $goods){
-            $result["branch"] = M("Branch")->getById($branch_id);
-            $result["goods"] = M("Goods")->getById($goods_id["id"]);
-            if(false == $result["branch"] && false == $result["goods"]){
-                throw new ThinkException("分店不存在或没有打折的商品!");
+        if(true == $goods){
+            $now = time();
+            /*
+             * 判断当前时间是否在商品促销期间
+             * 在商品促销时间：提示不能在添加促销信息，
+             * 该商品促销时间已过：可以添加商品促销
+             */
+            //在促销期间
+//            trace($goods["time_start"] );
+//            trace($now);
+//            trace($goods["time_end"]);
+            if(($goods["time_start"] < $now) && ($now < $goods["time_end"])){
+                throw new ThinkException("该商品在此期间存在促销！");
             }
         }
-
+        $result["branch"] = M("Branch")->getById($branch_id);
+        $result["goods"] = M("Goods")->getById($goods_id);
+        if(false == $result["branch"] && false == $result["goods"]){
+            throw new ThinkException("分店不存在或没有打折的商品!");
+        }
         return $result;
     }
 
