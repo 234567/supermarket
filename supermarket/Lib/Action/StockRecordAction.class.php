@@ -21,8 +21,10 @@ class StockRecordAction extends BaseAction{
     //查看入库记录详细
     public function detail(){
         $service = D("StockRecord","Service");
+        $recordId = $this->_param("recordId");
+        $supplierId = $this->_param("supplierId");
         try{
-            $result = $service->detail();
+            $result = $service->detail($recordId,$supplierId);
         }catch (Exception $e){
             $this->error("查看入库详细出错".$e->getMessage());
         }

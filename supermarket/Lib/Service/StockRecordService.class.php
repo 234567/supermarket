@@ -71,6 +71,8 @@ class StockRecordService{
                  */
                 $staff_id = $staff["staff_id"];
                 $result[$i]["staff"] = D("Staff")->getById($staff_id);
+                //员工所属分店信息
+                $result[$i]["staff"]["branch"] = D("Branch")->getById($result[$i]["staff"]["branch_id"]);
                 $map = array("staff_id"=>array("eq",$staff_id));
                 $count = $model->where($map)->count("id");
                 //存在记录
