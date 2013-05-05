@@ -62,6 +62,9 @@ ul.ajax-loaders{
     cursor:pointer;
 }
 #loading{
+    position: fixed;
+    left:300px;
+    top:200px;
     margin-top: 20px;
     width:128px;
     font-weight: bold;

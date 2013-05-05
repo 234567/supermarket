@@ -25,7 +25,7 @@ $(document).ready(function(){
     $('#is-ajax').on("click",function(e){
         $.cookie('is-ajax',$(this).prop('checked'),{expires:365});
     });
-    console.log($.cookie('is-ajax'));
+
     $('#is-ajax').prop('checked',$.cookie('is-ajax')==='true' ? true : false);
 
     //disbaling some functions for Internet Explorer
@@ -46,11 +46,17 @@ $(document).ready(function(){
         $.ajax({
             url:State.url,
             success:function(msg){
+                //替换内容
                 $('#content').html($(msg).find('#content').html());
+                //替换标题
+                $('title').text($(msg)[1].innerText);
+                //移除提示框
                 $('#loading').remove();
+                //显示新内容
                 $('#content').fadeIn("slow");
-                docReady();
 
+                //处理页面各种插件绑定
+                docReady();
 
                 if(!!$('#is-ajax').prop('checked') && State.url.search(/category\/index/) !== -1 ){
                     $("table").removeClass("tablesorter");
@@ -66,6 +72,7 @@ $(document).ready(function(){
                             3: {sorter: false}
                         }
                     });
+                    //为了处理重复绑定事件的BUG。。先取消
                     $("table tr.odd").die('click');
                     $("table tr.odd").live('click',function(){
                         var inner = $(this).next('tr').find('.table-inner');
@@ -95,6 +102,10 @@ $(document).ready(function(){
         }
         $('#loading').remove();
         $('#content').fadeOut().parent().append('<div id="loading" class="center">正在努力加载中...<div class="center"></div></div>');
+        $('#loading').css({
+            top:$(window).height()/2,
+            left:$(window).width()/2-70
+        });
 //        $('#content').fadeOut().parent().append('<div  id="loading" class="center progress progress-striped progress-success active" style="margin:150px 50px;"><div class="bar" style="width: 50%;"></div></div>');
         var $clink=$(this);
         History.pushState(null, null, $clink.attr('href'));
