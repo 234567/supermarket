@@ -20,6 +20,7 @@ return array(
         //增加ASSETS替换
         '__ASSETS__' => __ROOT__.'/assets',//静态资源目录
         '__PUBLIC__' => __ROOT__.'/assets', // 更改默认的/Public 替换规则
+        '__UPLOAD__'    =>  __ROOT__.'/uploads',
     ),
 
 
@@ -54,6 +55,7 @@ return array(
     'USER_AUTH_GATEWAY'         =>  '/public/login',// 默认认证网关
     'NOT_AUTH_MODULE'           =>  'Public',	// 默认无需认证模块
     'REQUIRE_AUTH_MODULE'       =>  '',		// 默认需要认证模块
+    //'REQUIRE_AUTH_MODULE'       =>  'Index,Branch,Staff,Supplier,Category,Goods,Promotions,StockRecord,SalesRecord,StockGoods,SaleGoods,Node,Role,Member',		// 默认需要认证模块
     'NOT_AUTH_ACTION'           =>  '',		   // 默认无需认证操作
     'REQUIRE_AUTH_ACTION'       =>  '',		// 默认需要认证操作
     'GUEST_AUTH_ON'             =>  false,      // 是否开启游客授权访问

@@ -77,7 +77,6 @@ class RoleService{
 
     public function updateAccess($roleId,$data= array()){
         $accessModel = M("access");
-
         $accessModel->where(array("role_id" => $roleId))->delete();
         if(0 === count($data)){
             return true;

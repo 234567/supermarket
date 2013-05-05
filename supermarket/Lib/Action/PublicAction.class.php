@@ -155,7 +155,14 @@ class PublicAction extends Action{
     public function profile(){
         $this->checkUser();
         $this->vo = session("staff_info");
-        $this->display();
+        $roleType = session("role_type");
+        if($roleType ===3){
+            $this->display("SaleGoods:profile");
+        }else if($roleType ===4){
+            $this->display("StockGoods:profile");
+        }else{
+            $this->display();
+        }
     }
 
     /**
@@ -190,7 +197,14 @@ class PublicAction extends Action{
      */
     public function changepw(){
         $this->checkUser();
-        $this->display();
+        $roleType = session("role_type");
+        if($roleType ===3){
+            $this->display("SaleGoods:changepw");
+        }else if($roleType ===4){
+            $this->display("StockGoods:changepw");
+        }else{
+            $this->display();
+        }
     }
 
     /**
@@ -217,6 +231,101 @@ class PublicAction extends Action{
         $staffInfo["password"] = md5( $_POST["newpass"] );
         session("staff_info",$staffInfo);
 
-        $this->success("密码修改成功！",U("index/index"));
+        $this->success("密码修改成功！");
+    }
+
+
+    public function avatar(){
+        $this->checkUser();
+        $roleType = session("role_type");
+        if($roleType ===3){
+            $this->display("SaleGoods:avatar");
+        }else if($roleType ===4){
+            $this->display("StockGoods:avatar");
+        }else{
+            $this->display();
+        }
+    }
+
+    /**
+     * 图片上传组件
+     */
+    public function upload(){
+        $this->checkUser();
+        if(empty($_FILES)){
+            $this->error("上传失败");
+        }
+
+        import('@.ORG.Net.UploadFile');
+        //导入上传类
+        $upload = new UploadFile();
+        //设置上传文件大小
+        $upload->maxSize            = 1*1024*1024;
+        //设置上传文件类型
+        $upload->allowExts          = explode(',', 'jpg,gif,png,jpeg');
+        //设置需要生成缩略图，仅对图像文件有效
+        $upload->thumb              = true;
+        // 设置引用图片类库包路径
+        $upload->imageClassPath     = '@.ORG.Util.Image';
+        //设置需要生成缩略图的文件后缀
+        $upload->thumbPrefix        = 'm_';  //生产2张缩略图
+        //设置缩略图最大宽度
+        $upload->thumbMaxWidth      = '400';
+        //设置缩略图最大高度
+        $upload->thumbMaxHeight     = '400';
+        //删除原图
+        $upload->thumbRemoveOrigin  = true;
+        //设置附件上传目录
+        $upload->savePath           ='./uploads/';
+        //设置上传文件规则
+        $upload->saveRule           = 'uniqid';
+        if (!$upload->upload()) {
+            //捕获上传异常
+            $this->error($upload->getErrorMsg());
+        }
+
+        //取得成功上传的文件信息
+        $uploadList = $upload->getUploadFileInfo();
+        $path = substr($uploadList[0]['savepath'],2,strlen($uploadList[0]['savepath'])-1) .'m_'. $uploadList[0]['savename'];
+
+        $this->ajaxReturn($path,"上传成功！",1);
+    }
+
+    /**
+     * 头像裁剪
+     * 来源：http://www.oschina.net/code/snippet_206300_7422
+     */
+    public function crop(){
+        $x=$this->_param("x","intval",0);
+        $y=$this->_param("y","intval",0);
+        $w=$this->_param("w","intval",150);
+        $h=$this->_param("h","intval",150);
+        //源图片
+        $src=$this->_param("src");
+
+        //第一步，根据传来的宽，高参数创建一幅图片，然后正好将截取的部分真好填充到这个区域
+//        header("Content-type: image/jpeg");
+        $target = @imagecreatetruecolor($w,$h) or die("Cannot Initialize new GD image stream");
+
+        //第二步，根据路径获取到源图像,用源图像创建一个image对象
+        $source = imagecreatefromjpeg("./".$src);
+
+        //第三步，根据传来的参数，选取源图像的一部分填充到第一步创建的图像中
+        imagecopy( $target, $source, 0, 0, $x, $y, $w, $h);
+        //
+        imagecopyresampled($target,$source,0,0,$x,$y,$w,$h,$w,$h);
+        //第四步,保存图像
+        // 生成图片、覆盖之前的缩略图
+        imagejpeg($target,  "./".$src);
+        imagedestroy($target);
+        imagedestroy($source);
+
+        $result = M("Staff")->where(array("id"=>$_SESSION["staff_info"]["id"]))->setField("photo",$src);
+        if(false === $result){
+            $this->error("保存失败！");
+        }else{
+            $_SESSION["staff_info"]["photo"] = $src;
+            $this->success("头像保存成功！");
+        }
     }
 }

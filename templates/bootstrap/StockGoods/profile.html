@@ -1,4 +1,4 @@
-<extend name="Common:base" />
+<extend name="StockGoods:base" />
 
 
 <block name="page_title">修改个人信息</block>
@@ -11,7 +11,7 @@
         <div class="box-content">
             <form class="form-horizontal" method="post" action="{:U('public/updateProfile')}">
                 <fieldset>
-                    <legend>个人信息</legend>
+                    <legend>个人信息<a href="{:U('StockGoods/index')}" class="btn btn-info pull-right">返回入库主页</a></legend>
                     <div class="control-group">
                         <label class="control-label">员工照片：</label>
                         <div class="controls">

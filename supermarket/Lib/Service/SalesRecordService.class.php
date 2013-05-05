@@ -119,8 +119,8 @@ class SalesRecordService {
             unset($map["branch_id"]);
         }
 
-        $fields = "sales_record.*,branch.name as branch_name";
-        $join = "branch ON branch.id = branch_id";
+        $fields = "sales_record.*,branch.name as branch_name,staff.name as staff_name";
+        $join = array("branch ON branch.id = branch_id","staff ON staff.id = staff_id");
         $count = $model->where($map)->count('id');
         $result = array();
         if($count > 0){

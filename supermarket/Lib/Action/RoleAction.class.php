@@ -49,10 +49,8 @@ class RoleAction extends BaseAction{
      *
      */
     public function updateAccess(){
-
         $roleId = $this->_post("id","intval");
         $data = $this->_post("data");
-
         $service = D("Role","Service");
         try{
             $service->updateAccess($roleId,$data);

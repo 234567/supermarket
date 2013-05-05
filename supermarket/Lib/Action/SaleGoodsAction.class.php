@@ -17,7 +17,7 @@ class SaleGoodsAction extends BaseAction{
      * 取消本次入库操作
      */
     public function cancel(){
-        //清空入库商品列表
+        //清空购物车商品列表
         session("cart_list",null);
         $this->redirect("SaleGoods/index");
     }
@@ -238,6 +238,9 @@ class SaleGoodsAction extends BaseAction{
             $this->error("交易发生错误！".$e->getMessage());
         }
 
+
+        //清空购物车商品列表
+        session("cart_list",null);
         //$this->success("销售成功！",U("SaleGoods/showticket"));
         //跳过提示成功页面直接重定向到打印小票
         $this->redirect("SaleGoods/showticket");
@@ -259,7 +262,9 @@ class SaleGoodsAction extends BaseAction{
     }
 
 
-
+    /**
+     * 查看个人的历史销售记录
+     */
     public function history(){
         //获取员工信息
         $staffInfo = session("staff_info");
@@ -272,6 +277,9 @@ class SaleGoodsAction extends BaseAction{
         $this->display();
     }
 
+    /**
+     * 查看某个销售记录的详情
+     */
     public function detail(){
         $id = $this->_param("id");
         $service = D("SalesRecord","Service");

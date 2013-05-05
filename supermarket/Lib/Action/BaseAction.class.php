@@ -9,7 +9,6 @@
 class BaseAction extends Action{
 
     function _initialize(){
-        $this->waitSecond = 9999;
         //RBAC权限检测
         if (C('USER_AUTH_ON') && !in_array(MODULE_NAME, explode(',', C('NOT_AUTH_MODULE')))) {
             import('@.ORG.Util.RBAC');

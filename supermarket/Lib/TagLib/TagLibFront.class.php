@@ -131,7 +131,7 @@ class TagLibFront extends TagLib {
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '  level="' . $v['level'] .  '" >' . $v['fullname'].'('.$v['title'].')'.'</option>';
             }
         }elseif($model === 'role'){
-
+            $parsestr .= '<option value="0">无</option>';
             import("@.ORG.Category");
             $cat = new Category($model, array('id', 'pid', 'name', 'fullname'));
 //            $cat->add(array("id"=>-1,"pid"=>0,"name"=>"无"));

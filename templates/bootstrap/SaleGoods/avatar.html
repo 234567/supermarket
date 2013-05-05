@@ -1,0 +1,91 @@
+<extend name="SaleGoods:base" />
+
+
+<block name="page_title">上传头像</block>
+<block name="main">
+
+    <div class="box">
+        <div class="box-header well-small">
+            <h4><i class="icon-edit"></i>上传头像</h4>
+        </div>
+        <div class="box-content">
+            <div class="alert alert-info hide tips"></div>
+            <empty name="Think.session.staff_info.photo">
+                <img id="preview" src="__ASSETS__/images/noimages.png"/>
+                <else/>
+                <img id="preview"  src="__ROOT__/{$Think.session.staff_info.photo}" alt="头像"/>
+            </empty>
+            <form id="uploadform" method="post" action="{:U('public/upload')}" enctype="multipart/form-data">
+                <fieldset>
+                    <hr/>
+                    <div class="control-group">
+                        <label class="control-label">新照片：</label>
+                        <div class="controls">
+                            <div class="input-append">
+                                <input class="input-file uniform_on" name="photo" type="file">
+                                <button type="submit" class="btn btn-small">重新上传</button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+            <!-- This is the form that our event handler fills -->
+            <form id="crop" class="hide" action="{:U('public/crop')}" method="post" onsubmit="return checkCoords();">
+                <input type="hidden" name="src" value=""/>
+                <input type="hidden" id="x" name="x" />
+                <input type="hidden" id="y" name="y" />
+                <input type="hidden" id="w" name="w" />
+                <input type="hidden" id="h" name="h" />
+                <button type="submit" class="btn btn-large btn-inverse">裁剪保存</button>
+            </form>
+
+        </div>
+    </div>
+
+</block>
+<block name="other">
+    <link rel="stylesheet" type="text/css" href="__ASSETS__/plugins/jcrop/jquery.Jcrop.css" />
+    <js href="__ASSETS__/plugins/jcrop/jquery.Jcrop.js"/>
+    <script type="text/javascript">
+        $(function(){
+            function updateCoords(c)
+            {
+                $('#x').val(c.x);
+                $('#y').val(c.y);
+                $('#w').val(c.w);
+                $('#h').val(c.h);
+            };
+
+            function checkCoords()
+            {
+                if (parseInt($('#w').val())) return true;
+                alert('Please select a crop region then press submit.');
+                return false;
+            };
+
+
+            $("#uploadform").on("submit",function(e){
+                e.preventDefault();
+                $(this).ajaxSubmit({
+                    success:function(json){
+                        console.log(json);
+                        if(json.status === 0){
+                            $("div.tips").html(json.info);
+                        }else{
+                            $("#preview").attr("src","__ROOT__/"+json.data);
+                            $("input[name=src]").val(json.data);
+                            $("#uploadform").fadeOut().remove();
+                            $('#preview').Jcrop({
+                                aspectRatio: 1,
+                                onSelect: updateCoords
+                            });
+                            $("#crop").fadeIn();
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+</block>

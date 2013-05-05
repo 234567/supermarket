@@ -153,6 +153,9 @@ function docReady(){
         $target.slideToggle();
     });
 
+    $("img").on("error",function(){
+        $(this).attr("src","/market/assets/images/noimages.png");
+    });
     //表格排序插件
     $("table").addClass("tablesorter").tablesorter();
 

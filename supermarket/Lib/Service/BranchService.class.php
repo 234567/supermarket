@@ -21,11 +21,10 @@ class BranchService {
         $map["status"] = array("eq",1);
 
         //取出员工所属的分店信息
-        $branchInfo = session("branch_info");
-        $map["branch_id"] = $branchInfo["id"];
+        $map["id"] = $_SESSION["staff_info"]["branch_id"];
         if( session( C("ADMIN_AUTH_KEY") ) == true ){
             //如果是管理员
-            unset($map["branch_id"]);
+            unset($map["id"]);
         }
 
         $model = D('Branch');

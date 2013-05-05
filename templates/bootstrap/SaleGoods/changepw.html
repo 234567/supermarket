@@ -1,0 +1,46 @@
+<extend name="SaleGoods:base" />
+
+
+<block name="page_title">修改密码</block>
+<block name="main">
+
+    <div class="box">
+        <div class="box-header well-small">
+            <h4><i class="icon-edit"></i>修改密码</h4>
+        </div>
+        <div class="box-content">
+
+            <form class="form-horizontal" method="post" action="{:U('public/changePass')}">
+                <fieldset>
+                    <legend>修改密码<a href="{:U('SaleGoods/index')}" class="btn btn-info pull-right">返回销售主页</a></legend>
+                    <div class="control-group">
+                        <label class="control-label">旧密码：</label>
+                        <div class="controls">
+                                <input type="password" name="oldpass" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">新密码：</label>
+                        <div class="controls">
+                                <input type="password" name="newpass" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">确认密码：</label>
+                        <div class="controls">
+                                <input type="password" name="renewpass" />
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">确定修改</button>
+                        <button type="reset" class="btn">取消</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+</block>
