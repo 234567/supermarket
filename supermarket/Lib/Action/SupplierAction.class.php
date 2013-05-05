@@ -42,4 +42,8 @@ class SupplierAction extends  BaseAction{
         $this->page = $result["page"];
         $this->display();
     }
+
+  /*  public function checkname(){
+
+    }*/
 }

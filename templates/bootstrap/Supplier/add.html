@@ -13,25 +13,52 @@
                     <div class="control-group">
                         <label class="control-label "> 姓名：</label>
                         <div class="controls">
-                            <input type="text" name="real_name" value="供货商1">
+                            <input type="text" name="real_name" value="供货商1"
+                                   required minlength="2"
+                                   data-validation-required-message="供货商名称必须！"
+                                   data-validation-minlength-message="分店名至少有两个字！"
+                                   data-validation-chinese-regex="[\\u4e00-\\u9fa5a-zA-Z][\\u4e00-\\u9fa5a-zA-Z\\d]+"
+                                   data-validation-chinese-message="供货商只能是以汉字或者英文开头！"
+                                    />
+                            <span class="help-inline">请输入正确的供货商！</span>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label ">  电话：</label>
+                        <label class="control-label">  电话：</label>
                         <div class="controls">
-                            <input type="text" name="phone_number" value="08516789045">
+                            <input type="text" name="phone_number" value="0851-6789045"
+                                   required
+                                   data-validation-required-message="电话必填！"
+                                   data-validation-regex-regex="(^\\(0\\d{2}\\)[-]?\d{8}$)|(^0\\d{2}[-]?\\d{8}$)|(^\\(0\\d{3}\\)[-]?\\d{7}$)|(^0\\d{3}[-]?\\d{7}$)"
+                                   data-validation-regex-message="这是正确的电话格式吗？"
+                                    >
+                            <span class="help-inline">格式：0851-1234567[021-12345678]或(0851)-1234567[(021)-12345678]或08511234567</span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label">手机：</label>
                         <div class="controls">
-                            <input type="text" name="mobile" value="13465347654">
+                            <input type="text" name="mobile" value="13465347654"
+                                    required  maxlength="11" minlength="11"
+                                    data-validation-minlength-message="手机号最短长度为11位！"
+                                    data-validation-maxlength-message="手机号固定长度为11位！"
+                                    data-validation-required-message="手机号码必填!"
+                                    data-validation-regex-regex="((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}"
+                                    data-validation-regex-message="请输入正确的手机号码!"
+
+                                    >
+                            <span class="help-inline">格式：13678578855</span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label">地址：</label>
                         <div class="controls">
-                            <input type="text" name="address" value="贵阳市花溪区">
+                            <input type="text" name="address" value="贵阳市花溪区老朝阳"
+                                    required
+                                    data-validation-regex-regex="[\\u4e00-\\u9fff][\\u4e00-\\u9fa5a-zA-Z\\d]+"
+                                    data-validation-regex-message="地址是以汉字开头的哟！"
+                                    >
+                            <span class="help-inline">如：贵阳市花溪区老朝阳教师宿舍34栋</span>
                         </div>
                     </div>
                     <div class="form-actions">

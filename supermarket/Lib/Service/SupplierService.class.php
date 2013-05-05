@@ -35,7 +35,7 @@ class SupplierService{
     public function insert(){
         $model = D("Supplier");
         $vo = $model->create();
-        if(false == $vo){
+        if(false === $vo){
             throw new ThinkException("表单验证失败!");
         }
         //开启事务
