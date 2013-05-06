@@ -102,7 +102,7 @@ class MenuWidget extends Widget
             foreach ($this->menuList as $key => $module) {
                 if(!isset($module['url'])){ $menu[$key] = $module;continue; }
                 $url = explode("/",$module['url']);
-                if (isset($accessList[strtoupper(APP_NAME)][strtoupper($url[0])]) || $_SESSION['administrator']) {
+                if (isset($accessList[strtoupper(APP_NAME)][strtoupper($url[0])]) || session(C("ADMIN_AUTH_KEY")) ===true) {
                     //设置模块访问权限
                     $module['access'] = 1;
                     $menu[$key] = $module;

@@ -110,53 +110,87 @@ class TagLibFront extends TagLib {
         $other= isset($tag['other']) ? $tag['other'] : "";
         $parsestr = '<select id="'.$id.'"  name="'.$name.'" class="'.$style.'" data-rel="chosen" '.$other.'> ';
 
+        /**
+         * 如果是选择LEVEL
+         */
         if($model === 'level'){
-
+            //固定数据
             $arr = array("请选择", "项目", "模块", "操作");
+
+            //生成OPTION列表
             for ($i = 1; $i < 4; $i++) {
-//                $sel = ( $selected == $i ) ? " selected='selected'" : "";
                 $sel = '<?php if( '.$i.' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
                 $parsestr .='<option value="' . $i . '" ' . $sel . '>' . $arr[$i] . '</option>';
             }
 
         }elseif($model === 'node'){
-
+            /**
+             * 如果是节点的下拉框
+             */
+            //生成分类树
             import("@.ORG.Category");
             $cat = new Category($model, array('id', 'pid', 'name', 'fullname'));
-            $list = $cat->getList("status=1");               //获取分类结构
+            $list = $cat->getList("status=1");
+
+            //生成OPTION列表，增加一个默认的根节点选择
             $parsestr .= '<option value="0" level="0">根节点</option>';
             foreach ($list as $k => $v) {
                 $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
                 $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '  level="' . $v['level'] .  '" >' . $v['fullname'].'('.$v['title'].')'.'</option>';
             }
+
         }elseif($model === 'role'){
-            $parsestr .= '<option value="0">无</option>';
+            /**
+             * 如果是选择角色下拉列表
+             */
             import("@.ORG.Category");
             $cat = new Category($model, array('id', 'pid', 'name', 'fullname'));
-//            $cat->add(array("id"=>-1,"pid"=>0,"name"=>"无"));
-            $list = $cat->getList("status=1");               //获取分类结构
+            $list = $cat->getList("status=1");
+
+            //生成OPTION列表，增加一个默认的根节点选择
+            $parsestr .= '<option value="0">无</option>';
             foreach ($list as $k => $v) {
                 $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
                 $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>' . $v['fullname'].'</option>';
             }
+
+
         }else if($model === "category"){
+            /**
+             * 商品分类选择列表
+             */
             import("@.ORG.Category");
             $cat = new Category($model, array('id', 'pid', 'name','fullname'));
-//            $cat->add(array("id"=>-1,"pid"=>0,"name"=>"无"));
             $list = $cat->getList("status=1");               //获取分类结构
             foreach ($list as $k => $v) {
                 $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
                 $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>'. $v['id']  .$v['fullname']. '</option>';
             }
+
         }else if($model === 'supplier'){
+            /**
+             * 选择供货商
+             */
             $list = M($model)->where("status=1")->select();
             foreach ($list as $k => $v) {
                 $dis = $v['id'] == $disabled ? ' disabled="disabled"' : "";
                 $sel = $v['id'] == $selected ? ' selected="selected"' : "";
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>' . $v['real_name'].'</option>';
+            }
+
+        }elseif($model === 'branch'){
+            /**
+             * 选择分店
+             */
+            $parsestr .= '<option value="0">无</option>';
+            $list = M($model)->select();
+            foreach ($list as $k => $v) {
+                $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
+                $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
+                $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>' . $v['name'].'</option>';
             }
         }else{
             $list = M($model)->select();
@@ -166,7 +200,6 @@ class TagLibFront extends TagLib {
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>' . $v['name'].'</option>';
             }
         }
-
 
 
         $parsestr .= '</select>';

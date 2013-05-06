@@ -126,7 +126,9 @@ INSERT INTO `node` (`name`, `title`, `status`, `remark`, `sort`, `pid`, `level`)
 ******************************************/
 INSERT INTO `node` (`name`, `title`, `status`, `remark`, `sort`, `pid`, `level`) VALUES
 ('index', '销售记录列表', 1, '', 0, 10, 3),
-('showchart', '图表统计显示销售记录', 1, '', 0, 10, 3);
+('search', '搜索销售记录列表', 1, '', 0, 10, 3),
+('showchart', '图表统计显示销售记录', 1, '', 0, 10, 3),
+('showDetail', '销售记录详细', 1, '', 0, 10, 3);
 
 
  /*******************************************

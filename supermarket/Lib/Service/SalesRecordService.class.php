@@ -114,14 +114,13 @@ class SalesRecordService {
      */
     public function getList($map = array(),$branchId=0,$staffId=0){
         $model = M("SalesRecord");
-
+        trace($branchId);
         if(!empty($branchId)){
             $map["sales_record.branch_id"] = $branchId;
         }
         if(!empty($staffId)){
             $map["sales_record.staff_id"] = $staffId;
         }
-
         $fields = "sales_record.*,branch.name as branch_name,staff.name as staff_name";
         $join = array("branch ON branch.id = branch_id","staff ON staff.id = staff_id");
         $count = $model->where($map)->count('id');
@@ -221,10 +220,11 @@ class SalesRecordService {
         if(!empty($staffId)){
             $map["sales_record.staff_id"] = $staffId;
         }
-
+        $field = "sales_record.*,staff.name as staff_name,branch.name as branch_name";
+        $join = array("staff ON staff.id = sales_record.staff_id","branch ON branch.id = sales_record.branch_id");
         //获取销售记录
-        $salesRecord = M("SalesRecord")->field("sales_record.*,staff.name as staff_name")->join("staff ON staff.id = sales_record.staff_id")->where($map)->find();
-        //如果没有或者查找失败
+        $salesRecord = M("SalesRecord")->field($field)->join($join)->where($map)->find();
+        //如果没有或者查找失败，说明没有权限
         if(empty($salesRecord) || false === $salesRecord){
             throw new ThinkException("找不到指定的销售记录！");
         }
