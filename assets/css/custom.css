@@ -45,6 +45,14 @@ h1,h2,h3,h4,h5,h6{
     padding-bottom:5px;*/
 }
 
+.navbar-avatar{
+    width:35px;
+    height:35px;
+    margin-right:10px;
+    padding:0;
+    border: 0px;
+}
+
 ul.ajax-loaders li{
     display:inline-block;
     list-style:none;
