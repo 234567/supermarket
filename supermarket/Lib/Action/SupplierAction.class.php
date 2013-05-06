@@ -43,7 +43,38 @@ class SupplierAction extends  BaseAction{
         $this->display();
     }
 
-  /*  public function checkname(){
+ //检查供货商名称是否重复
+  public function checkName(){
+      $service = D("Supplier","Service");
+      $name = $this->_param("value");
+      $id = $this->_param("id");
+      $service->checkName($name,$id);
+  }
+    //查询出status为0（不可用），-1（已删除）的供货商
+    public function trash(){
+        $service = D("Supplier","Service");
+        $map = array("status"=>array("neq",1));
+        try{
+            $result = $service->trash($map);
+        }catch (Exception $e){
+            $this->error($e->getMessage());
+        }
+        $this->list = $result["list"];
+        $this->page = $result["page"];
+        $this->display();
+    }
 
-    }*/
+    //根据不用操作，对status状态进行操作
+    public function operate(){
+        $service = D("Supplier","Service");
+        $id = $this->_param("id");
+        $op = $this->_param("op");
+        try{
+            $result = $service->operate($id,$op);
+        }catch (Exception $e){
+            $this->error($e->getMessage());
+        }
+        $this->success("操作成功");
+    }
+
 }

@@ -10,6 +10,7 @@
         </div>
         <div class="box-content">
             <a href="{:U('supplier/add')}"  class="btn btn-info">新增供货商信息</a>
+            <a href="{:U('supplier/trash')}"  class="btn btn-success pull-right">回收站</a>
             <hr />
             <table class="table table-striped table-bordered table-hover table-condensed">
                 <thead>
@@ -37,13 +38,13 @@
                         <td class="center">{$vo.address|default="暂无联系地址？"}</td>
                         <td class="center">
                             <a class="btn btn-success btn-mini btn-add" href="{:U('supplier/searchGoods?id='.$vo['id'])}">
-                                <i class="icon-zoom-in icon-white"></i>
+                                商品
                             </a>
-                            <!-- <a class="btn btn-info btn-mini btn-edit" href="{:U('supplier/edit?id='.$vo['id'])}">
-                                 <i class="icon-edit icon-white"></i>
-                             </a>-->
-                            <a class="btn btn-danger btn-mini btn-delete" href="{:U('supplier/del?id='.$vo['id'])}">
-                                <i class="icon-trash icon-white"></i>
+                            <a class="btn btn-danger btn-mini " href="{:U('supplier/operate?op=del&id='.$vo['id'])}">
+                                隐藏
+                            </a>
+                            <a class="btn btn-warning btn-mini btn-delete" href="{:U('supplier/operate?op=disable&id='.$vo['id'])}">
+                                禁用
                             </a>
                         </td>
                     </tr>

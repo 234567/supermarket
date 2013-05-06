@@ -26,8 +26,6 @@ class SupplierModel extends  RelationModel{
         array("phone_number","require","电话号码必须!"),
         array("mobile","require","手机号码必须!"),
         array("address","require","地址必须!"),
-      /*  array("real_name","","供货商名称唯一!",Model::VALUE_VALIDATE,"unique",Model::MODEL_BOTH)*/
-
     );
 /*
     //关联模型

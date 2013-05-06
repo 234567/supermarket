@@ -20,6 +20,7 @@
                                    data-validation-minlength-message="分店名至少有两个字！"
                                    data-validation-chinese-regex="[\\u4e00-\\u9fa5a-zA-Z][\\u4e00-\\u9fa5a-zA-Z\\d]+"
                                    data-validation-chinese-message="供货商只能是以汉字或者英文开头！"
+                                   data-validation-ajax-ajax="{:U('Supplier/checkName?id='.$vo['id'])}"
                                     >
                             <span class="help-inline">请输入正确的供货商！</span>
                         </div>

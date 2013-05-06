@@ -1,0 +1,78 @@
+<extend name="Common:base" />
+
+
+<block name="page_title">供货商管理</block>
+<block name="main">
+
+    <div class="box">
+        <div class="box-header well-small">
+            <h4>供货商-回收站列表</h4>
+        </div>
+        <div class="box-content">
+            <a href="{:U('supplier/index')}"  class="btn btn-info">返回供货商列表</a>
+            <hr />
+            <empty name="list">
+                <div class="alert alert-error">回收站为空，无不可用或删除的供货商</div>
+                <else/>
+
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>姓名</th>
+                        <th>电话号码</th>
+                        <th>手机</th>
+                        <th>联系地址</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <volist name="list" id="vo">
+                        <tr id="row{$vo.id}">
+                            <td>{$vo.id}</td>
+                            <td class="center">
+                                <a class="" href="{:U('supplier/edit?id='.$vo['id'])}">
+                                    {$vo.real_name|default="这个不留名？"}
+                                </a>
+                            </td>
+                            <td class="center">{$vo.phone_number|default="暂无电话"}</td>
+                            <td class="center">{$vo.mobile|default="暂无手机号"}</td>
+                            <td class="center">{$vo.address|default="暂无联系地址？"}</td>
+                            <td class="center">
+                                <if condition="($vo.status eq 0)"> 不可用
+                                    <elseif condition="$vo.status eq -1"/>已删除
+                                    <else /> 正常
+                                </if>
+
+                            </td>
+                            <td class="center">
+                                <a class="btn btn-success btn-mini btn-add" href="{:U('supplier/operate?op=recover&id='.$vo['id'])}">
+                                    启动
+                                </a>
+                                <eq name="vo.status" value="0"><a class="btn btn-warning btn-mini" href="{:U('supplier/operate?op=del&id='.$vo['id'])}">删除</a></eq>
+                                <eq name="vo.status" value="-1"><a class="btn btn-warning btn-mini" href="{:U('supplier/operate?op=disable&id='.$vo['id'])}">禁用</a></eq>
+                                <a class="btn btn-danger btn-mini btn-delete" href="{:U('supplier/operate?op=foreverde&id='.$vo['id'])}">
+                                   清除
+                                </a>
+
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <div id="page" class="pagination">{$page}</div>
+            </empty>
+        </div>
+    </div>
+</block>
+
+
+ <block name="other">
+     <script type="text/javascript">
+         $(function(){
+
+         });
+     </script>
+ </block>
