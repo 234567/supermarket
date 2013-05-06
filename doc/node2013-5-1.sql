@@ -36,7 +36,8 @@ INSERT INTO `node` (`name`, `title`, `status`, `remark`, `sort`, `pid`, `level`)
 ('update', '更新分店', 1, '', 0, 3, 3),
 ('del', '删除分店', 1, '', 0, 3, 3),
 ('recycle', '还原分店', 1, '', 0, 3, 3),
-('goodsstock', '商品库存情况', 1, '', 0, 3, 3);
+('goodsstock', '商品库存情况', 1, '', 0, 3, 3),
+('stafflist', '分店的员工列表', 1, '', 0, 3, 3);
 
 
 

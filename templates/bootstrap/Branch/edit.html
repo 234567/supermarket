@@ -53,8 +53,10 @@
                             <span class="help-inline">电话/手机号码格式：11位手机号码，3-4位区号、7-8位直播号码、1-4位分机号</span>
                         </div>
                     </div>
-
-
+                    {/*
+                    只有管理员才能指定负责人
+                    */}
+                    <eq name="Think.session.administrator" value="true">
                     <div class="control-group">
                         <label class="control-label">负责人：</label>
                         <div class="controls">
@@ -62,6 +64,7 @@
                             <span class="help-inline">请指定一个员工为负责人</span>
                         </div>
                     </div>
+                    </eq>
                     <div class="control-group">
                         <label class="control-label">图片：</label>
                         <div class="controls">

@@ -17,8 +17,11 @@ class StaffService{
     public function getList($branchId=0,$map=array()){
         //主键ID大于1,因为ID为1的是超级管理员
         $map['id'] = array('gt',1);
-        $model = M("Staff");
+        if(!empty($branchId)){
+            $map["branch_id"] = $branchId;
+        }
 
+        $model = M("Staff");
         $count = $model->where($map)->count('id');
         $result = array();
         if($count > 0){
