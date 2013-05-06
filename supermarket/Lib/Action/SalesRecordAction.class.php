@@ -8,7 +8,7 @@
  * 查看超市所有员工的销售记录、
  * 查看特定员工的销售记录
  * 查看指定分店的销售记录
- * 图表显示以上销售记录
+ * 图表显示销售统计信息
  */
 class SalesRecordAction extends BaseAction{
 
@@ -43,6 +43,9 @@ class SalesRecordAction extends BaseAction{
         $this->display();
     }
 
+    /**
+     * 多条件搜索销售记录（区分管理员与负责人）
+     */
     public function search(){
         //获取过滤参数
         $branchId = $this->_param("branchId","intval",0);

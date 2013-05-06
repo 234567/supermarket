@@ -62,7 +62,6 @@
                 var idx = item.dataIndex;
                 if (previousPoint != idx) {
                     previousPoint = idx;
-                    console.log(item);
                     var price = item.datapoint[1];
                     $("#tooltip").remove();
                     showTooltip(item.pageX, item.pageY,

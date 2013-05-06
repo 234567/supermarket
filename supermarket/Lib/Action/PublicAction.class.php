@@ -24,7 +24,7 @@ class PublicAction extends Action{
 
     public function index() {
         //如果通过认证跳转到首页
-        redirect(__APP__);
+        $this->redirect(__APP__);
     }
 
     /**
@@ -37,7 +37,10 @@ class PublicAction extends Action{
             session_destroy();
             $this->success("成功退出系统！",U("public/login"));
         }else {
-            $this->error("请勿重复退出！");
+            //如果直接ERROR，可能导致无限退出
+            //$this->error("请勿重复退出！");
+            //直接跳转
+            $this->redirect("public/login");
         }
     }
 

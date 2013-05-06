@@ -9,6 +9,14 @@
             <h4><i class="icon-edit"></i>上传头像</h4>
         </div>
         <div class="box-content">
+
+            <div id="preview-pane" class="hide pull-right">
+                <div class="preview-container">
+                    <img src="demo_files/sago.jpg" class="jcrop-preview" alt="Preview" />
+                </div>
+            </div>
+            <!--<img id="previewimg" src="demo_files/sago.jpg" alt="Preview" class="hide pull-right" style="width: 150px;height:150px;overflow: hidden;"/>-->
+
             <div class="alert alert-info hide tips"></div>
             <empty name="Think.session.staff_info.photo">
                 <img id="preview" src="__ASSETS__/images/noimages.png"/>
@@ -31,7 +39,7 @@
             </form>
 
             <!-- This is the form that our event handler fills -->
-            <form id="crop" class="hide" action="{:U('public/crop')}" method="post" onsubmit="return checkCoords();">
+            <form id="crop" class="hide" action="{:U('public/crop')}" method="post">
                 <input type="hidden" name="src" value=""/>
                 <input type="hidden" id="x" name="x" />
                 <input type="hidden" id="y" name="y" />
@@ -46,22 +54,54 @@
 </block>
 <block name="other">
     <link rel="stylesheet" type="text/css" href="__ASSETS__/plugins/jcrop/jquery.Jcrop.css" />
+    <style type="text/css">
+
+            /* Apply these styles only when #preview-pane has
+               been placed within the Jcrop widget */
+        .jcrop-holder #preview-pane {
+            display: block;
+            position: absolute;
+            z-index: 2000;
+            top: 10px;
+            right: -280px;
+            padding: 6px;
+            border: 1px rgba(0,0,0,.4) solid;
+            background-color: white;
+
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            border-radius: 6px;
+            -webkit-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+            -moz-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+            box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+        }
+        #preview-pane .preview-container {
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+        }
+
+    </style>
     <js href="__ASSETS__/plugins/jcrop/jquery.Jcrop.js"/>
     <script type="text/javascript">
         $(function(){
-            function updateCoords(c)
-            {
-                $('#x').val(c.x);
-                $('#y').val(c.y);
-                $('#w').val(c.w);
-                $('#h').val(c.h);
-            };
+            var $previewPane = $('#preview-pane'),
+                    $pimg = $('#preview-pane .preview-container img'),
+                    jcrop_api,boundx,boundy;
 
-            function checkCoords()
+            function updatePreview(c)
             {
-                if (parseInt($('#w').val())) return true;
-                alert('Please select a crop region then press submit.');
-                return false;
+                if (parseInt(c.w) > 0)
+                {
+                    var rx = 150 / c.w;
+                    var ry = 150 / c.h;
+                    $pimg.css({
+                        width: Math.round(rx * boundx) + 'px',
+                        height: Math.round(ry * boundy) + 'px',
+                        marginLeft: '-' + Math.round(rx * c.x) + 'px',
+                        marginTop: '-' + Math.round(ry * c.y) + 'px'
+                    });
+                }
             };
 
 
@@ -69,21 +109,43 @@
                 e.preventDefault();
                 $(this).ajaxSubmit({
                     success:function(json){
-                        console.log(json);
                         if(json.status === 0){
                             $("div.tips").html(json.info);
                         }else{
                             $("#preview").attr("src","__ROOT__/"+json.data);
+                            $pimg.attr("src","__ROOT__/"+json.data);
                             $("input[name=src]").val(json.data);
                             $("#uploadform").fadeOut().remove();
                             $('#preview').Jcrop({
                                 aspectRatio: 1,
-                                onSelect: updateCoords
+                                onChange: updatePreview,
+                                onSelect: function(c){
+                                    $('#x').val(c.x);
+                                    $('#y').val(c.y);
+                                    $('#w').val(c.w);
+                                    $('#h').val(c.h);
+                                }
+                            },function(){
+                                var bounds = this.getBounds();
+                                boundx = bounds[0];
+                                boundy = bounds[1];
+                                // Store the API in the jcrop_api variable
+                                jcrop_api = this;
+                                $previewPane.appendTo(jcrop_api.ui.holder).fadeIn();
+
+                                // Move the preview into the jcrop container for css positioning
+//                                $previewImg.fadeIn();
                             });
                             $("#crop").fadeIn();
                         }
                     }
                 });
+            });
+
+            $("#crop").on("submit",function(){
+                if (parseInt($('#w').val())) return true;
+                    alert('请先进行图片的裁剪');
+                return false;
             });
 
         });

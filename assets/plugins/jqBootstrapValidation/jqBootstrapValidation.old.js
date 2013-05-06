@@ -43,7 +43,6 @@
                     $inputs.each(function (i, el) {
                         var $this = $(el),
                             $controlGroup = $this.parents(".control-group").first();
-                        console.log($this);
                         if (
                             $controlGroup.hasClass("warning")
                             ) {
