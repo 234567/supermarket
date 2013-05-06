@@ -346,3 +346,48 @@ th.headerSortDown {
     background: url(../images/desc.gif)  no-repeat center right;
     background-color: #3399FF;
 }
+
+
+
+
+
+
+
+
+
+ul.staff-list{
+    margin:0;
+}
+
+ul.staff-list li{
+    padding: 7px 0;
+    list-style:none;
+    min-width: 320px;
+    margin-left:10px !important;
+    margin-top:12px;
+    border: 1px solid rgba(3, 90, 212, 0.30);
+}
+
+ul.staff-list a:hover{
+    text-decoration:none;
+}
+
+
+
+ul.staff-list li a span {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+    text-align: right;
+    width: 70px;
+    zoom: 1;
+}
+ul.staff-list .staff-avatar{
+    height: 130px;
+    width: 130px;
+    padding: 1px;
+    float: left;
+    margin: 10px 15px;
+    border: 1px solid #EBEBEB;
+}

@@ -1,18 +1,19 @@
 <extend name="Common:base" />
 
 
-<block name="page_title">录入新分店</block>
+<block name="page_title">录入新分店信息</block>
 <block name="main">
 
     <div class="box">
-        <div class="box-header well-small">
-            <h4><i class="icon-edit"></i>录入新分店</h4>
+        <div class="box-header well">
+            <h4><i class="icon-edit"></i>录入新分店信息</h4>
         </div>
         <div class="box-content">
 
             <form class="form-horizontal" method="post" action="{:U('branch/insert')}">
                 <fieldset>
-                    <legend>连锁分店信息 <a href="{:U('/branch')}" class="btn btn-info pull-right">返回分店列表</a></legend>
+                    <legend>分店信息 <a href="{:U('branch/index')}" class="btn btn-info pull-right">返回分店列表</a></legend>
+
                     <div class="control-group">
                         <label class="control-label">分店名称：</label>
                         <div class="controls">
@@ -20,15 +21,15 @@
                                    required minlength="1"
                                    data-validation-required-message="分店名称必填！"
                                    data-validation-minlength-message="一个字都不输入没有意义"
-                                   data-validation-chinese-regex="[\\u4e00-\\u9fa5]|[a-zA-Z]+"
-                                   data-validation-chinese-message="只能输入汉字或者英文"
+                                   data-validation-chiese-regex="[\\u4e00-\\u9fa5]|[a-zA-Z]+"
+                                   data-validation-chiese-message="只能输入汉字或者英文"
                                     />
                             <span class="help-inline">可以取名形如地名+店名，例如贵大分店、步行街分店。</span>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label">详细地址：</label>
+                        <label class="control-label">地址：</label>
                         <div class="controls">
                             <input type="text" name="address"
                                    required minlength="6"
@@ -45,10 +46,10 @@
                             <input type="text" name="phone"
                                    required
                                    data-validation-required-message="联系电话必填！"
-                                   data-validation-phone-regex="\\d{3}-\\d{8}|\\d{4}-\\d{7}"
+                                   data-validation-phone-regex="((\\d{11})|^((\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d{1})|(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d{1}))$)"
                                    data-validation-phone-message="电话号码格式不对～"
                                     />
-                            <span class="help-inline">电话号码格式：0851-1234567或者021-12345678</span>
+                            <span class="help-inline">电话/手机号码格式：11位手机号码，3-4位区号、7-8位直播号码、1-4位分机号</span>
                         </div>
                     </div>
 
@@ -56,28 +57,76 @@
                     <div class="control-group">
                         <label class="control-label">负责人：</label>
                         <div class="controls">
-                            <front:select name="director_staff_id" data-rel="chosen" model="staff" disabled="1" />
+                            <front:select name="director_staff_id" model="staff"/>
                             <span class="help-inline">请指定一个员工为负责人</span>
                         </div>
                     </div>
-
-
                     <div class="control-group">
                         <label class="control-label">图片：</label>
                         <div class="controls">
-                            <input type="text" name="photo" />
-                            <span class="help-inline">上传一张分店的店铺照片～</span>
+                            <input type="hidden" name="photo"/>
+                                <img class="branchphoto" src="__ASSETS__/images/noimages.png" alt="暂无图片"/>
+                                <a class="btn btn-small" href="#uploadDlg" data-toggle="modal">上传</a>
+                                <span class="help-inline">分店的店铺照片～</span>
                         </div>
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">确定</button>
+                        <button type="submit" class="btn btn-primary">修改</button>
                         <button type="reset" class="btn">重置</button>
                     </div>
                 </fieldset>
             </form>
 
+
+
+            <div id="uploadDlg" class="modal hide fade">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3>上传分店照片</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info tips hide"></div>
+                    <img class="branchphoto" src="__ASSETS__/images/noimages.png" alt="暂无图片"/>
+                    <form id="uploadform" method="post" action="{:U('public/upload')}" enctype="multipart/form-data">
+                        <fieldset>
+                            <div class="control-group">
+                                <label class="control-label">照片：</label>
+                                <div class="controls">
+                                    <div class="input-append">
+                                        <input class="input-file uniform_on" name="photo" type="file">
+                                        <button type="submit" class="btn btn-small">上传</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
+</block>
+<block name="other">
+    <script type="text/javascript">
+        $(function(){
+            var newPhoto = '';
+            $("#uploadform").on("submit",function(e){
+                e.preventDefault();
+                $(this).ajaxSubmit({
+                    success:function(json){
+                        if(json.status === 0){
+                            $("div.tips").html(json.info).fadeIn().fadeOut(3000);
+                        }else{
+                            $("div.tips").html(json.info).fadeIn().fadeOut(3000);;
+                            //保存新图片地址
+                            newPhoto = json.data;
+                            $(".branchphoto").attr("src","__ROOT__/"+json.data);
+                            $("input[name=photo]").val(json.data);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </block>

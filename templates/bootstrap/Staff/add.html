@@ -16,21 +16,21 @@
                     <div class="control-group">
                         <label class="control-label">所属分店：</label>
                         <div class="controls">
-                            <front:select name="branch_id" model="branch" />
+                            <front:select name="branch_id" model="branch" appendoption="false"/>
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">用户组：</label>
                         <div class="controls">
-                            <front:select name="role_id" model="role" disabled="1" selected="3"/>
+                            <front:select name="role_id" model="role" disabled="1" appendoption="false"/>
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">员工姓名：</label>
                         <div class="controls">
-                            <input type="text" name="name" value="销售人员xx"/>
+                            <input type="text" name="name"/>
                         </div>
                     </div>
 
@@ -45,28 +45,28 @@
                     <div class="control-group">
                         <label class="control-label">出生日期：</label>
                         <div class="controls">
-                            <input type="text" name="birthday" class="datepicker" value="08/10/1990"/>
+                            <input type="text" name="birthday" class="datepicker"/>
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">身份证号：</label>
                         <div class="controls">
-                            <input type="text" name="identify_num" value="522123123123123123123" />
+                            <input type="text" name="identify_num"/>
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">手机号码：</label>
                         <div class="controls">
-                            <input type="text" name="mobile" value="13588888888"/>
+                            <input type="text" name="mobile"/>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label">员工照片：</label>
+                        <label class="control-label">备  注：</label>
                         <div class="controls">
-                            <input class="input-file uniform_on" type="text" name="photo" value="">
+                            <textarea  name="remark" class="autogrow" ></textarea>
                         </div>
                     </div>
                 </fieldset>
@@ -86,7 +86,7 @@
                     <div class="control-group">
                         <label class="control-label">密码：</label>
                         <div class="controls">
-                            <input type="password" name="password" value="123456"/>
+                            <input type="password" name="password"/>
                         </div>
                     </div>
 
@@ -97,16 +97,6 @@
                                 <option value="1" selected="selected">启用</option>
                                 <option value="0">禁用</option>
                             </select>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <fieldset>
-                    <legend>其他信息</legend>
-                    <div class="control-group">
-                        <label class="control-label">备  注：</label>
-                        <div class="controls">
-                            <textarea  name="remark" class="autogrow" ></textarea>
                         </div>
                     </div>
                 </fieldset>

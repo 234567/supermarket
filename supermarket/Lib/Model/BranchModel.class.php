@@ -26,7 +26,7 @@ class BranchModel extends RelationModel{
         array('name','require','分店名必须！',Model::EXISTS_VALIDATE,'',Model:: MODEL_BOTH ),//
         array('address','require','分店地址必须！',Model::EXISTS_VALIDATE,'',Model:: MODEL_BOTH ),//
         array('name','','分店名唯一！',Model::VALUE_VALIDATE,'unique',Model::MODEL_BOTH),
-        array('director_staff_id','','分店负责人不能重复！',Model::VALUE_VALIDATE,'unique',Model::MODEL_BOTH),
+//        array('director_staff_id','','分店负责人不能重复！',Model::VALUE_VALIDATE,'unique',Model::MODEL_BOTH),
     );
 
     //关联模型

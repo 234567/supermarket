@@ -65,6 +65,23 @@ class BranchService {
             $model->rollback();
             throw new ThinkException($model->getError());
         }
+
+        /**
+         * 如果指定了分店负责人
+         */
+        if($vo["director_staff_id"] !=0){
+            //指定选择的员工为负责人
+            $role = M("RoleUser");
+            //先删除旧的角色
+            $role->where(array("user_id"=>$vo["director_staff_id"]))->delete();
+            //升职为店长～
+            $result = $role->data(array("role_id"=>C('ROLE_TYPE_DIRECTOR'),"user_id"=>$vo["director_staff_id"]))->add();
+            if(false === $result){
+                $model->rollback();
+                throw new ThinkException("更改负责人出错！".$model->getError());
+            }
+        }
+
         //提交事务
         $model->commit();
     }
@@ -87,15 +104,20 @@ class BranchService {
             throw new ThinkException($model->getError());
         }
 
-        //指定选择的员工为负责人
-        $role = M("RoleUser");
-        //先删除旧的角色
-        $role->where(array("user_id"=>$vo["director_staff_id"]))->delete();
-        //升职为店长～
-        $result = $role->data(array("role_id"=>2,"user_id"=>$vo["director_staff_id"]))->add();
-        if(false === $result){
-            $model->rollback();
-            throw new ThinkException("指定负责人出错！".$model->getError());
+        /**
+         * 如果指定了分店负责人
+         */
+        if($vo["director_staff_id"] !=0){
+            //指定选择的员工为负责人
+            $role = M("RoleUser");
+            //先删除旧的角色
+            $role->where(array("user_id"=>$vo["director_staff_id"]))->delete();
+            //升职为店长～
+            $result = $role->data(array("role_id"=>C('ROLE_TYPE_DIRECTOR'),"user_id"=>$vo["director_staff_id"]))->add();
+            if(false === $result){
+                $model->rollback();
+                throw new ThinkException("指定负责人出错！".$model->getError());
+            }
         }
 
         $model->commit();

@@ -126,9 +126,9 @@ class PublicAction extends Action{
         // 缓存访问权限
         RBAC::saveAccessList();
         $url = U("index/index");
-        if($roleType ===3){
+        if($roleType === C('ROLE_TYPE_SALESMAN')){
             $url = U("SaleGoods/index");
-        }else if($roleType ===4){
+        }else if($roleType ===C('ROLE_TYPE_STOCKMAN')){
             $url = U("StockGoods/index");
         }
         $this->success("登录成功！",$url);
@@ -201,9 +201,10 @@ class PublicAction extends Action{
     public function changepw(){
         $this->checkUser();
         $roleType = session("role_type");
-        if($roleType ===3){
+
+        if($roleType ===C('ROLE_TYPE_SALESMAN')){
             $this->display("SaleGoods:changepw");
-        }else if($roleType ===4){
+        }else if($roleType ===C('ROLE_TYPE_STOCKMAN')){
             $this->display("StockGoods:changepw");
         }else{
             $this->display();
@@ -240,10 +241,11 @@ class PublicAction extends Action{
 
     public function avatar(){
         $this->checkUser();
+
         $roleType = session("role_type");
-        if($roleType ===3){
+        if($roleType ===C('ROLE_TYPE_SALESMAN')){
             $this->display("SaleGoods:avatar");
-        }else if($roleType ===4){
+        }else if($roleType ===C('ROLE_TYPE_STOCKMAN')){
             $this->display("StockGoods:avatar");
         }else{
             $this->display();

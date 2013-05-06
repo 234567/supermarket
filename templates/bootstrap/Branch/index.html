@@ -23,25 +23,23 @@
                         </div>
 
                         <div class="box-content">
-                            <img src="__ASSETS__/images/noimages.png" alt="" style="width: 260px; height: 120px;max-height: 160px;min-height:160px;">
+                            <empty name="vo.photo">
+                                <img src="__ASSETS__/images/noimages.png" alt="" style="width: 260px; height: 120px;max-height: 160px;min-height:160px;">
+                                <else/>
+                                <img src="__ROOT__/{$vo.photo}" alt="" style="width: 260px; height: 120px;max-height: 160px;min-height:160px;">
+                            </empty>
                             <p></p>
                             <p>地址：{$vo.address}</p>
-
                             <p>电话：{$vo.phone}</p>
-
                             <p>负责人姓名：{$vo.director_name}</p>
-
                             <p>负责人手机：{$vo.director_mobile}</p>
-
                             <p>
                                 <a href="{:U('branch/goodsstock?branchId='.$vo['id'])}" class="btn btn-mini">查看商品库存</a>
                                 <a href="{:U('branch/edit?id='.$vo['id'])}" class="btn btn-info btn-mini">修改</a>
                                 <eq name="vo.id" value="1">
                                     <else/>
                                     <a href="{:U('branch/del?id='.$vo['id'])}" class="btn btn-info btn-mini">删除</a>
-
                                 </eq>
-
                             </p>
                         </div>
                     </div>

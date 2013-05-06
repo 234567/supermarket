@@ -10,7 +10,7 @@ class TagLibFront extends TagLib {
     protected $tags = array(
         'list' => array('attr' => 'table,where,order,limit,relation,field,result,page,purl,purlvars', 'close' => 1),
         'category_select'    =>  array('attr'=>'id,name,selected','close'=>0),
-        'select' => array("attr"=>"id,name,model,selected,disabled,style","close"=>0),
+        'select' => array("attr"=>"id,name,model,selected,disabled,style,other,appendoption","close"=>0),
     );
     //获取列表数据 可关联(字段过滤无效) 可分页
     public function _list($attr, $content) {
@@ -108,6 +108,7 @@ class TagLibFront extends TagLib {
         $disabled = isset($tag['disabled']) ? $tag['disabled'] : 0;
         $style= isset($tag['style']) ? $tag['style'] : "";
         $other= isset($tag['other']) ? $tag['other'] : "";
+        $appendoption= isset($tag['appendoption']) && $tag['appendoption'] ==='false' ? false : true;
         $parsestr = '<select id="'.$id.'"  name="'.$name.'" class="'.$style.'" data-rel="chosen" '.$other.'> ';
 
         /**
@@ -149,7 +150,9 @@ class TagLibFront extends TagLib {
             $list = $cat->getList("status=1");
 
             //生成OPTION列表，增加一个默认的根节点选择
-            $parsestr .= '<option value="0">无</option>';
+            if($appendoption){
+                $parsestr .= '<option value="0">无</option>';
+            }
             foreach ($list as $k => $v) {
                 $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
                 $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
@@ -185,8 +188,24 @@ class TagLibFront extends TagLib {
             /**
              * 选择分店
              */
-            $parsestr .= '<option value="0">无</option>';
+            if($appendoption){
+                $parsestr .= '<option value="0">无</option>';
+            }
             $list = M($model)->select();
+            foreach ($list as $k => $v) {
+                $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
+                $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
+                $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>' . $v['name'].'</option>';
+            }
+        }elseif($model ==='staff'){
+            /**
+             * 选择员工
+             */
+            if($appendoption){
+                $parsestr .= '<option value="0">暂无</option>';
+            }
+
+            $list = M($model)->where(array("id"=>array("gt",1)))->select();
             foreach ($list as $k => $v) {
                 $dis = '<?php if( '.$v['id'].' == '.$disabled.'){ echo "disabled=\"disabled\"";} ?>';
                 $sel = '<?php if( '.$v['id'].' == '.$selected.'){ echo "selected=\"selected\"";} ?>';
@@ -200,7 +219,6 @@ class TagLibFront extends TagLib {
                 $parsestr .= '<option value="' . $v['id'] . '"' . $sel . $dis . '>' . $v['name'].'</option>';
             }
         }
-
 
         $parsestr .= '</select>';
         return $parsestr;

@@ -77,5 +77,10 @@ return array(
 
     //压缩HTML输出
     'MIN'=>true,
+
+    'ROLE_TYPE_ADMIN' => 1,
+    'ROLE_TYPE_DIRECTOR' => 2,
+    'ROLE_TYPE_SALESMAN' => 3,
+    'ROLE_TYPE_STOCKMAN' => 4,
 );
 ?>
