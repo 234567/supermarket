@@ -27,13 +27,53 @@ class PromotionsService{
         }
         $model = D("Promotions");
         $count = $model->where($map)->count("id");
-        $table = "promotions as p,goods as g,branch as b";
         $result = array();
-        $fields = "p.*,g.name as goods_name,g.sales_price,b.name as branch_name";
+        $fields = "promotions.*,goods.barcode,goods.name as goods_name,goods.sales_price,branch.name as branch_name";
+        $now = time();
+        $map["time_start"] = array("elt",$now);
+        $map["time_end"] = array("egt",$now);
         if($count > 0 ){
             import("@.ORG.Util.Page");
             $page = new Page($count,5);
-            $result["list"] = $model->table($table)->field($fields)->where("p.goods_id=g.id and p.branch_id=b.id")->order("p.time_end desc")->limit($page->firstRow.','.$page->listRows)->select();
+            $result["list"] = $model->join(array("goods on promotions.goods_id=goods.id","branch on promotions.branch_id=branch.id"))->
+               field($fields)->where($map)->order("promotions.time_end desc")->limit($page->firstRow.','.$page->listRows)->select();
+            $result["page"] = $page->show();
+        }
+        return $result;
+    }
+
+    /**
+     * 获取历史促销列表
+     * @param $map
+     * @return array
+     */
+    public function history($map){
+        /*
+         * 1：超级管理员：可以查看所有分店的历史促销信息
+         * 2：分店负责人：只可以查看本分店的历史促销信息，即在查询时带入分店id进行查询
+         */
+        //取出员工所属的分店信息
+        $branchInfo = session("branch_info");
+        //是分店负责人，带上分店ID查询
+        $map["branch.id"] = $branchInfo["id"];
+        //如果是管理员，可惜查询所有促销信息
+        if( session( C("ADMIN_AUTH_KEY") ) == true ){
+            //如果是管理员
+            unset($map["branch.id"]);
+        }
+        $model = D("Promotions");
+        $now = time();
+        $map["time_start"] = array("egt",$now);
+        $map["time_end"] = array("elt",$now);
+        $map['_logic'] = 'OR';
+        $count = $model->where($map)->count("id");
+        $result = array();
+        $fields = "promotions.*,goods.barcode,goods.name as goods_name,goods.sales_price,branch.name as branch_name";
+        if($count > 0 ){
+            import("@.ORG.Util.Page");
+            $page = new Page($count,5);
+            $result["list"] = $model->join(array("goods on promotions.goods_id=goods.id","branch on promotions.branch_id=branch.id"))->
+                field($fields)->where($map)->order("promotions.time_end desc")->limit($page->firstRow.','.$page->listRows)->select();
             $result["page"] = $page->show();
         }
         return $result;
@@ -75,6 +115,7 @@ class PromotionsService{
         return $result;
     }
 
+
     /**
      * 插入促销信息
      * @throws ThinkException
@@ -91,12 +132,11 @@ class PromotionsService{
         if( false === $id ){
             //事务回滚
             $model->rollback();
-            throw new ThinkException("添加商品信息出错！".$model->getError());
+            throw new ThinkException("添加促销出错！".$model->getError());
         }
         //提交事务
         $model->commit();
     }
-
     /**
      * 编辑
      *
@@ -164,7 +204,35 @@ class PromotionsService{
         //提交事务
         $model->commit();
     }
-
-
+    /*
+     * 根据条码，判断该商品在现阶段是否存在促销
+     * 1.存在，提示，不允许再次添加促销信息
+     * 2.不存在，提示：可以添加促销信息
+     */
+    public function isPromotions($barcode){
+        //根据条码获取商品信息
+        $goods= D("Goods")->getByBarcode($barcode);
+        if(empty($goods)){
+           throw new ThinkException("找不到条码".$barcode."的商品信息!");
+        }
+        //查询该商品在此期间是否存在折扣，存在则不允许在添加折扣，否则添加
+        $map = array();
+        $now = time();
+        /*
+         * 判断当前时间是否在商品促销期间
+         * 在商品促销时间：提示不能在添加促销信息，
+         * 该商品促销时间已过：可以添加商品促销
+         */
+        $map["goods_id"] = $goods["id"];
+        $map["time_start"][] = array("elt",$now);
+        $map["time_end"][] = array("egt",$now);
+        $promotions = D("Promotions")->where($map)->find();
+        if(!empty($promotions)){
+            throw new ThinkException("该商品在此期间已存在商品促销");
+        }
+        $goods['promotions'] = $promotions;
+        //可以发布促销,则返回商品信息
+        return $goods;
+    }
 
 }

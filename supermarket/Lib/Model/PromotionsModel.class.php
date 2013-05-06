@@ -16,6 +16,19 @@ class PromotionsModel extends CommonModel{
         "time_start",//商品打折开始时间
         "time_end"//商品打折结束时间
     );
+    //新增字段配置
+    protected $insertFields  = array(
+        "branch_id",
+        "goods_id",
+        "discount",
+        "time_start",
+        "time_end"
+    );
+    //修改时字段配置
+    protected $updateFields  = array(
+        "id","discount","time_start","time_end"
+    );
+
     //自动完成
     protected $_auto = array(
         array("time_start","strtotime",Model::MODEL_BOTH,"function"),
@@ -23,8 +36,29 @@ class PromotionsModel extends CommonModel{
     );
     //自动验证
     protected $_validate = array(
+       array("branch_id","require","分店id不能为空!"),
+       array("goods_id","require","商品id不能为空!"),
+       array("discount","require","折扣不能为空!"),
        array("time_start","require","开始时间必须!"),
        array("time_end","require","结束时间必须!"),
-
+       array("goods_id","checkHasPromotion","该商品此期间已经有促销信息了!",Model::MUST_VALIDATE ,'callback',Model:: MODEL_INSERT ),
     );
+
+    /**
+     *
+     */
+    protected function checkHasPromotion(){
+        //获取商品ID
+        $goodsId = $_POST['goods_id'];
+        $map = array();
+        $now = time();
+        $map["goods_id"] = $goodsId;
+        $map["time_start"][] = array("elt",$now);
+        $map["time_end"][] = array("egt",$now);
+        $promotions = M("Promotions")->where($map)->find();
+        if(!empty($promotions)){
+            return false;
+        }
+        return true;
+    }
 }

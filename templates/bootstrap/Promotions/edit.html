@@ -7,51 +7,137 @@
             <h4>修改商品促销</h4>
         </div>
         <div class="box-content">
+
             <form class="form-horizontal" action="{:U('promotions/update')}" method="post">
                 <fieldset>
+
                     <legend>促销信息<a href="{:U('promotions/index')}" class="btn btn-info pull-right">返回促销商品列表</a></legend>
+                    <div id="formtips" class="alert alert-info" style="display: none">
+                        <div id="scanned">
+                            <p></p>
+                        </div>
+                    </div>
                     <input type="hidden" name="id" value="{$promotions.id}"/>
-                    <input type="hidden" name="branch_id" value="{$promotions.branch_id}"/>
-                    <input type="hidden" name="goods_id" value="{$promotions.goods_id}"/>
                     <div class="control-group">
                         <label class="control-label">促销条码</label>
                         <div class="controls">
-                            <input type="text" name="goods_id" value="{$goods.id}"/>
+                            <input type="text" name="barcode" value="{$goods.barcode}" disabled/>
+                            <a id="getGoodsInfo" class="btn">获取商品信息</a>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label">促销条商品</label>
                         <div class="controls">
-                            <input type="text" value="{$goods.name}" />
+                            <p id="goodsInfo" class="hide text-info noinfo"></p>
                         </div>
                     </div>
-
                     <div class="control-group">
                         <label class="control-label">折扣</label>
                         <div class="controls">
-                            <input  type="text" name="discount" value="{$promotions.discount}"/>
-                            <span>折</span>
+                            <input  type="text" name="discount" value="{$promotions.discount}"
+                                    required min="0.01" max="0.99" minlength="3" maxlength="4"
+                                    data-validation-required-message="折扣不能为空！"
+                                    data-validation-min-message="折扣大于0，因为折扣为0，标识免费，没有意义"
+                                    data-validation-max-message="折扣小于1，折扣为1，表示不打折，也没有意义"
+                                    data-validation-minlength-message="最小长度为3"
+                                    data-validation-maxlength-message="最长长度为3"
+                                    />
+                            <span class="help-inline">规则：该项值在0~1之间，其中0.78表示7.8折，保留两位有效数字</span>
                         </div>
                     </div>
 
-                     <div class="control-group">
-                        <label class="control-label">开始时间</label>
+                    <div class="control-group">
+                        <label class="control-label">折扣价</label>
                         <div class="controls">
-                            <input type="text" name="time_start" class="datepicker" value="{$promotions.time_start|toDate='Y-m-d'}"/>
+                            <span id="discountprice" class="alert">￥{$goods["sales_price"]*$promotions["discount"]}</span>
                         </div>
                     </div>
-                     <div class="control-group">
+                    <div class="control-group">
+                        <label class="control-label">开始时间</label>
+                        <div class="controls ">
+                            <div class=" input-append"  id="timestart">
+                                <input data-format="yyyy-MM-dd hh:mm:ss" name="time_start" value="{$promotions.time_start|toDate}"
+                                       required="required" type="text"
+                                       data-validation-required-message="开始时间不能为空！"
+                                        />
+                                <span class="add-on">
+                                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
                         <label class="control-label">结束时间</label>
-                        <div class="controls">
-                            <input type="text" name="time_end" class="datepicker" value="{$promotions.time_end|toDate='Y-m-d'}"/>
+                        <div class="controls ">
+                            <div class=" input-append" id="timeend">
+                                <input data-format="yyyy-MM-dd hh:mm:ss" name="time_end" value="{$promotions.time_end|toDate}"
+                                       required="required" type="text"
+                                       data-validation-required-message="结束时间不能为空！"
+                                        />
+                                <span class="add-on">
+                                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">确定</button>
+                        <button type="submit" class="btn btn-primary">修改</button>
                         <button type="reset" class="btn">重置</button>
                     </div>
                 </fieldset>
             </form>
         </div>
     </div>
+</block>
+<block name="other">
+    <js href="__ASSETS__/plugins/scanner/scanner.js" />
+    <script type="text/javascript">
+        $(function(){
+            var price = 0;
+            //判断条码对应商品，是否符合促销
+            $("#getGoodsInfo").on("click",function(){
+                var code = $("input[name='barcode']").val();
+                $.get('{:U("Goods/getInfo")}',{"barcode":code},function(json){
+                    if(json.status == 0){
+                        $('#goodsInfo').addClass("noinfo").html("");
+                    }else{
+                        /* console(json.data);*/
+                        price = json.data["sales_price"];
+                        var list  = "<strong>商品名称：</strong>"+json.data["name"]+"<br/>"+
+                                "<strong>分类：</strong>"+json.data["category_id"]+"<br/>"+
+                                "<strong>规格：</strong>"+json.data["specifications"]+"<br/>"+
+                                "<strong>单位：</strong>"+json.data["unit"]+"<br/>"+
+                                "<strong>售价：</strong>￥"+json.data["sales_price"]+"<br/>";
+                        $("p#goodsInfo").html(list);
+                        $('#goodsInfo').removeClass("noinfo").addClass("hasinfo").show();
+                        $("input[name='goods_id']").val(json.data["id"]);
+                    }
+                });
+            });
+            $("input[name='discount']").on("blur",function(){
+                var value=(parseFloat($(this).val(),10)*price);
+                var flag = "￥";
+                $("#discountprice").html(flag+value.toFixed(2));
+
+            });
+            //时间控制
+            var startPicker = $("#timestart").datetimepicker({
+                //其实时间不能是当前时间之后的时间
+                startDate:new Date(),
+                language: 'zh-CN'
+            });
+            var endPicker = $("#timeend").datetimepicker({
+                startDate:new Date(),
+                language: 'zh-CN'
+            });
+
+            startPicker.on('changeDate', function(e) {
+                var localDate = e.date;
+                var picker = endPicker.data('datetimepicker');
+                picker.setStartDate(localDate);
+            });
+        });
+
+
+    </script>
+
 </block>

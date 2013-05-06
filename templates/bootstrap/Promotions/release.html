@@ -9,35 +9,65 @@
         <div class="box-content">
             <form class="form-horizontal" action="{:U('promotions/insert')}" method="post">
                 <fieldset>
-                    <legend>促销信息<a href="{:U('promotions/index')}" class="btn btn-info pull-right">返回促销商品列表</a></legend>
+                    <legend>促销信息<a href="{:U('Promotions/index')}" class="">返回</a></legend>
+                    <div id="webcam" style="width:280px;height:210px; margin:0 auto;position:fixed;top:80px;right:0px;"></div>
+                    <div id="formtips" class="alert alert-info">
+                        <strong>温馨提示：</strong>
+                        <div id="scanned">
+                            <p>如果出现无法扫描的商品，可以手动输入商品条形码!</p>
+                        </div>
+                    </div>
                     <input type="hidden" name="branch_id" value="{$branch.id}"/>
                     <input type="hidden" name="goods_id" value="{$goods.id}"/>
                     <div class="control-group">
                         <label class="control-label">促销条码</label>
                         <div class="controls">
-                            <input type="text" name="goods_id" value="{$goods.id}" />
+                            <input type="text" name="barcode" value="{$goods.id}"
+                                   required minlength="13" maxlength="13" pattern="^[0-9]{1,}$"
+                                   data-validation-required-message="商品条形码必须有！"
+                                   data-validation-minlength-message="商品条形码长度应该为13位!"
+                                   data-validation-maxlength-message="商品条形码长度应该为13位!"
+                                   data-validation-pattern-message="条形码只能是纯数字!"
+                                   data-validation-ajax-ajax="{:U('Promotions/checkExist')}"
+                                    />
+                            <a id="getGoodsInfo" class="btn">获取商品信息</a>
                         </div>
+
                     </div>
                     <div class="control-group">
-                        <label class="control-label">促销条商品</label>
                         <div class="controls">
-                            <input type="text" value="{$goods.name}"  />
+                            <p id="goodsInfo" class="hide text-info noinfo"></p>
                         </div>
                     </div>
-
                     <div class="control-group">
                         <label class="control-label">折扣</label>
                         <div class="controls">
-                            <input  type="text" name="discount"/>
-                                <span>折</span>
+                            <input  type="text" name="discount"
+                                 required min="0.01" max="0.99" minlength="3" maxlength="4"
+                                 data-validation-required-message="折扣不能为空！"
+                                 data-validation-min-message="折扣大于0，因为折扣为0，标识免费，没有意义"
+                                 data-validation-max-message="折扣小于1，折扣为1，表示不打折，也没有意义"
+                                 data-validation-minlength-message="最小长度为3"
+                                 data-validation-maxlength-message="最长长度为3"
+                                    />
+                            <span class="help-inline">规则：该项值在0~1之间，其中0.78表示7.8折，保留两位有效数字</span>
                         </div>
                     </div>
 
+                    <div class="control-group">
+                        <label class="control-label">折扣价</label>
+                        <div class="controls">
+                            <span id="discountprice" class="alert"></span>
+                        </div>
+
+                    </div>
                      <div class="control-group">
                         <label class="control-label">开始时间</label>
                         <div class="controls ">
-                            <div class="datetimepicker input-append">
-                                <input data-format="yyyy-MM-dd hh:mm:ss" name="time_start"  type="text"/>
+                            <div class=" input-append"  id="timestart">
+                                <input data-format="yyyy-MM-dd hh:mm:ss" name="time_start" required="required" type="text"
+                                       data-validation-required-message="开始时间不能为空！"
+                                        />
                                 <span class="add-on">
                                     <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                                 </span>
@@ -46,9 +76,16 @@
                     </div>
                      <div class="control-group">
                         <label class="control-label">结束时间</label>
-                        <div class="controls">
-                            <input type="text" name="time_end" class="datetimepicker"/>
-                        </div>
+                         <div class="controls ">
+                             <div class=" input-append" id="timeend">
+                                 <input data-format="yyyy-MM-dd hh:mm:ss" name="time_end"  required="required" type="text"
+                                        data-validation-required-message="结束时间不能为空！"
+                                         />
+                                <span class="add-on">
+                                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                </span>
+                             </div>
+                         </div>
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">确定</button>
@@ -58,4 +95,93 @@
             </form>
         </div>
     </div>
+</block>
+<block name="other">
+    <js href="__ASSETS__/plugins/scanner/scanner.js" />
+    <script type="text/javascript">
+        $(function(){
+            var scanner  = new Scanner("webcam",function(code){
+                $('input[name="barcode"]').val(code);
+                showTips("识别到条形码<strong>"+code+"</strong>，请输入商品数量!");
+                //防止重复添加
+                if(isScanned(code)){
+                    showTips("<strong>注意！</strong>条形码："+code+"已经添加过！");
+                }
+            });
+
+            var price = 0;
+            //判断条码对应商品，是否符合促销
+            $("#getGoodsInfo").on("click",function(){
+                var code = $("input[name='barcode']").val();
+                if(code ==='' || code.length !==13){
+                    alert("商品条形不正确!");
+                    return false;
+                }
+
+                $.get('{:U("Promotions/isPromotions")}',{"barcode":code},function(json){
+                    if(json.status == 0){
+                        showTips(json.info,"alert-error");
+                        $('#goodsInfo').addClass("noinfo").html("");
+                    }else{
+                        /* console(json.data);*/
+                        showTips(json.info);
+                        price = json.data["sales_price"];
+                        var list  = "<strong>商品名称：</strong>"+json.data["name"]+"<br/>"+
+                                "<strong>分类：</strong>"+json.data["category_id"]+"<br/>"+
+                                "<strong>规格：</strong>"+json.data["specifications"]+"<br/>"+
+                                "<strong>单位：</strong>"+json.data["unit"]+"<br/>"+
+                                "<strong>售价：</strong>￥"+json.data["sales_price"]+"<br/>";
+                        $("p#goodsInfo").html(list);
+                        $('#goodsInfo').removeClass("noinfo").addClass("hasinfo").show();
+                        $("input[name='goods_id']").val(json.data["id"]);
+                    }
+                });
+            });
+
+
+            var codes = [];
+            function isScanned(code){
+                for(var i = 0,len=codes.length; i< len; i++){
+                    if(codes[i] === code){
+                        return true;
+                    }
+                }
+                return false;
+            }
+            function showTips(msg,type){
+                if(type!=null){
+                    $("#formtips").removeClass("alert-info alert-error alert-success").addClass(type);
+                }
+                $("#formtips").html("<strong>"+msg+"</strong>");
+            }
+
+            $("input[name='discount']").on("blur",function(){
+                var value=(parseFloat($(this).val(),10)*price);
+                var flag = "￥";
+                 $("#discountprice").html(flag+value.toFixed(2));
+
+            });
+
+
+            //时间控制
+            var startPicker = $("#timestart").datetimepicker({
+                //其实时间不能是当前时间之后的时间
+                startDate:new Date(),
+                language: 'zh-CN'
+            });
+            var endPicker = $("#timeend").datetimepicker({
+                startDate:new Date(),
+                language: 'zh-CN'
+            });
+
+            startPicker.on('changeDate', function(e) {
+                var localDate = e.date;
+                var picker = endPicker.data('datetimepicker');
+                picker.setStartDate(localDate);
+            });
+        });
+
+
+    </script>
+
 </block>
