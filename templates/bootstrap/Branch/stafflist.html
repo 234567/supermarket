@@ -1,19 +1,26 @@
 <extend name="Common:base" />
 
 
-<block name="page_title">所有员工列表</block>
+<block name="page_title">{$branchInfo.name} 分店的员工列表</block>
 
 
 <block name="main">
 
     <div class="box">
         <div class="box-header well-small">
-            <h4>所有员工列表</h4>
+            <h4>{$branchInfo.name} 分店的员工列表</h4>
         </div>
         <div class="box-content">
-            <a href="{:U('staff/add')}" class="btn btn-info">录入新员工</a>
+            <a href="{:U('branch/index')}" class="btn btn-info">返回分店列表</a>
             <hr/>
             <ul class="row-fluid staff-list">
+                <empty name="list">
+                    <div class ="alert alert-warning">
+                        <strong>该分店还没有任何员工！！</strong>
+                        <p></p>
+                        <p><a href="{:U('staff/add')}" class="btn btn-primary">录入新员工</a></p>
+                    </div>
+                </empty>
                 <volist name="list" id="vo">
                 <li class="span4">
                     <a href="{:U('staff/edit?id='.$vo['id'])}">

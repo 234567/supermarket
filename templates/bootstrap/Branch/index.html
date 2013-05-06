@@ -16,7 +16,6 @@
                     <div class="box span4">
                         <div class="box-header well-small">
                             <h4>{$vo.name}</h4>
-
                             <div class="box-icon">
                                 <a href="#" class=" btn-minimize btn-mini"><i class="icon-chevron-up"></i></a>
                             </div>
@@ -34,7 +33,8 @@
                             <p>负责人姓名：{$vo.director_name}</p>
                             <p>负责人手机：{$vo.director_mobile}</p>
                             <p>
-                                <a href="{:U('branch/goodsstock?branchId='.$vo['id'])}" class="btn btn-mini">查看商品库存</a>
+                                <a href="{:U('branch/goodsstock?branchId='.$vo['id'])}" class="btn btn-mini">商品库存</a>
+                                <a href="{:U('branch/stafflist?id='.$vo['id'])}" class="btn btn-mini">员工列表</a>
                                 <a href="{:U('branch/edit?id='.$vo['id'])}" class="btn btn-info btn-mini">修改</a>
                                 <eq name="vo.id" value="1">
                                     <else/>

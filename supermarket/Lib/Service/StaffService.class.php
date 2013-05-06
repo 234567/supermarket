@@ -5,28 +5,19 @@
  *
  * 员工管理相关的一些业务逻辑
  *
- *
  */
 class StaffService{
 
     /**
-     * 获取员工列表，自动从SESSION获取分店信息
-     * @param $map
-     * @return array
+     * 获取员工列表，可指定分店标识
+     * @param int $branchId 分店标志
+     * @param array $map    查询条件
+     * @return array    包含结果和分页对象的数组
      */
-    public function getList($map){
+    public function getList($branchId=0,$map=array()){
         //主键ID大于1,因为ID为1的是超级管理员
         $map['id'] = array('gt',1);
         $model = M("Staff");
-
-        //取出员工所属的分店信息
-        //取出员工所属的分店信息
-        $branchInfo = session("branch_info");
-        $map["branch_id"] = $branchInfo["id"];
-        if( session( C("ADMIN_AUTH_KEY") ) == true ){
-            //如果是管理员
-            unset($map["branch_id"]);
-        }
 
         $count = $model->where($map)->count('id');
         $result = array();
@@ -140,6 +131,5 @@ class StaffService{
 
         $model->commit();
     }
-
 
 }

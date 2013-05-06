@@ -1,8 +1,17 @@
 <?php
 
-
+/**
+ * Class GoodsService
+ *
+ * 商品管理相关业务逻辑
+ */
 class GoodsService{
 
+    /**
+     * 获取商品列表
+     * @param array $map
+     * @return array
+     */
     public function getList($map = array()){
         $model = M("Goods");
 
@@ -17,7 +26,10 @@ class GoodsService{
         return $result;
     }
 
-
+    /**
+     * 增加商品信息
+     * @throws ThinkException
+     */
     public function insert(){
         $model = D("Goods");
         $vo = $model->create();
@@ -33,13 +45,15 @@ class GoodsService{
             $model->rollback();
             throw new ThinkException("添加商品信息出错！".$model->getError());
         }
-        //TODO:添加其他业务逻辑
-
 
         //提交事务
         $model->commit();
     }
 
+    /**
+     * 更新商品信息
+     * @throws ThinkException
+     */
     public function update(){
         $model = D("Goods");
         $vo = $model->create();
@@ -55,7 +69,6 @@ class GoodsService{
             $model->rollback();
             throw new ThinkException("修改商品信息出错！".$model->getError());
         }
-        //TODO:添加其他业务逻辑
 
         //提交事务
         $model->commit();
@@ -67,7 +80,7 @@ class GoodsService{
         //根据传过来的ID参数，有可能是批量删除，也就是删除多个ID，默认以,分割
         $condition = array("id" => array("in" ,explode(",",$id)));
         //这里的删除并不是真正的删除操作，只是将信息标记为删除状态
-//        $result = $model->where($condition)->delete();
+        //$result = $model->where($condition)->delete();
         //将状态设置为-1表示已删除状态
         $result = $model->where($condition)->setField("status",-1);
         if(false == $result){
@@ -96,4 +109,6 @@ class GoodsService{
         $filed = "goods.*,bhg.amount as stock_amount";
        return M("Goods")->field($filed)->join("branch_has_goods bhg on bhg.goods_id = goods.id ")->where($map)->find();
     }
+
+
 }

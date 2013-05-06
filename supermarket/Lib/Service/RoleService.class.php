@@ -28,6 +28,11 @@ class RoleService{
         return $result;
     }
 
+
+    /**
+     * 插入系统角色信息
+     * @throws ThinkException
+     */
     public function insert(){
         $model = D('Role');
         $vo = $model->create();
@@ -44,6 +49,10 @@ class RoleService{
         $model->commit();
     }
 
+    /**
+     * 更新系统角色信息
+     * @throws ThinkException
+     */
     public function update(){
         $model = D('Role');
         $vo = $model->create();
@@ -60,6 +69,11 @@ class RoleService{
         $model->commit();
     }
 
+    /**
+     * 删除角色信息（非永久删除）
+     * @param $id   角色ＩＤ
+     * @throws ThinkException
+     */
     public function del($id){
         $model = D("Staff");
 
@@ -75,6 +89,13 @@ class RoleService{
         $model->commit();
     }
 
+    /**
+     * 更新指定角色的权限访问信息
+     * @param $roleId       角色ＩＤ
+     * @param array $data   权限信息
+     * @return bool
+     * @throws ThinkException
+     */
     public function updateAccess($roleId,$data= array()){
         $accessModel = M("access");
         $accessModel->where(array("role_id" => $roleId))->delete();
@@ -96,18 +117,19 @@ class RoleService{
         if(false === $result){
             throw new ThinkException("权限设置失败，请重试");
         }
+        return true;
     }
 
 
     /**
      * 通过角色ID获取所属角色的员工列表
-     * * @param $id       角色ID
-     * @param $branchId 分店ID
+     * @param $id       角色ID
+     * @param $branchId 分店ID，默认不需要
      * @return array    包含list和分页对象的数组
      */
-    public function getStaffList($id ,$branchId){
+    public function getStaffList($id ,$branchId=0){
         $where = "rs.role_id = ".$id." and rs.user_id = s.id";
-        if(isset($branchId)){
+        if(!empty($branchId)){
             $where .= " and s.branch_id = ".$branchId;
         }
 

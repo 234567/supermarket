@@ -1,14 +1,16 @@
 <?php
 /**
- * Created by JetBrains PhpStorm.
- * User: corn-s
- * Date: 13-4-24
- * Time: 下午8:49
- * To change this template use File | Settings | File Templates.
+ * Class CategoryService
+ *
+ * 商品分类业务逻辑
  */
-//商品分类业务逻辑
 class CategoryService{
 
+    /**
+     * 获取分类列表
+     * @param $map
+     * @return array
+     */
     public function getList($map){
         $map['pid']=array('eq',0);
         $category = D('Category');

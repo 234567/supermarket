@@ -8,6 +8,9 @@
  */
 class RoleAction extends BaseAction{
 
+    /**
+     * 角色的权限控制
+     */
     public function auth(){
         $id = $this->_param("id","intval");
         if(empty($id)){
@@ -46,7 +49,6 @@ class RoleAction extends BaseAction{
 
     /**
      * 更新角色的权限访问信息
-     *
      */
     public function updateAccess(){
         $roleId = $this->_post("id","intval");
@@ -62,9 +64,11 @@ class RoleAction extends BaseAction{
     }
 
 
-
+    /**
+     * 查看角色下的员工列表
+     */
     public function staff(){
-        $id = $this->_param("id");
+        $id = $this->_param("id","intval");
         if(empty($id)){
             $this->error("参数错误！");
         }
@@ -73,9 +77,8 @@ class RoleAction extends BaseAction{
         if(session( C("ADMIN_AUTH_KEY") ) === true){
             $result = $service->getStaffList($id);
         }else{
-            //获取分店标识
-            $branchInfo = session("branch_info");
-            $result = $service->getStaffList($id,$branchInfo["id"]);
+            //只能查看自己所在分店
+            $result = $service->getStaffList($id,$_SESSION["staff_info"]["branch_id"]);
         }
 
         $this->role = $result["role"];

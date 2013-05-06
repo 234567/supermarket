@@ -45,4 +45,31 @@ class BranchAction extends BaseAction{
         $this->display();
     }
 
+    /**
+     * 查看分店的员工列表
+     */
+    public function stafflist(){
+        $branchId = $this->_param("id","intval");
+        if(empty($branchId)){
+            $this->error("参数错误！");
+        }
+
+        //如果不管理员
+        if( session( C("ADMIN_AUTH_KEY") ) !== true ){
+            $branchId = $_SESSION["staff_info"]["branch_id"];
+        }
+
+        try{
+            $branchInfo = M("Branch")->getById($branchId);
+            $service = D("Staff","Service");
+            $result = $service->getList($branchId);
+        }catch (Exception $e){
+            $this->error($e->getMessage());
+        }
+        $this->branchInfo = $branchInfo;
+        $this->list = $result["list"];
+        $this->page = $result["page"];
+        $this->display();
+    }
+
 }
