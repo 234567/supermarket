@@ -48,6 +48,7 @@ class SalesRecordService {
 
 
         $items = D("SalesItem");
+        $datas = array();
         foreach($goodsList as &$goods){
             //统计商品总量
             $totalAmount += $goods["amount"];
@@ -68,12 +69,14 @@ class SalesRecordService {
             if(false === $result){
                 throw new ThinkException($items->getError());
             }
-            $result = $items->add($result);
-            if(false === $result){
-                $record->rollback();
-                throw new ThinkException($items->getError());
-            }
-
+            //加入待添加数组，
+            $datas[] = $result;
+//
+//            $result = $items->add($result);
+//            if(false === $result){
+//                $record->rollback();
+//                throw new ThinkException($items->getError());
+//            }
             //对商品库存量进行减少
             $branchHasGoods = M("BranchHasGoods");
             if(false === $branchHasGoods->where(array(
@@ -83,6 +86,12 @@ class SalesRecordService {
                 $record->rollback();
                 throw new ThinkException($branchHasGoods->getError()."，销售的商品数量已经超过了商品库存！");
             };
+        }
+        //一次性添加销售记录详细信息
+        $result = $items->addAll($datas);
+        if(false === $result){
+            $record->rollback();
+            throw new ThinkException($items->getError());
         }
 
         $recordData["id"] = $recordId;

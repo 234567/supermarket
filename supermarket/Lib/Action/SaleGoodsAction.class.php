@@ -243,8 +243,8 @@ class SaleGoodsAction extends BaseAction{
         //清空购物车商品列表
         session("cart_list",null);
         //$this->success("销售成功！",U("SaleGoods/showticket"));
-        //跳过提示成功页面直接重定向到打印小票
-        $this->redirect("SaleGoods/showticket");
+        //提示成功页面并重定向到打印小票
+        $this->success("销售成功！",U("SaleGoods/showticket?id=".$result["id"]));
     }
 
     /**
@@ -253,12 +253,18 @@ class SaleGoodsAction extends BaseAction{
     public function showticket(){
         $id = $this->_param("id");
         if(empty($id)){
-            $this->recordInfo =  session("record_info");
-            $this->list = session("cart_list");
-            $this->time = date("Y-m-d h:i:s", time());
-        }else{
-
+            $this->error("参数错误！");
         }
+
+        $service = D("SalesRecord","Service");
+        try{
+            $result = $service->getDetail($id,$_SESSION["staff_info"]["branch_id"],$_SESSION["staff_info"]["id"]);
+        }catch (Exception $e){
+            $this->error($e->getMessage());
+        }
+
+        $this->list = $result["items"];
+        $this->recordInfo = $result["record"];
         $this->display();
     }
 
