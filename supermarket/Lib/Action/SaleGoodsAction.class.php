@@ -264,17 +264,16 @@ class SaleGoodsAction extends BaseAction{
 
 
     /**
-     * 查看个人的历史销售记录
+     * 查看个人的历史销售记录（即使是管理员）
+     * 如果管理员需要查看所有记录，可以进入后台查看
      */
     public function history(){
         //获取员工信息
         $staffInfo = session("staff_info");
-        if( session( C("ADMIN_AUTH_KEY") ) === true ){
-            //如果是管理员
-            $result = D("SalesRecord","Service")->getList();
-        }else{
-
+        try{
             $result = D("SalesRecord","Service")->getList(array(),$staffInfo["branch_id"],$staffInfo["id"]);
+        }catch (Exception $e){
+            $this->error($e->getMessage());
         }
         $this->list = $result["list"];
         $this->page = $result["page"];
@@ -282,7 +281,7 @@ class SaleGoodsAction extends BaseAction{
     }
 
     /**
-     * 查看某个销售记录的详情
+     * 查看某个销售记录的详情（只能查看自己的）
      */
     public function detail(){
         $id = $this->_param("id");
