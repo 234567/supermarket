@@ -44,7 +44,7 @@
                 <tbody>
 
                 <volist name="list" id="vo">
-                        <td >{$vo.barcode}</td>
+                        <td class="barcode">{$vo.barcode}</td>
                         <td><a href="{:U('goods/edit?id='.$vo['id'])}">{$vo.name}</a></td>
                         <!--<td><eq name="vo.category_id" value="999999">未分类<else/>{$vo.category_id|default="未归类"}</eq></td>-->
                         <td><a href="{:U('Goods/search?cid='.$vo['category_id'])}">{$vo.category_name}</a></td>
@@ -69,4 +69,19 @@
         </div>
     </div>
 
+</block>
+<block name="other">
+    {/*
+    条形码生成来源：http://barcode-coder.com/en/
+    */}
+    <script type="text/javascript" src="__ASSETS__/plugins/barcode/jquery-barcode.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("td.barcode").each(function(){
+                var barcode = $(this).text();
+                $(this).barcode(barcode, "ean13",{barWidth:1, barHeight:20});
+            });
+
+        });
+    </script>
 </block>
