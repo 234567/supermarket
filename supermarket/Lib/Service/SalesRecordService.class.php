@@ -75,10 +75,14 @@ class SalesRecordService {
             }
 
             //对商品库存量进行减少
-            M("BranchHasGoods")->where(array(
+            $branchHasGoods = M("BranchHasGoods");
+            if(false === $branchHasGoods->where(array(
                 "branch_id" =>$staffInfo["branch_id"],
                 "goods_id" => $goods["id"],
-            ))->setDec('amount',$goods["amount"]);
+            ))->setDec('amount',$goods["amount"])){
+                $record->rollback();
+                throw new ThinkException($branchHasGoods->getError()."，销售的商品数量已经超过了商品库存！");
+            };
         }
 
         $recordData["id"] = $recordId;
@@ -108,15 +112,14 @@ class SalesRecordService {
      * @param array $map    查询条件
      * @return array    包含列表和分页对象的数组
      */
-    public function getList($map = array()){
+    public function getList($map = array(),$branchId=0,$staffId=0){
         $model = M("SalesRecord");
 
-        //取出员工所属的分店信息
-        $branchInfo = session("branch_info");
-        $map["branch_id"] = $branchInfo["id"];
-        if( session( C("ADMIN_AUTH_KEY") ) == true ){
-            //如果是管理员
-            unset($map["branch_id"]);
+        if(!empty($branchId)){
+            $map["sales_record.branch_id"] = $branchId;
+        }
+        if(!empty($staffId)){
+            $map["sales_record.staff_id"] = $staffId;
         }
 
         $fields = "sales_record.*,branch.name as branch_name,staff.name as staff_name";
@@ -207,13 +210,22 @@ class SalesRecordService {
     }
 
 
-    public function getDetail($recordId){
+    public function getDetail($recordId,$branchId=0,$staffId = 0){
         //查询入库记录详细
         $result = array();
+        $map = array();
+        $map["sales_record.id"] = $recordId;
+        if(!empty($branchId)){
+            $map["sales_record.branch_id"] = $branchId;
+        }
+        if(!empty($staffId)){
+            $map["sales_record.staff_id"] = $staffId;
+        }
 
         //获取销售记录
-        $salesRecord = M("SalesRecord")->getById($recordId);
-        if(false === $salesRecord){
+        $salesRecord = M("SalesRecord")->field("sales_record.*,staff.name as staff_name")->join("staff ON staff.id = sales_record.staff_id")->where($map)->find();
+        //如果没有或者查找失败
+        if(empty($salesRecord) || false === $salesRecord){
             throw new ThinkException("找不到指定的销售记录！");
         }
 

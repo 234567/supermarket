@@ -106,7 +106,15 @@
                                 "<strong>分类：</strong>"+json.data["category_id"]+"<br/>"+
                                 "<strong>规格：</strong>"+json.data["specifications"]+"<br/>"+
                                 "<strong>单位：</strong>"+json.data["unit"]+"<br/>"+
-                                "<strong>售价：</strong>￥"+json.data["sales_price"];
+                                "<strong>售价：</strong>￥"+json.data["sales_price"]+"<br/>"+
+                                "<strong>本店库存量：</strong>"+json.data["stock_amount"];
+
+                        $("input[name=amount]").on("change",function(){
+                            if( parseInt($(this).val(),10) >json.data["stock_amount"]){
+                                alert("不能超过库存量！");
+                                $(this).val(json.data["stock_amount"]);
+                            }
+                        });
                         $("p#goodsInfo").html(list);
                         $('#goodsInfo').removeClass("noinfo").addClass("hasinfo").show();
                     }

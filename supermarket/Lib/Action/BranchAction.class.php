@@ -19,8 +19,9 @@ class BranchAction extends BaseAction{
 
         //哈哈，如果是不是管理员，无论如何也只能看到自己分店的库存情况
         //或者直接给予错误提示
-        $currBid = $_SESSION["branch_info"]["id"];
-        if(C("ADMIN_AUTH_KEY")  !== true && $branchId != $currBid){
+        $currBid = intval($_SESSION["branch_info"]["id"]);
+        //如果不是管理员，那么查看的不是自己分店的信息就要报错
+        if(session(C("ADMIN_AUTH_KEY"))  !== true && $branchId != $currBid){
             $this->error("请不要跨越权限尝试查看其他分店的库存信息！");
             //$branchId = $currBid;
         }

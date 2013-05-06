@@ -79,4 +79,21 @@ class GoodsService{
         $model->commit();
 
     }
+
+    /**
+     * 获取商品信息（同时会获取商品的库存信息）
+     * @param $barcode
+     * @param $branchId
+     * @return mixed|null
+     */
+    public function getInfo($barcode,$branchId){
+        if(empty($branchId)){
+            return null;
+        }
+        $map = array();
+        $map["goods.barcode"] = $barcode;
+        $map["bhg.branch_id"] = $branchId;
+        $filed = "goods.*,bhg.amount as stock_amount";
+       return M("Goods")->field($filed)->join("branch_has_goods bhg on bhg.goods_id = goods.id ")->where($map)->find();
+    }
 }

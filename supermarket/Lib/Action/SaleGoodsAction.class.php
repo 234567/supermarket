@@ -44,7 +44,8 @@ class SaleGoodsAction extends BaseAction{
         if(empty($barcode)){
             $this->error("参数错误");
         }
-        $info = M("Goods")->getByBarcode($barcode);
+
+        $info = D("Goods","Service")->getInfo($barcode,$_SESSION["staff_info"]["branch_id"]);
         if(empty($info)){
             $this->error("不存在对应的商品信息！");
         }
@@ -71,7 +72,7 @@ class SaleGoodsAction extends BaseAction{
         }
         //如果没有添加，就获取商品信息加入购物车，否则的话只是增加对应商品的数量
         if(!$bFound){
-            $goods = M("Goods")->getByBarcode($barcode);
+            $goods = D("Goods","Service")->getInfo($barcode,$_SESSION["staff_info"]["branch_id"]);
             $goods["amount"] = $amount;
             //加入SESSION内的购物车
             $_SESSION["cart_list"][] = $goods;
@@ -268,10 +269,13 @@ class SaleGoodsAction extends BaseAction{
     public function history(){
         //获取员工信息
         $staffInfo = session("staff_info");
-        $map = array();
-        $map["staff_id"] = $staffInfo["id"];
-        $map["branch_id"] = $staffInfo["branch_id"];
-        $result = D("SalesRecord","Service")->getList($map);
+        if( session( C("ADMIN_AUTH_KEY") ) === true ){
+            //如果是管理员
+            $result = D("SalesRecord","Service")->getList();
+        }else{
+
+            $result = D("SalesRecord","Service")->getList(array(),$staffInfo["branch_id"],$staffInfo["id"]);
+        }
         $this->list = $result["list"];
         $this->page = $result["page"];
         $this->display();
@@ -284,9 +288,9 @@ class SaleGoodsAction extends BaseAction{
         $id = $this->_param("id");
         $service = D("SalesRecord","Service");
         try{
-            $result = $service->getDetail($id);
+            $result = $service->getDetail($id,$_SESSION["staff_info"]["branch_id"],$_SESSION["staff_info"]["id"]);
         }catch (Exception $e){
-            $this->error("查看详细出错".$e->getMessage());
+            $this->error($e->getMessage());
         }
         $this->items = $result["items"];
         $this->record = $result["record"];
