@@ -14,10 +14,10 @@ class StaffAction extends BaseAction {
             if( session( C("ADMIN_AUTH_KEY") ) !== true ){
                 //如果不是管理员
                 //取出员工所属的分店信息
-                $branchId = $_SESSION["branch_id"];
+                $branchId = $_SESSION["staff_info"]["branch_id"];
             }
             $service = D("Staff","Service");
-            $result = $service->getList(array(),$branchId);
+            $result = $service->getList($branchId);
         }catch (Exception $e){
             $this->error($e->getMessage());
         }
