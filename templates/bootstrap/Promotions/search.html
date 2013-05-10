@@ -37,7 +37,7 @@
                         <tr>
                             <th>条码</th>
                             <eq name="Think.session.administrator" value="true">
-                               <!-- 管理员 可查看所有分店促销-->
+                                <!-- 管理员 可查看所有分店促销-->
                                 <th>分店名</th>
                             </eq>
                             <th>商品名</th>
@@ -57,7 +57,7 @@
                                 <eq name="Think.session.administrator" value="true">
                                     <!-- 管理员 可查看所有分店促销-->
                                     <td class="center">
-                                       <a href="{:U('promotions/search?branchId='.$vo['branch_id'])}">{$vo.branch_name|default="未知"}</a>
+                                        <a href="{:U('promotions/search?branchId='.$vo['branch_id'])}">{$vo.branch_name|default="未知"}</a>
                                     </td>
                                 </eq>
 
@@ -108,7 +108,7 @@
                 language: 'zh-CN'
             });
             var endPicker = $("#endtime").datetimepicker({
-                startDate:new Date(),
+               /* startDate:new Date(),*/
                 language: 'zh-CN'
             });
 

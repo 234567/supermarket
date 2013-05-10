@@ -15,7 +15,10 @@
             <hr/>
 
             <empty name="list">
-                <div class="alert alert-error">没有该分店的任何商品库存信息！！</div>
+                <div class="alert alert-error">
+                    <span>没有该分店的任何商品库存信息！！</span>
+<!--                    <a href="" class="btn btn-success btn-mini">开始入库</a>-->
+                </div>
                 <else/>
                 <form class="form-inline" method="get"
                       action="{:U('branch/goodsstock')}">

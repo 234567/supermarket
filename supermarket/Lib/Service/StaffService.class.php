@@ -14,13 +14,18 @@ class StaffService{
      * @param array $map    查询条件
      * @return array    包含结果和分页对象的数组
      */
-    public function getList($branchId=0,$map=array()){
+    public function getList($map=array(),$branchId=0){
         //主键ID大于1,因为ID为1的是超级管理员
         $map['id'] = array('gt',1);
-        if(!empty($branchId)){
+     /*   if(!empty($branchId)){
+            $map["branch_id"] = $branchId;
+        }*/
+       /*
+        * 修改：沈玉敏
+        */
+        if($branchId !=0){
             $map["branch_id"] = $branchId;
         }
-
         $model = M("Staff");
         $count = $model->where($map)->count('id');
         $result = array();
@@ -41,6 +46,10 @@ class StaffService{
      */
     public function insert(){
         $model = D("Staff");
+   /*     $data = array(
+            "branch_id"=>$_SESSION["branch_info"]["id"],
+            "account"=>$
+        );*/
         $vo = $model->create();
         if(false === $vo){
             throw new ThinkException($model->getError());

@@ -53,12 +53,10 @@ class BranchAction extends BaseAction{
         if(empty($branchId)){
             $this->error("参数错误！");
         }
-
         //如果不管理员
         if( session( C("ADMIN_AUTH_KEY") ) !== true ){
             $branchId = $_SESSION["staff_info"]["branch_id"];
         }
-
         try{
             $branchInfo = M("Branch")->getById($branchId);
             $service = D("Staff","Service");

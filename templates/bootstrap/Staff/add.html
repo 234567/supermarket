@@ -15,8 +15,16 @@
                     <legend>员工基本信息<a class="btn btn-info pull-right" href="{:U('staff/index')}">返回员工列表</a></legend>
                     <div class="control-group">
                         <label class="control-label">所属分店：</label>
+                        {$Think.session.ADMIN_AUTH_KEY}
                         <div class="controls">
-                            <front:select name="branch_id" model="branch" appendoption="false"/>
+                            <empty name="Think.session.ADMIN_AUTH_KEY">
+                                <input type="hidden" name="branch_id" value="{$Think.session.branch_info.id}"/>
+                                <span class=" alert alert-info ">{$Think.session.branch_info.name}</span>
+                                <else/>
+                                <front:select name="branch_id" model="branch" appendoption="false"/>
+                            </empty>
+
+
                         </div>
                     </div>
 

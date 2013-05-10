@@ -1,8 +1,6 @@
 <extend name="Common:base" xmlns:front="http://www.w3.org/1999/html"/>
 
-
 <block name="page_title">入库记录</block>
-
 
 <block name="main">
 
@@ -33,47 +31,51 @@
                     <button class="btn btn-success" type="submit" >搜索</button>
                 </form>
             <div id="list">
-                <table class="table table-striped table-bordered table-hover table-condensed">
-                    <thead>
-                    <tr>
-                        <th>编号</th>
-                         <eq name="Think.session.administrator" value="true">
-                             <th>分店</th>
-                         </eq>
-                        <th>供货商</th>
-                        <th>商品总量</th>
-                        <th>商品总金额</th>
-                        <th>入库时间</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <volist name="list" id="vo">
+                <empty name="list">
+                    <div class="alert alert-danger">该搜索组合，暂无入库记录！请重新选择！</div>
+                    <else/>
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <thead>
                         <tr>
-                            <td>{$vo.id}</td>
+                            <th>编号</th>
                             <eq name="Think.session.administrator" value="true">
-                                <td>
-                                <a href="{:U('StockRecord/search?branchId='.$vo['branch_id'])}">{$vo.branch_name}</a>
-                                </td>
-                            </eq>
-                            <td>
-                                <eq name="Think.session.administrator" value="true">
-                                    <a href="{:U('StockRecord/search?supplierId='.$vo['supplier_id'])}">{$vo.supplier_name}</a>
-                                    <else/>
-                                    {$vo.supplier_name}
-                                </eq>
-                            </td>
-                            <td>{$vo.total_amount}份</td>
-                            <td>￥{$vo.total_cost}元</td>
-                            <td>{$vo.time|todate}</td>
-                            <td>
-                                <a href="{:U('StockRecord/detail?recordId='.$vo['id'].'&supplierId='.$vo['sid'])}" class="btn btn-mini btn-primary">查看详情</a>
-                            </td>
+                              <th>分店</th>
+                             </eq>
+                            <th>供货商</th>
+                            <th>商品总量</th>
+                            <th>商品总金额</th>
+                            <th>入库时间</th>
+                            <th>操作</th>
                         </tr>
-                    </volist>
-                    </tbody>
-                </table>
-                <div id="page" class="pagination">{$page}</div>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr>
+                                <td>{$vo.id}</td>
+                                <eq name="Think.session.administrator" value="true">
+                                    <td>
+                                    <a href="{:U('StockRecord/search?branchId='.$vo['branch_id'])}">{$vo.branch_name}</a>
+                                    </td>
+                                </eq>
+                                <td>
+                                    <eq name="Think.session.administrator" value="true">
+                                        <a href="{:U('StockRecord/search?supplierId='.$vo['supplier_id'])}">{$vo.supplier_name}</a>
+                                        <else/>
+                                        {$vo.supplier_name}
+                                    </eq>
+                                </td>
+                                <td>{$vo.total_amount}份</td>
+                                <td>￥{$vo.total_cost}元</td>
+                                <td>{$vo.time|todate}</td>
+                                <td>
+                                    <a href="{:U('StockRecord/detail?recordId='.$vo['id'].'&supplierId='.$vo['supplier_id'])}" class="btn btn-mini btn-primary">查看详情</a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                    <div id="page" class="pagination">{$page}</div>
+                </empty>
             </div>
         </div>
     </div>

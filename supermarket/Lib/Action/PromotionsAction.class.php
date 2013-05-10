@@ -86,11 +86,13 @@ class PromotionsAction extends BaseAction
         $map["branch_id"] = $_SESSION["staff_info"]["branch_id"];
         $map["time_start"] = array("elt", $now);
         $map["time_end"] = array("egt", $now);
+        $map["goods.barcode"] = array("eq", $barcode);
+        $join = array("goods ON goods.id = promotions.goods_id","branch ON branch.id = promotions.branch_id");
         $promotions = M("Promotions")->field("promotions.*,goods.name as goods_name")->
-            join("goods ON goods.id = promotions.goods_id and goods.barcode = " . $barcode)->where($map)->find();
-
+            join($join)->where($map)->find();
         if (!empty($promotions)) {
             if (!isset($promotions["goods_name"])) {
+                //没有商品细信息
                 echo json_encode(
                     array(
                         "value" => $barcode,
@@ -130,4 +132,37 @@ class PromotionsAction extends BaseAction
         $this->page = $result["page"];
         $this->display();
     }
+    /**
+     * 多条件搜索促销记录（目前正在促销的）
+     */
+    public function search(){
+        //获取过滤参数
+        $branchId = $this->_param("branchId","intval",0);//分店id
+        $startTime = $this->_param("starttime","strtotime",0);//开始时间
+        $endTime = $this->_param("endtime","strtotime");//结束时间
+        $map = array();
+        if(!empty($startTime)){
+            $map["promotions.time_start"][] = array("egt",$startTime);
+            $map["promotions.time_end"][]= array("egt",$startTime);
+        }
+        if(!empty($endTime)){
+            $map["promotions.time_start"][] = array("egt",$startTime);
+        }
+        if(!empty($branchId)){
+            $map["promotions.branch_id"] = array("eq",$branchId);
+        }
+        try{
+            $service = D("Promotions","Service");
+            $result = $service->getList($map);
+        }catch (Exception $e){
+            $this->error($e->getMessage());
+        }
+        $this->branchId = $branchId;
+        $this->starttime = $startTime;
+        $this->endtime = $endTime;
+        $this->list = $result['list'];
+        $this->page = isset($result['page']) ? $result['page'] : null;
+        $this->display();
+    }
+
 }
