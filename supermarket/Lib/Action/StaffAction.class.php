@@ -17,7 +17,7 @@ class StaffAction extends BaseAction {
                 $branchId = $_SESSION["staff_info"]["branch_id"];
             }
             $service = D("Staff","Service");
-            $result = $service->getList($branchId);
+            $result = $service->getList(array(),$branchId);
         }catch (Exception $e){
             $this->error($e->getMessage());
         }
