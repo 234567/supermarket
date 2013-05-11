@@ -6,14 +6,16 @@
  * 用户角色相关模块
  * 包括基本的角色管理，查看角色下的用户列表、对角色的详细权限控制等
  */
-class RoleAction extends BaseAction{
+class RoleAction extends BaseAction
+{
 
     /**
      * 角色的权限控制
      */
-    public function auth(){
-        $id = $this->_param("id","intval");
-        if(empty($id)){
+    public function auth()
+    {
+        $id = $this->_param("id", "intval");
+        if (empty($id)) {
             $this->error("非法参数！");
         }
 
@@ -24,7 +26,7 @@ class RoleAction extends BaseAction{
         }
 
         //获取角色的访问权限
-        $access =  M("Access")->field("CONCAT(`node_id`,':',`level`,':',`pid`) as val")->where(array("role_id" =>$role['id']) )->select();
+        $access = M("Access")->field("CONCAT(`node_id`,':',`level`,':',`pid`) as val")->where(array("role_id" => $role['id']))->select();
         $role['access'] = count($access) > 0 ? json_encode($access) : json_encode(array());
 
         //获取节点信息
@@ -50,35 +52,37 @@ class RoleAction extends BaseAction{
     /**
      * 更新角色的权限访问信息
      */
-    public function updateAccess(){
-        $roleId = $this->_post("id","intval");
+    public function updateAccess()
+    {
+        $roleId = $this->_post("id", "intval");
         $data = $this->_post("data");
-        $service = D("Role","Service");
-        try{
-            $service->updateAccess($roleId,$data);
-        }catch (Exception $e){
+        $service = D("Role", "Service");
+        try {
+            $service->updateAccess($roleId, $data);
+        } catch (Exception $e) {
             $this->error($e->getMessage());
         }
 
-        $this->success("权限设置成功！",U("role/index"));
+        $this->success("权限设置成功！", U("role/index"));
     }
 
 
     /**
      * 查看角色下的员工列表
      */
-    public function staff(){
-        $id = $this->_param("id","intval");
-        if(empty($id)){
+    public function staff()
+    {
+        $id = $this->_param("id", "intval");
+        if (empty($id)) {
             $this->error("参数错误！");
         }
 
-        $service = D("Role","Service");
-        if(session( C("ADMIN_AUTH_KEY") ) === true){
+        $service = D("Role", "Service");
+        if (session(C("ADMIN_AUTH_KEY")) === true) {
             $result = $service->getStaffList($id);
-        }else{
+        } else {
             //只能查看自己所在分店
-            $result = $service->getStaffList($id,$_SESSION["staff_info"]["branch_id"]);
+            $result = $service->getStaffList($id, $_SESSION["staff_info"]["branch_id"]);
         }
 
         $this->role = $result["role"];

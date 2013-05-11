@@ -6,9 +6,11 @@
  * 修改这里的注释内容
  */
 
-class BaseAction extends Action{
+class BaseAction extends Action
+{
 
-    function _initialize(){
+    function _initialize()
+    {
         //RBAC权限检测
         $this->waitSecond = 99999;
         if (C('USER_AUTH_ON') && !in_array(MODULE_NAME, explode(',', C('NOT_AUTH_MODULE')))) {
@@ -35,13 +37,15 @@ class BaseAction extends Action{
     }
 
 
-    protected function getReturnUrl() {
-        return U(MODULE_NAME.'/'.strtolower(  C('DEFAULT_ACTION') ) );
+    protected function getReturnUrl()
+    {
+        return U(MODULE_NAME . '/' . strtolower(C('DEFAULT_ACTION')));
     }
 
-    public function index(){
+    public function index()
+    {
         //实例化Service
-        $service = D($this->getActionName(),"Service");
+        $service = D($this->getActionName(), "Service");
         //无过滤条件获取列表
         $result = $service->getList(array());
         $this->list = $result['list'];
@@ -49,100 +53,107 @@ class BaseAction extends Action{
         $this->display();
     }
 
-    public function insert(){
-        $service = D($this->getActionName(),"Service");
-        try{
+    public function insert()
+    {
+        $service = D($this->getActionName(), "Service");
+        try {
             $service->insert();
-        }catch (Exception $e){
+        } catch (Exception $e) {
             $this->error($e->getMessage());
         }
-        $this->success("新增成功！",$this->getReturnUrl());
+        $this->success("新增成功！", $this->getReturnUrl());
     }
 
-    public function edit(){
-    $name = $this->getActionName();
-    $model = M($name);
-    $id = $this->_param( $model->getPk());
-    if(empty($id)){
-        $this->error("参数错误！");
-    }
-    $vo = $model->getById($id);
-    $this->vo = $vo;
-    $this->display();
-  }
-
-    public function update(){
-        $service = D($this->getActionName(),"Service");
-        try{
-            $service->update();
-        }catch (Exception $e){
-            $this->error($e->getMessage());
-        }
-        $this->success("修改成功！",$this->getReturnUrl());
-    }
-
-
-    public function del(){
-        $id = $this->_param("id");
-        if(empty($id)){
+    public function edit()
+    {
+        $name = $this->getActionName();
+        $model = M($name);
+        $id = $this->_param($model->getPk());
+        if (empty($id)) {
             $this->error("参数错误！");
         }
-        $service = D($this->getActionName(),"Service");
-        try{
-            $service->del($id);
-        }catch (Exception $e){
+        $vo = $model->getById($id);
+        $this->vo = $vo;
+        $this->display();
+    }
+
+    public function update()
+    {
+        $service = D($this->getActionName(), "Service");
+        try {
+            $service->update();
+        } catch (Exception $e) {
             $this->error($e->getMessage());
         }
-        $this->success("删除成功！",$this->getReturnUrl());
+        $this->success("修改成功！", $this->getReturnUrl());
     }
 
 
-    public function forbid(){
+    public function del()
+    {
+        $id = $this->_param("id");
+        if (empty($id)) {
+            $this->error("参数错误！");
+        }
+        $service = D($this->getActionName(), "Service");
+        try {
+            $service->del($id);
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
+        }
+        $this->success("删除成功！", $this->getReturnUrl());
+    }
+
+
+    public function forbid()
+    {
         $name = $this->getActionName();
         $model = D($name);
         $pk = $model->getPk();
         $id = $this->_param($pk);
-        if(empty($id)){
+        if (empty($id)) {
             $this->error("非法参数！");
         }
         $condition = array($pk => array("in", $id));
         $list = $model->forbid($condition);
-        if( false === $list){
+        if (false === $list) {
             $this->error("状态禁用失败！");
         }
 
-        $this->success("状态禁用成功！",$this->getReturnUrl());
+        $this->success("状态禁用成功！", $this->getReturnUrl());
     }
 
-    public function recycle(){
+    public function recycle()
+    {
         $name = $this->getActionName();
         $model = D($name);
         $pk = $model->getPk();
         $id = $this->_get($pk);
-        if(empty($id)){
+        if (empty($id)) {
             $this->error("非法参数！");
         }
         $condition = array($pk => array("in", $id));
         $list = $model->recycle($condition);
-        if(false === $list){
+        if (false === $list) {
             $this->error("状态还原失败！");
         }
-        $this->success("状态还原成功！",$this->getReturnUrl());
+        $this->success("状态还原成功！", $this->getReturnUrl());
     }
 
-    function resume() {
+    function resume()
+    {
         //恢复指定记录
         $name = $this->getActionName();
         $model = D($name);
         $pk = $model->getPk();
-        $id = $this->_get( $pk );
-        if(empty($id)){
+        $id = $this->_get($pk);
+        if (empty($id)) {
             $this->error("非法参数！");
         }
         $condition = array($pk => array('in', $id));
         if (false == $model->resume($condition)) {
             $this->error('状态恢复失败！');
         }
-        $this->success('状态恢复成功！',$this->getReturnUrl());
+        $this->success('状态恢复成功！', $this->getReturnUrl());
     }
 }

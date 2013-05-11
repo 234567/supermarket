@@ -36,19 +36,19 @@ class StaffModel extends CommonModel
         array("password", "passCrypt", Model::MODEL_BOTH, "callback"),
         array("create_time", "time", Model::MODEL_INSERT, "function"),
         array("update_time", "time", Model::MODEL_UPDATE, "function"),
-        array("birthday","strtotime",Model::MODEL_BOTH,"function" ),
+        array("birthday", "strtotime", Model::MODEL_BOTH, "function"),
     );
 
     //可以插入的字段
     protected $insertFields = array(
         //员工信息
-        "branch_id","name","sex","birthday","identify_num","mobile","photo","remark",
+        "branch_id", "name", "sex", "birthday", "identify_num", "mobile", "photo", "remark",
         //登陆信息
-        "account","password");
+        "account", "password");
 
     protected $updateFields = array(
         //修改时，不能进行分店的转移，性别也暂时不能修改
-        "name","sex","birthday","identify_num","mobile","photo","remark",
+        "name", "sex", "birthday", "identify_num", "mobile", "photo", "remark",
         //帐号也不能进行修改
         "password",
     );

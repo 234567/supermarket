@@ -4,14 +4,16 @@
  *
  *
  */
-class StockRecordAction extends BaseAction{
+class StockRecordAction extends BaseAction
+{
 
-    public function index(){
+    public function index()
+    {
         //实例化Service
-        $service = D("StockRecord","Service");
-        try{
+        $service = D("StockRecord", "Service");
+        try {
             $result = $service->getList();
-        }catch (Exception $e){
+        } catch (Exception $e) {
             $this->error($e->getMessage());
         }
         trace($result["list"]);
@@ -21,14 +23,15 @@ class StockRecordAction extends BaseAction{
     }
 
     //查看入库记录详细
-    public function detail(){
-        $service = D("StockRecord","Service");
+    public function detail()
+    {
+        $service = D("StockRecord", "Service");
         $recordId = $this->_param("recordId");
         $supplierId = $this->_param("supplierId");
-        try{
-            $result = $service->detail($recordId,$supplierId);
-        }catch (Exception $e){
-            $this->error("查看入库详细出错".$e->getMessage());
+        try {
+            $result = $service->detail($recordId, $supplierId);
+        } catch (Exception $e) {
+            $this->error("查看入库详细出错" . $e->getMessage());
         }
         $this->list = $result["list"];
         $this->supplier = $result["supplier"];
@@ -39,29 +42,30 @@ class StockRecordAction extends BaseAction{
     /**
      * 多条件搜索入库记录（区分管理员与负责人）
      */
-    public function search(){
+    public function search()
+    {
         //获取过滤参数
-        $branchId = $this->_param("branchId","intval",0);//分店id
-        $supplierId = $this->_param("supplierId","intval",0);//分店id
-        $startTime = $this->_param("starttime","strtotime",0);//开始时间
-        $endTime = $this->_param("endtime","strtotime");//结束时间
+        $branchId = $this->_param("branchId", "intval", 0); //分店id
+        $supplierId = $this->_param("supplierId", "intval", 0); //分店id
+        $startTime = $this->_param("starttime", "strtotime", 0); //开始时间
+        $endTime = $this->_param("endtime", "strtotime"); //结束时间
         $map = array();
-        if(!empty($startTime)){
-            $map["stock_record.time"][] = array("gt",$startTime);
+        if (!empty($startTime)) {
+            $map["stock_record.time"][] = array("gt", $startTime);
         }
-        if(!empty($endTime)){
-            $map["stock_record.time"][] = array("lt",$endTime);
+        if (!empty($endTime)) {
+            $map["stock_record.time"][] = array("lt", $endTime);
         }
-        if(!empty($supplierId)){
-            $map["stock_record.supplier_id"] = array("eq",$supplierId);
+        if (!empty($supplierId)) {
+            $map["stock_record.supplier_id"] = array("eq", $supplierId);
         }
-        if(!empty($branchId)){
-            $map["stock_record.branch_id"] = array("eq",$branchId);
+        if (!empty($branchId)) {
+            $map["stock_record.branch_id"] = array("eq", $branchId);
         }
-        try{
-            $service = D("StockRecord","Service");
+        try {
+            $service = D("StockRecord", "Service");
             $result = $service->getList($map);
-        }catch (Exception $e){
+        } catch (Exception $e) {
             $this->error($e->getMessage());
         }
         $this->branchId = $branchId;

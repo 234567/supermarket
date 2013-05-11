@@ -4,27 +4,29 @@
  *
  * 商品信息管理模块
  */
-class GoodsAction extends BaseAction{
+class GoodsAction extends BaseAction
+{
 
     /**
      * 商品搜索，目前只能通过分类以及商品名称进行查找
      *
      */
-    public function search(){
-        $cid = $this->_param("cid","intval");
+    public function search()
+    {
+        $cid = $this->_param("cid", "intval");
         $name = $this->_param("name");
 
         $map = array();
-        if(!empty($cid)){
+        if (!empty($cid)) {
             $map["category_id"] = $cid;
         }
 
-        if(!empty($name)){
-            $map["goods.name"] = array("like", "%".$name."%");
+        if (!empty($name)) {
+            $map["goods.name"] = array("like", "%" . $name . "%");
         }
 
         //通过条件获取商品列表
-        $service = D("Goods","Service");
+        $service = D("Goods", "Service");
         $result = $service->getList($map);
         $this->cid = $cid;
         $this->searchname = $name;
@@ -38,22 +40,23 @@ class GoodsAction extends BaseAction{
      * AJAX获取商品信息接口，
      * 通过商品编号 或者 商品条形码 均可获取。
      */
-    public function getInfo(){
-        $id = $this->_param("id","intval");
+    public function getInfo()
+    {
+        $id = $this->_param("id", "intval");
         $barcode = $this->_param("barcode");
 
-        if(!empty($id)){
+        if (!empty($id)) {
             $info = M("Goods")->getById($id);
-        }elseif(!empty($barcode)){
+        } elseif (!empty($barcode)) {
             $info = M("Goods")->getByBarcode($barcode);
-        }else{
+        } else {
             $this->error("参数错误");
         }
-        if(empty($info)){
+        if (empty($info)) {
             $this->error("找不到该商品的任何信息！");
         }
 
-        $this->ajaxReturn($info,'获取商品信息成功！',1);
+        $this->ajaxReturn($info, '获取商品信息成功！', 1);
     }
 
 
@@ -61,34 +64,35 @@ class GoodsAction extends BaseAction{
      * 检测条形码对应的商品是否已经添加
      * （配合表单验证插件进行输入验证）
      */
-    public function checkBarcode(){
+    public function checkBarcode()
+    {
         $barcode = $this->_param("value");
-        if(empty($barcode)){
+        if (empty($barcode)) {
             echo json_encode(array(
-                    "value" => $barcode,
-                    "valid" => false,
-                    "message" => "条形码错误！"
+                "value" => $barcode,
+                "valid" => false,
+                "message" => "条形码错误！"
             ));
-            return ;
+            return;
         }
 
         $info = M("Goods")->getByBarcode($barcode);
         //没有该条码的商品信息
-        if(empty($info)){
+        if (empty($info)) {
             echo json_encode(array(
                 "value" => $barcode,
                 "valid" => true,
-                "message" => "条形码".$barcode."可录入，没有对应的商品信息！",
+                "message" => "条形码" . $barcode . "可录入，没有对应的商品信息！",
             ));
-            return ;
-        }else{
+            return;
+        } else {
             echo json_encode(array(
                 "value" => $barcode,
                 "valid" => false,
-                "message" => "条形码".$barcode."已存在，商品名称：".
-                    $info["name"]." 价格￥".$info["sales_price"]."元 <a href=\"".U("Goods/edit?id=".$info["id"])."\">点击修改</a>",
+                "message" => "条形码" . $barcode . "已存在，商品名称：" .
+                    $info["name"] . " 价格￥" . $info["sales_price"] . "元 <a href=\"" . U("Goods/edit?id=" . $info["id"]) . "\">点击修改</a>",
             ));
-            return ;
+            return;
         }
     }
 }

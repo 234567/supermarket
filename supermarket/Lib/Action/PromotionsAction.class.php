@@ -87,7 +87,7 @@ class PromotionsAction extends BaseAction
         $map["time_start"] = array("elt", $now);
         $map["time_end"] = array("egt", $now);
         $map["goods.barcode"] = array("eq", $barcode);
-        $join = array("goods ON goods.id = promotions.goods_id","branch ON branch.id = promotions.branch_id");
+        $join = array("goods ON goods.id = promotions.goods_id", "branch ON branch.id = promotions.branch_id");
         $promotions = M("Promotions")->field("promotions.*,goods.name as goods_name")->
             join($join)->where($map)->find();
         if (!empty($promotions)) {
@@ -99,7 +99,7 @@ class PromotionsAction extends BaseAction
                         "valid" => false,
                         "message" => "该条形码没有对应的商品信息！"
                     ));
-            }else{
+            } else {
                 echo json_encode(
                     array(
                         "value" => $barcode,
@@ -118,13 +118,14 @@ class PromotionsAction extends BaseAction
     }
 
     //查询历史促销信息
-    public function history(){
-        $service = D("Promotions","Service");
+    public function history()
+    {
+        $service = D("Promotions", "Service");
         $map = array();
 
-        try{
+        try {
             $result = $service->history($map);
-        }catch (Exception $e){
+        } catch (Exception $e) {
             $this->error($e->getMessage());
         }
         trace($result);
@@ -132,29 +133,31 @@ class PromotionsAction extends BaseAction
         $this->page = $result["page"];
         $this->display();
     }
+
     /**
      * 多条件搜索促销记录（目前正在促销的）
      */
-    public function search(){
+    public function search()
+    {
         //获取过滤参数
-        $branchId = $this->_param("branchId","intval",0);//分店id
-        $startTime = $this->_param("starttime","strtotime",0);//开始时间
-        $endTime = $this->_param("endtime","strtotime");//结束时间
+        $branchId = $this->_param("branchId", "intval", 0); //分店id
+        $startTime = $this->_param("starttime", "strtotime", 0); //开始时间
+        $endTime = $this->_param("endtime", "strtotime"); //结束时间
         $map = array();
-        if(!empty($startTime)){
-            $map["promotions.time_start"][] = array("egt",$startTime);
-            $map["promotions.time_end"][]= array("egt",$startTime);
+        if (!empty($startTime)) {
+            $map["promotions.time_start"][] = array("egt", $startTime);
+            $map["promotions.time_end"][] = array("egt", $startTime);
         }
-        if(!empty($endTime)){
-            $map["promotions.time_start"][] = array("egt",$startTime);
+        if (!empty($endTime)) {
+            $map["promotions.time_start"][] = array("egt", $startTime);
         }
-        if(!empty($branchId)){
-            $map["promotions.branch_id"] = array("eq",$branchId);
+        if (!empty($branchId)) {
+            $map["promotions.branch_id"] = array("eq", $branchId);
         }
-        try{
-            $service = D("Promotions","Service");
+        try {
+            $service = D("Promotions", "Service");
             $result = $service->getList($map);
-        }catch (Exception $e){
+        } catch (Exception $e) {
             $this->error($e->getMessage());
         }
         $this->branchId = $branchId;

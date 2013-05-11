@@ -4,44 +4,48 @@
  *
  * 商品分类业务逻辑
  */
-class CategoryService{
+class CategoryService
+{
 
     /**
      * 获取分类列表
      * @param $map
      * @return array
      */
-    public function getList($map){
-        $map['pid']=array('eq',0);
+    public function getList($map)
+    {
+        $map['pid'] = array('eq', 0);
         $category = D('Category');
         $result = array();
         $result['list'] = $category->parseFieldsMap($category->where($map)->select());
-        return  $result;
+        return $result;
     }
+
     //添加
-    public function insert(){
+    public function insert()
+    {
         $category = D('Category');
         $vo = $category->create();
-        if(false == $vo){
+        if (false == $vo) {
             // 字段验证错误
             throw new ThinkException("商品分类字段验证错误!");
         }
         //填充主键
         $pid = $vo['pid'];
-        $count = $category->where(array('pid' =>$pid ))->count();
+        $count = $category->where(array('pid' => $pid))->count();
         $count++;
-        $id = $pid.'';
+        $id = $pid . '';
         //组装分类ID
-        if($count >0 && $count <= 9){
-            $id = $id.'0'.$count;
-        }else{
-            $id = $id.$count;
+        if ($count > 0 && $count <= 9) {
+            $id = $id . '0' . $count;
+        } else {
+            $id = $id . $count;
         }
-        $vo['id']= $id;
+        $vo['id'] = $id;
         //开启事务
         $category->startTrans();
         $id = $category->add($vo);
-        if (false == $id ) {
+        if (false == $id) {
             //事务回滚
             $category->rollback();
             throw new ThinkException("商品分类数据写入失败!");
@@ -50,17 +54,19 @@ class CategoryService{
         $category->commit();
 
     }
+
     //更新
-    public function update(){
+    public function update()
+    {
         $category = D('Category');
         $vo = $category->create();
-        if(false == $vo){
+        if (false == $vo) {
             throw new ThinkException("表单验证失败!");
         }
         //开启事务
         $category->startTrans();
         $id = $category->save();
-        if(false == $id ){
+        if (false == $id) {
             $category->rollback();
             throw new ThinkException("数据修改失败!");
         }
@@ -68,22 +74,23 @@ class CategoryService{
     }
 
     //删除
-    public function del($id){
+    public function del($id)
+    {
         $category = D('Category');
         //如果当前分类下有子分类，则不能删除
-        if($category->where(array('pid'=>$id))->count()  >  0){
+        if ($category->where(array('pid' => $id))->count() > 0) {
             throw new ThinkException('当前分类下还有子分类，不能进行删除！');
         }
 
         $goods = D('Goods');
-        if($goods->where(array('category_id'=>$id))->count()  >  0){
+        if ($goods->where(array('category_id' => $id))->count() > 0) {
             throw new ThinkException('当前分类下还有商品信息，不能进行删除！');
         }
 
         //开启事务
         $category->startTrans();
-       /* $result = $category->where(array('id'=>$id))->setField('status',-1);*/
-        $result =  $category->delete($id);
+        /* $result = $category->where(array('id'=>$id))->setField('status',-1);*/
+        $result = $category->delete($id);
         if (false == $result) {
             //回滚
             $category->rollback();
