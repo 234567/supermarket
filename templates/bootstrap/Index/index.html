@@ -6,25 +6,23 @@
 <block name="main">
 
     <div class="row-fluid">
-        <a data-rel="tooltip" title="总共有312名员工" class="well span3 top-block">
+        <a data-rel="tooltip" title="分店总数{$branchAmount}" class="well span3 top-block" href="#">
+            <span class="icon32 icon-color icon-flag"></span>
+            <div>分店总数</div>
+            <div>{$branchAmount}</div>
+        </a>
+
+        <a data-rel="tooltip" title="总共有{$staffAmount}名员工" class="well span3 top-block">
             <span class="icon32 icon-red icon-user"></span>
             <div>总员工数量</div>
-            <div>312</div>
-            <span class="notification">新增5人</span>
+            <div>{$staffAmount}</div>
         </a>
 
-        <a data-rel="tooltip" title="昨日收入￥9200" class="well span3 top-block" href="#">
-            <span class="icon32 icon-color icon-cart"></span>
+        <a data-rel="tooltip" title="昨日收入￥{$yesterdayIncoming|default='0'}" class="well span3 top-block" href="#">
+            <span class="icon32 icon-color icon-bar-chart"></span>
             <div>昨日收入</div>
-            <div>￥9200</div>
+            <div>￥{$yesterdayIncoming|default="0"}</div>
             <span class="notification yellow">盈利</span>
-        </a>
-
-        <a data-rel="tooltip" title="12 new messages." class="well span3 top-block" href="#">
-            <span class="icon32 icon-color icon-envelope-closed"></span>
-            <div>Messages</div>
-            <div>25</div>
-            <span class="notification red">12</span>
         </a>
     </div>
 

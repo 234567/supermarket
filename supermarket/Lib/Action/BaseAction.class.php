@@ -1,18 +1,16 @@
 <?php
 /**
- * User: simplewind
- * Date: 13-4-9
- * Time: 上午12:03
- * 修改这里的注释内容
+ * Class BaseAction
+ *
+ * Action基类，负责权限检测，以及一些公共操作的封装
+ *
  */
-
 class BaseAction extends Action
 {
 
     function _initialize()
     {
         //RBAC权限检测
-        $this->waitSecond = 99999;
         if (C('USER_AUTH_ON') && !in_array(MODULE_NAME, explode(',', C('NOT_AUTH_MODULE')))) {
             import('@.ORG.Util.RBAC');
             if (!RBAC::AccessDecision()) {
@@ -36,12 +34,18 @@ class BaseAction extends Action
         }
     }
 
-
+    /**
+     * 获取返回地址，默认返回所属模块的首页
+     * @return string
+     */
     protected function getReturnUrl()
     {
         return U(MODULE_NAME . '/' . strtolower(C('DEFAULT_ACTION')));
     }
 
+    /**
+     * 默认首页
+     */
     public function index()
     {
         //实例化Service
@@ -53,6 +57,9 @@ class BaseAction extends Action
         $this->display();
     }
 
+    /**
+     * 插入操作
+     */
     public function insert()
     {
         $service = D($this->getActionName(), "Service");
@@ -64,6 +71,9 @@ class BaseAction extends Action
         $this->success("新增成功！", $this->getReturnUrl());
     }
 
+    /**
+     * 编辑操作
+     */
     public function edit()
     {
         $name = $this->getActionName();
@@ -77,6 +87,9 @@ class BaseAction extends Action
         $this->display();
     }
 
+    /**
+     * 更新操作
+     */
     public function update()
     {
         $service = D($this->getActionName(), "Service");
@@ -88,7 +101,9 @@ class BaseAction extends Action
         $this->success("修改成功！", $this->getReturnUrl());
     }
 
-
+    /**
+     * 删除操作
+     */
     public function del()
     {
         $id = $this->_param("id");
@@ -105,6 +120,9 @@ class BaseAction extends Action
     }
 
 
+    /**
+     * 禁止操作
+     */
     public function forbid()
     {
         $name = $this->getActionName();
@@ -123,6 +141,9 @@ class BaseAction extends Action
         $this->success("状态禁用成功！", $this->getReturnUrl());
     }
 
+    /**
+     * 还原已删除状态
+     */
     public function recycle()
     {
         $name = $this->getActionName();
@@ -140,6 +161,9 @@ class BaseAction extends Action
         $this->success("状态还原成功！", $this->getReturnUrl());
     }
 
+    /**
+     * 恢复禁止状态
+     */
     function resume()
     {
         //恢复指定记录
