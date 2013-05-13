@@ -63,7 +63,7 @@ class BranchAction extends BaseAction
         try {
             $branchInfo = M("Branch")->getById($branchId);
             $service = D("Staff", "Service");
-            $result = $service->getList($branchId);
+            $result = $service->getList(array(),$branchId);
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }

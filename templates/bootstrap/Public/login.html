@@ -37,6 +37,9 @@
             display: block;
             text-align:center;
         }
+        p.accountinfo{
+            text-align:left;
+        }
 
         /*div.alert-success,div.alert-error{
             font-size:16px !important;
@@ -61,12 +64,12 @@
                 <fieldset>
                     <div class="input-prepend">
                         <span class="add-on"><i class="icon-user"></i></span>
-                        <input autofocus name="account" type="text" value="admin" />
+                        <input autofocus name="account" type="text" />
                     </div>
 
                     <div class="input-prepend">
                         <span class="add-on"><i class="icon-lock"></i></span>
-                        <input name="password" type="password" value="admin" />
+                        <input name="password" type="password" />
                     </div>
 
                     <div class="input-prepend input-append">
@@ -81,6 +84,12 @@
                 </fieldset>
             </form>
         </div>
+        <p class="span5 offset3 accountinfo">
+            管理员帐号：admin　密码admin<br/>
+            以下帐号密码均为<strong>123</strong><br/>
+            超市总店：<br/>负责人<strong>headdirector</strong>、销售员<strong>headsales</strong>、入库员<strong>headstock</strong><br/>
+            步行街分店：<br/>负责人<strong>bxjdirector</strong>、销售员<strong>bxjsales</strong>、入库员<strong>bxjstock</strong><br/>
+        </p>
     </div>
 
 </div>

@@ -127,7 +127,9 @@ INSERT INTO `node` (`name`, `title`, `status`, `remark`, `sort`, `pid`, `level`)
       入库管理相关
 ******************************************/
 INSERT INTO `node` (`name`, `title`, `status`, `remark`, `sort`, `pid`, `level`) VALUES
-('index', '入库记录列表', 1, '', 0, 9, 3);
+('index', '入库列表', 1, '', 0, 9, 3),
+('detail', '详细信息', 1, '', 0, 9, 3),
+('search', '搜索', 1, '', 0, 9, 3);
 
 /*******************************************
       销售管理相关
