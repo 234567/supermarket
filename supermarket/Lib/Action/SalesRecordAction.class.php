@@ -34,7 +34,7 @@ class SalesRecordAction extends BaseAction
         try {
             $service = D("SalesRecord", "Service");
             //如果不是管理员，限定分店ID为自己的管理的分店。
-            if (session(C("ADMIN_AUTH_KEY")) !== true) {
+            if ($_SESSION[C("ADMIN_AUTH_KEY")] !== true) {
                 $branchId = $_SESSION["staff_info"]["branch_id"];
             }
             $result = $service->getList(array(), $branchId);
@@ -70,7 +70,7 @@ class SalesRecordAction extends BaseAction
         try {
             $service = D("SalesRecord", "Service");
             //如果不是管理员，限定分店ID为自己的管理的分店。
-            if (session(C("ADMIN_AUTH_KEY")) !== true) {
+            if ($_SESSION[C("ADMIN_AUTH_KEY")] !== true) {
                 $branchId = $_SESSION["staff_info"]["branch_id"];
             }
             $result = $service->getList($map, $branchId, $staffId);
@@ -94,7 +94,7 @@ class SalesRecordAction extends BaseAction
 
         $service = D("SalesRecord", "Service");
         try {
-            if (session(C("ADMIN_AUTH_KEY")) === true) {
+            if ($_SESSION[C("ADMIN_AUTH_KEY")] === true) {
                 $result = $service->getDetail($recordId);
             } else {
                 $result = $service->getDetail($recordId, $_SESSION["staff_info"]["branch_id"]);

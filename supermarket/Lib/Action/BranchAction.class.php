@@ -23,7 +23,7 @@ class BranchAction extends BaseAction
         //或者直接给予错误提示
         $currBid = intval($_SESSION["branch_info"]["id"]);
         //如果不是管理员，那么查看的不是自己分店的信息就要报错
-        if (session(C("ADMIN_AUTH_KEY")) !== true && $branchId != $currBid) {
+        if ($_SESSION[C("ADMIN_AUTH_KEY")] !== true && $branchId != $currBid) {
             $this->error("请不要跨越权限尝试查看其他分店的库存信息！");
             //$branchId = $currBid;
         }
@@ -57,7 +57,7 @@ class BranchAction extends BaseAction
             $this->error("参数错误！");
         }
         //如果不管理员
-        if (session(C("ADMIN_AUTH_KEY")) !== true) {
+        if ($_SESSION[C("ADMIN_AUTH_KEY")] !== true) {
             $branchId = $_SESSION["staff_info"]["branch_id"];
         }
         try {

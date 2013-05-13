@@ -43,7 +43,7 @@ class StockGoodsAction extends BaseAction
     public function cancel()
     {
         //清空入库商品列表
-        session("stock_list", null);
+        unset($_SESSION["stock_list"]);
         $this->redirect("StockGoods/index");
     }
 
@@ -92,7 +92,7 @@ class StockGoodsAction extends BaseAction
      */
     public function showlist()
     {
-        $stock_list = session("stock_list");
+        $stock_list = $_SESSION["stock_list"];
         $totalPrice = 0.0;
         $totalAmount = 0;
         foreach ($stock_list as $stock) {
@@ -119,14 +119,14 @@ class StockGoodsAction extends BaseAction
             $this->error("请输入正确的修改信息！");
         }
 
-        $stockList = session("stock_list");
+        $stockList = $_SESSION["stock_list"];
         foreach ($stockList as &$stock) {
             if ($stock["id"] == $goodsId) {
                 $stock["actual_cost"] = $cost;
                 $stock["amount"] = $amount;
             }
         }
-        session("stock_list", $stockList);
+        $_SESSION["stock_list"] = $stockList;
         $this->success("修改成功！");
     }
 
@@ -136,7 +136,7 @@ class StockGoodsAction extends BaseAction
     public function del()
     {
         $goodsId = $this->_param("goodsId");
-        $stockList = session("stock_list");
+        $stockList = $_SESSION["stock_list"];
         $len = count($stockList);
         while ($len--) {
             if ($stockList[$len]["id"] == $goodsId) {
@@ -144,7 +144,7 @@ class StockGoodsAction extends BaseAction
 //                unset($stockList[$len]);
             }
         }
-        session("stock_list", $stockList);
+        $_SESSION["stock_list"] = $stockList;
         $this->success("删除成功！");
     }
 
@@ -154,7 +154,7 @@ class StockGoodsAction extends BaseAction
     public function doStock()
     {
         //获取员工信息
-        $staffInfo = session("staff_info");
+        $staffInfo = $_SESSION["staff_info"];
         //获取商品列表
         $stock_list = & $_SESSION["stock_list"];
         $service = D("StockRecord", "Service");
@@ -173,7 +173,7 @@ class StockGoodsAction extends BaseAction
     public function history()
     {
         //获取员工信息
-        $staffInfo = session("staff_info");
+        $staffInfo = $_SESSION["staff_info"];
         $map = array();
         $map["staff_id"] = $staffInfo["id"];
         $map["branch_id"] = $staffInfo["branch_id"];

@@ -78,7 +78,7 @@ class RoleAction extends BaseAction
         }
 
         $service = D("Role", "Service");
-        if (session(C("ADMIN_AUTH_KEY")) === true) {
+        if ($_SESSION[C("ADMIN_AUTH_KEY")] === true) {
             $result = $service->getStaffList($id);
         } else {
             //只能查看自己所在分店

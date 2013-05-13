@@ -154,7 +154,7 @@ function docReady(){
     });
 
     $("img").on("error",function(){
-        $(this).attr("src","/market/assets/images/noimages.png");
+        $(this).attr("src","/assets/images/noimages.png");
     });
     //表格排序插件
     $("table").addClass("tablesorter").tablesorter();

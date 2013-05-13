@@ -107,7 +107,7 @@ class MenuWidget extends Widget
                     continue;
                 }
                 $url = explode("/", $module['url']);
-                if (isset($accessList[strtoupper(APP_NAME)][strtoupper($url[0])]) || session(C("ADMIN_AUTH_KEY")) === true) {
+                if (isset($accessList[strtoupper(APP_NAME)][strtoupper($url[0])]) || $_SESSION[C("ADMIN_AUTH_KEY")] === true) {
                     //设置模块访问权限
                     $module['access'] = 1;
                     $menu[$key] = $module;

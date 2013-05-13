@@ -64,7 +64,7 @@ class PublicAction extends Action
         }
 
         //检测验证码
-        if (session("verify") != md5($verify)) {
+        if ($_SESSION["verify"] != md5($verify)) {
             $this->error("验证码错误！");
         }
 
@@ -89,9 +89,9 @@ class PublicAction extends Action
             $this->error("密码错误！");
         }
 
-        session(C("USER_AUTH_KEY"), $authInfo["id"]);
+        $_SESSION[C("USER_AUTH_KEY")] = $authInfo["id"];
         //保存员工姓名
-        session("staff_info", $authInfo);
+        $_SESSION["staff_info"] = $authInfo;
 
         //获取分店信息
         $branchInfo = M("Branch")->where(array("id" => $authInfo["branch_id"]))->find();
@@ -100,11 +100,11 @@ class PublicAction extends Action
             $this->error("不存在的分店信息，你肯定不是本超市的员工！", U("public/logout"));
         }
         //保存分店信息
-        session("branch_info", $branchInfo);
+        $_SESSION["branch_info"] = $branchInfo;
 
         //如果是超级管理员
         if ($authInfo["account"] === "admin") {
-            session(C("ADMIN_AUTH_KEY"), true);
+            $_SESSION[C("ADMIN_AUTH_KEY")] = true;
         } else {
             //获取员工的角色标识，如果小于2,说明是负责人以上的等级，有更多的权限
             //否则就只能处于销售前台或者入库前台
@@ -113,7 +113,7 @@ class PublicAction extends Action
                 $this - error("找不到员工的角色信息！", U("public/logout"));
             }
             $roleType = intval($result["role_id"]);
-            session("role_type", $roleType);
+            $_SESSION["role_type"] = $roleType;
         }
 
         //保存登录信息
@@ -166,8 +166,8 @@ class PublicAction extends Action
     public function profile()
     {
         $this->checkUser();
-        $this->vo = session("staff_info");
-        $roleType = session("role_type");
+        $this->vo = $_SESSION["staff_info"];
+        $roleType = $_SESSION["role_type"];
         if ($roleType === 3) {
             $this->display("SaleGoods:profile");
         } else if ($roleType === 4) {
@@ -183,7 +183,7 @@ class PublicAction extends Action
     public function updateProfile()
     {
         $this->checkUser();
-        $staffInfo = session("staff_info");
+        $staffInfo = $_SESSION["staff_info"];
         $model = D("Staff");
         $result = $model->create();
         if (false === $result) {
@@ -201,7 +201,7 @@ class PublicAction extends Action
         //重置SESSION中的员工信息
 
         //TODO：更新相关冗余字段
-        session("staff_info", $result);
+        $_SESSION["staff_info"] = $result;
         $this->success("修改个人信息成功！");
     }
 
@@ -211,7 +211,7 @@ class PublicAction extends Action
     public function changepw()
     {
         $this->checkUser();
-        $roleType = session("role_type");
+        $roleType = $_SESSION["role_type"];
 
         if ($roleType === C('ROLE_TYPE_SALESMAN')) {
             $this->display("SaleGoods:changepw");
@@ -235,7 +235,7 @@ class PublicAction extends Action
             $this->error("请输入新旧密码或者重复密码与新密码不一致！");
         }
 
-        $staffInfo = session("staff_info");
+        $staffInfo = $_SESSION["staff_info"];
         if (md5($_POST["oldpass"]) != $staffInfo["password"]) {
             $this->error("旧密码错误！");
         }
@@ -246,7 +246,7 @@ class PublicAction extends Action
         }
 
         $staffInfo["password"] = md5($_POST["newpass"]);
-        session("staff_info", $staffInfo);
+        $_SESSION["staff_info"] = $staffInfo;
 
         $this->success("密码修改成功！");
     }
@@ -255,8 +255,13 @@ class PublicAction extends Action
     public function avatar()
     {
         $this->checkUser();
+        $roleType = $_SESSION["role_type"];
+       if(!empty($_SESSION["staff_info"]["photo"])){
+           $this->avatar =$_SESSION["staff_info"]["photo"];
+       }else{
+           $this->avatar = "/assets/images/noimages.png";
+       }
 
-        $roleType = session("role_type");
         if ($roleType === C('ROLE_TYPE_SALESMAN')) {
             $this->display("SaleGoods:avatar");
         } else if ($roleType === C('ROLE_TYPE_STOCKMAN')) {

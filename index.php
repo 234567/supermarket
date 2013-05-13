@@ -11,7 +11,7 @@ define("APP_NAME","SuperMarket");
 define("APP_PATH","./supermarket/");
 
 //开启调试模式
-define("APP_DEBUG",true);
+//define("APP_DEBUG",true);
 
 //更改模板文件路径
 define("TMPL_PATH","./templates/");

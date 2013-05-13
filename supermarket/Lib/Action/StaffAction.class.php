@@ -13,7 +13,7 @@ class StaffAction extends BaseAction
     public function index()
     {
         try {
-            if (session(C("ADMIN_AUTH_KEY")) !== true) {
+            if ($_SESSION[C("ADMIN_AUTH_KEY")] !== true) {
                 //如果不是管理员
                 //取出员工所属的分店信息
                 $branchId = $_SESSION["staff_info"]["branch_id"];

@@ -21,7 +21,7 @@ class SaleGoodsAction extends BaseAction
     public function cancel()
     {
         //清空购物车商品列表
-        session("cart_list", null);
+        unset($_SESSION["cart_list"]);
         $this->redirect("SaleGoods/index");
     }
 
@@ -30,7 +30,7 @@ class SaleGoodsAction extends BaseAction
      */
     public function begin()
     {
-        $cartList = session("cart_list");
+        $cartList = $_SESSION["cart_list"];
         //如果购物车为空
         if (empty($cartList)) {
             $this->redirect("SaleGoods/scan");
@@ -112,8 +112,8 @@ class SaleGoodsAction extends BaseAction
      */
     public function showCart()
     {
-        $staffInfo = session("staff_info");
-        $cartList = session("cart_list");
+        $staffInfo = $_SESSION["staff_info"];
+        $cartList = $_SESSION["cart_list"];
         //商品出销信息的查询条件
         $map = array();
         $map["branch_id"] = $staffInfo["branch_id"];
@@ -148,7 +148,7 @@ class SaleGoodsAction extends BaseAction
         }
 
         //更新SESSION的值
-        session("cart_list", $cartList);
+        $_SESSION["cart_list"] = $cartList;
 
         //模板变量
         $this->list = $cartList;
@@ -160,7 +160,7 @@ class SaleGoodsAction extends BaseAction
     public function delFromCart()
     {
         $goodsId = $this->_param("goodsId");
-        $cartList = session("cart_list");
+        $cartList = $_SESSION["cart_list"];
         $len = count($cartList);
         while ($len--) {
             if ($cartList[$len]["id"] == $goodsId) {
@@ -168,7 +168,7 @@ class SaleGoodsAction extends BaseAction
 //                unset($stockList[$len]);
             }
         }
-        session("cart_list", $cartList);
+        $_SESSION["cart_list"] = $cartList;
         $this->success("删除成功！");
     }
 
@@ -229,9 +229,9 @@ class SaleGoodsAction extends BaseAction
     {
 
         //获取员工信息
-        $staffInfo = session("staff_info");
+        $staffInfo = $_SESSION["staff_info"];
         //获取商品列表
-        $goodsList = & $_SESSION["cart_list"];
+        $goodsList = &$_SESSION["cart_list"];
         $service = D("SalesRecord", "Service");
 
         //获取各商品的数量
@@ -242,14 +242,14 @@ class SaleGoodsAction extends BaseAction
         try {
             $result = $service->doSale($staffInfo, $goodsList);
             //保存其他记录信息
-            session("record_info", $result);
+            $_SESSION["record_info"] = $result;
         } catch (Exception $e) {
             $this->error("交易发生错误！" . $e->getMessage());
         }
 
 
         //清空购物车商品列表
-        session("cart_list", null);
+        unset($_SESSION["cart_list"]);
         //$this->success("销售成功！",U("SaleGoods/showticket"));
         //提示成功页面并重定向到打印小票
         $this->success("销售成功！", U("SaleGoods/showticket?id=" . $result["id"]));
@@ -285,7 +285,7 @@ class SaleGoodsAction extends BaseAction
     public function history()
     {
         //获取员工信息
-        $staffInfo = session("staff_info");
+        $staffInfo = $_SESSION["staff_info"];
         try {
             $result = D("SalesRecord", "Service")->getList(array(), $staffInfo["branch_id"], $staffInfo["id"]);
         } catch (Exception $e) {

@@ -18,11 +18,8 @@
             <!--<img id="previewimg" src="demo_files/sago.jpg" alt="Preview" class="hide pull-right" style="width: 150px;height:150px;overflow: hidden;"/>-->
 
             <div class="alert alert-info hide tips"></div>
-            <empty name="Think.session.staff_info.photo">
-                <img id="preview" src="__ASSETS__/images/noimages.png"/>
-                <else/>
-                <img id="preview"  src="__ROOT__/{$Think.session.staff_info.photo}" alt="头像"/>
-            </empty>
+
+            <img id="preview"  src="__ROOT__/{$avatar}" alt="头像"/>
             <hr/>
             <form id="uploadform" method="post" action="{:U('public/upload')}" enctype="multipart/form-data">
                 <fieldset>

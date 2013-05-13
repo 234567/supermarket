@@ -24,7 +24,7 @@ class BranchService
 
         //取出员工所属的分店信息
         $map["id"] = $_SESSION["staff_info"]["branch_id"];
-        if (session(C("ADMIN_AUTH_KEY")) == true) {
+        if ($_SESSION[C("ADMIN_AUTH_KEY")] === true) {
             //如果是管理员
             unset($map["id"]);
         }

@@ -18,7 +18,7 @@ class StockRecordService
         //是分店负责人，带上分店ID查询、及入库员工id
         $map["branch.id"] = $_SESSION["branch_info"]["id"];
         //如果是管理员，可惜查询所有入库记录
-        if (session(C("ADMIN_AUTH_KEY")) == true) {
+        if ($_SESSION[C("ADMIN_AUTH_KEY")] === true) {
             //如果是管理员
             unset($map["branch.id"]);
         }
@@ -281,7 +281,7 @@ class StockRecordService
          * 入库项及入库记录插入成功
          * 清空入库记录 $stockList
          */
-        session("stock_list", null);
+        unset($_SESSION["stock_list"]);
     }
 
 }
