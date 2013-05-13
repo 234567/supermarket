@@ -144,7 +144,7 @@
                         if(json.status === 1){
                             codes.push(code);
                             $("form").resetForm();
-                            $('#goodsInfo').addClass("noinfo").hide();
+                            $('#goodsInfo').removeClass("hasinfo").addClass("noinfo").hide();
                         }
                     }
                 });

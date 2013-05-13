@@ -91,23 +91,34 @@ class StockRecordService
 //    }
 
     //查看入库记录详细
-    public function detail($recordId, $supplierId)
+    public function detail($recordId,$branchId = 0,$staffId=0)
     {
+        $map = array();
+        $map["id"] = $recordId;
+        if(!empty($branchId)){
+            $map["branch_id"] = $branchId;
+        }
+        if(!empty($staffId)){
+            $map["staff_id"] = $staffId;
+        }
+
+        $stockRecord = M("StockRecord")->where($map)->find();
+        if(empty($stockRecord)){
+            throw new ThinkException("找不到该入库记录!");
+        }
+
         //从页面获取入库记录id
         $model = D("StockItem");
-        if (false === $recordId) {
-            throw new ThinkException("入库记录ID为空！");
-        }
         //查询入库记录详细
         $result = array();
-        $count = $model->where("stock_record_id=" . $recordId)->count("id");
+        $count = $model->where("stock_record_id = ".$recordId)->count("id");
         if ($count > 0) {
             $field = array(
                 "stock_item.id as itemId", "actual_cost", "amount", "remark ", "goods.*"
             );
-            $result["list"] = $model->join("goods on stock_item.goods_id = goods.id")->field($field)->where("stock_record_id=" . $recordId)->select();
+            $result["list"] = $model->join("goods on stock_item.goods_id = goods.id")->field($field)->where("stock_record_id = ".$recordId)->select();
         }
-        $result["supplier"] = M("Supplier")->getById($supplierId);
+        $result["supplier"] = M("Supplier")->getById($stockRecord["supplier_id"]);
         return $result;
     }
 

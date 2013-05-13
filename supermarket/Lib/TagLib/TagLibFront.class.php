@@ -185,6 +185,9 @@ class TagLibFront extends TagLib
             /**
              * 选择供货商
              */
+            if ($appendoption) {
+                $parsestr .= '<option value="0">无</option>';
+            }
             $list = M($model)->where("status=1")->select();
             foreach ($list as $k => $v) {
                 $dis = $v['id'] == $disabled ? ' disabled="disabled"' : "";

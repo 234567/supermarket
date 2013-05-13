@@ -4,17 +4,17 @@ return array(
 
     //数据库配置
     'DB_TYPE'               => 'mysql',     // 数据库类型
-//    'DB_HOST'               => '192.168.1.2', // 服务器地址
-//    'DB_NAME'               => 'supermarket',          // 数据库名
-//    'DB_USER'               => 'root',      // 用户名
-//    'DB_PWD'                => 'root',          // 密码
-//    'DB_PORT'               => '3306',        // 端口
-
-    'DB_HOST'               => '10.0.22.169', // 服务器地址
-    'DB_NAME'               => 'd4a5a5e975871452e9f981cdb7bf79555',          // 数据库名
-    'DB_USER'               => 'uxpmOqx0bNICN',      // 用户名
-    'DB_PWD'                => 'paU4YzisZuv3u',          // 密码
+    'DB_HOST'               => '192.168.1.2', // 服务器地址
+    'DB_NAME'               => 'supermarket',          // 数据库名
+    'DB_USER'               => 'root',      // 用户名
+    'DB_PWD'                => 'root',          // 密码
     'DB_PORT'               => '3306',        // 端口
+
+//    'DB_HOST'               => '10.0.22.169', // 服务器地址
+//    'DB_NAME'               => 'd4a5a5e975871452e9f981cdb7bf79555',          // 数据库名
+//    'DB_USER'               => 'uxpmOqx0bNICN',      // 用户名
+//    'DB_PWD'                => 'paU4YzisZuv3u',          // 密码
+//    'DB_PORT'               => '3306',        // 端口
     'DB_PREFIX'             => '',    // 数据库表前缀
 
     //启用主题
@@ -78,7 +78,7 @@ return array(
     //自动加载、预加载标签库
     'APP_AUTOLOAD_PATH'         =>  '@.TagLib',
     'TAGLIB_PRE_LOAD' => 'Front' ,
-//    'SHOW_PAGE_TRACE' => 1,
+    'SHOW_PAGE_TRACE' => 1,
 
 
     //压缩HTML输出

@@ -24,11 +24,18 @@ class StockRecordAction extends BaseAction
     //查看入库记录详细
     public function detail()
     {
-        $service = D("StockRecord", "Service");
-        $recordId = $this->_param("recordId");
-        $supplierId = $this->_param("supplierId");
+        $recordId = $this->_param("recordId","intval");
+        if(empty($recordId)){
+            $this->error("参数错误！");
+        }
+
         try {
-            $result = $service->detail($recordId, $supplierId);
+            $service = D("StockRecord", "Service");
+            if($_SESSION[C("ADMIN_AUTH_KEY")] === true){
+                $result = $service->detail($recordId);
+            }else{
+                $result = $service->detail($recordId,$_SESSION["staff_info"]["branch_id"]);
+            }
         } catch (Exception $e) {
             $this->error("查看入库详细出错" . $e->getMessage());
         }
@@ -57,9 +64,13 @@ class StockRecordAction extends BaseAction
         if (!empty($supplierId)) {
             $map["stock_record.supplier_id"] = array("eq", $supplierId);
         }
-        if (!empty($branchId)) {
-            $map["stock_record.branch_id"] = array("eq", $branchId);
+        if($_SESSION[C("ADMIN_AUTH_KEY")] === true && !empty($branchId)){
+            $map["stock_record.branch_id"] =  $branchId;
+        }else{
+            //限定只能查看自己所在分店
+            $map["stock_record.branch_id"] =  $_SESSION["staff_info"]["branch_id"];
         }
+
         try {
             $service = D("StockRecord", "Service");
             $result = $service->getList($map);

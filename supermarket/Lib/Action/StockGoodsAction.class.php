@@ -189,13 +189,17 @@ class StockGoodsAction extends BaseAction
      */
     public function detail()
     {
-        $service = D("StockRecord", "Service");
-        $recordId = $this->_param("recordId");
-        $supplierId = $this->_param("supplierId");
+        $recordId = $this->_param("recordId","intval");
+        if(empty($recordId)){
+            $this->error("参数错误！");
+        }
+
         try {
-            $result = $service->detail($recordId, $supplierId);
+            $service = D("StockRecord", "Service");
+            //员工只能查看他自己的入库记录
+            $result = $service->detail($recordId,$_SESSION["staff_info"]["branch_id"],$_SESSION["staff_info"]["id"]);
         } catch (Exception $e) {
-            $this->error("查看入库详细出差" . $e->getMessage());
+            $this->error($e->getMessage());
         }
         $this->list = $result["list"];
         $this->supplier = $result["supplier"];
