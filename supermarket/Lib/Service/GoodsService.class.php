@@ -16,13 +16,13 @@ class GoodsService
     public function getList($map = array())
     {
         $model = M("Goods");
-
+        //$map["status"] = array("gt",1);
         $count = $model->where($map)->count('id');
         $result = array();
         if ($count > 0) {
             import("@.ORG.Util.Page");
             $p = new Page($count, 20);
-            $result["list"] = $model->field("goods.*,category.name as category_name")->where($map)->join("category ON category.id = category_id")->limit($p->firstRow . ',' . $p->listRows)->select();
+            $result["list"] = $model->field("goods.*,category.name as category_name")->where($map)->join("category ON category.id = category_id")->order("id desc")->limit($p->firstRow . ',' . $p->listRows)->select();
             $result["page"] = $p->show();
         }
         return $result;
@@ -84,10 +84,10 @@ class GoodsService
         $model->startTrans();
         //根据传过来的ID参数，有可能是批量删除，也就是删除多个ID，默认以,分割
         $condition = array("id" => array("in", explode(",", $id)));
-        //这里的删除并不是真正的删除操作，只是将信息标记为删除状态
-        //$result = $model->where($condition)->delete();
+        $result = $model->where($condition)->delete();
         //将状态设置为-1表示已删除状态
-        $result = $model->where($condition)->setField("status", -1);
+        //这里的删除并不是真正的删除操作，只是将信息标记为删除状态
+//        $result = $model->where($condition)->setField("status", -1);
         if (false == $result) {
             $model->rollback();
             throw new ThinkException($model->getError());

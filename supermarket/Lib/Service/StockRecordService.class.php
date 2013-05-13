@@ -11,16 +11,12 @@ class StockRecordService
     {
         $model = D("StockRecord");
         $result = array();
-        $staff_info = $_SESSION["staff_info"];
-        if (false === $staff_info) {
-            throw new ThinkException("请先登录！");
-        }
         //是分店负责人，带上分店ID查询、及入库员工id
-        $map["branch.id"] = $_SESSION["branch_info"]["id"];
+        $map["branch_id"] = $_SESSION["staff_info"]["branch_id"];
         //如果是管理员，可惜查询所有入库记录
         if ($_SESSION[C("ADMIN_AUTH_KEY")] === true) {
             //如果是管理员
-            unset($map["branch.id"]);
+            unset($map["branch_id"]);
         }
         $count = $model->where($map)->count("id");
         //查询入库记录
@@ -36,7 +32,7 @@ class StockRecordService
             $join = array("supplier on stock_record.supplier_id = supplier.id", "branch on stock_record.branch_id = branch.id");
             $result["list"] = $model->join($join)
                 ->where($map)->field($field)->order("time desc")->limit($p->firstRow . ',' . $p->listRows)->select();
-            $result["staff"] = D("Staff")->getById($staff_info["id"]);
+            $result["staff"] = D("Staff")->getById($_SESSION["staff_info"]["id"]);
             $result["page"] = $p->show();
         }
         return $result;
@@ -216,7 +212,6 @@ class StockRecordService
                     throw new ThinkException("create 分店添加出错" . $branchGoods->getError());
                 }
                 //向分店中添加商品信息
-                trace($branchGoodsData);
                 $branchGoods_id = $branchGoods->save($result);
                 if (false == $branchGoods_id) {
                     $record->rollback();
@@ -233,7 +228,6 @@ class StockRecordService
             $suppler = M("supplier_has_goods");
             $supplierGoods = $suppler->where("goods_id=" . $stockItem["id"] . " and supplier_id=" . $supplier_id)->find();
             //供货商下不存在该商品信息，将该商品加入到给分店中
-            dump($stockItem["actual_cost"]);
             if (false == $supplierGoods) {
                 $supplierGoodsData = array(
                     "supplier_id" => $supplier_id, //供货商ID

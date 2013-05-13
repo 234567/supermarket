@@ -12,13 +12,17 @@
 
             <div id="preview-pane" class="hide pull-right">
                 <div class="preview-container">
-                    <img src="demo_files/sago.jpg" class="jcrop-preview" alt="Preview" />
+                    <img src="__ASSETS__/images/noimages.png" class="jcrop-preview" alt="Preview" />
                 </div>
             </div>
-            <!--<img id="previewimg" src="demo_files/sago.jpg" alt="Preview" class="hide pull-right" style="width: 150px;height:150px;overflow: hidden;"/>-->
 
             <div class="alert alert-info hide tips"></div>
-            <img id="preview"  src="__ROOT__/{$avatar}" alt="头像"/>
+            <empty name="avatar">
+                <img id="preview"  src="__ASSETS__/images/noimages.png" alt="头像"/>
+                <else/>
+                <img id="preview"  src="__ROOT__/{$avatar}" alt="头像"/>
+            </empty>
+
             <hr/>
             <form id="uploadform" method="post" action="{:U('public/upload')}" enctype="multipart/form-data">
                 <fieldset>

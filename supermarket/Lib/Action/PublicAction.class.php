@@ -256,11 +256,7 @@ class PublicAction extends Action
     {
         $this->checkUser();
         $roleType = $_SESSION["role_type"];
-       if(!empty($_SESSION["staff_info"]["photo"])){
-           $this->avatar =$_SESSION["staff_info"]["photo"];
-       }else{
-           $this->avatar = "/assets/images/noimages.png";
-       }
+        $this->avatar =$_SESSION["staff_info"]["photo"];
 
         if ($roleType === C('ROLE_TYPE_SALESMAN')) {
             $this->display("SaleGoods:avatar");

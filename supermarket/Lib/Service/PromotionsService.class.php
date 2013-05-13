@@ -21,11 +21,11 @@ class PromotionsService
         //取出员工所属的分店信息
         $branchInfo = $_SESSION["branch_info"];
         //是分店负责人，带上分店ID查询
-        $map["branch.id"] = $branchInfo["id"];
+        $map["branch_id"] = $branchInfo["id"];
         //如果是管理员，可惜查询所有促销信息
         if ($_SESSION[C("ADMIN_AUTH_KEY")] === true) {
             //如果是管理员
-            unset($map["branch.id"]);
+            unset($map["branch_id"]);
         }
         $model = D("Promotions");
         $count = $model->where($map)->count("id");
@@ -55,14 +55,10 @@ class PromotionsService
          * 1：超级管理员：可以查看所有分店的历史促销信息
          * 2：分店负责人：只可以查看本分店的历史促销信息，即在查询时带入分店id进行查询
          */
-        //取出员工所属的分店信息
-        $branchInfo = $_SESSION["branch_info"];
-        //是分店负责人，带上分店ID查询
-        $map["branch.id"] = $branchInfo["id"];
         //如果是管理员，可惜查询所有促销信息
         if ($_SESSION[C("ADMIN_AUTH_KEY")] === true) {
             //如果是管理员
-            unset($map["branch.id"]);
+            unset($map["branch_id"]);
         }
         $model = D("Promotions");
         $now = time();

@@ -21,7 +21,6 @@ class PromotionsAction extends BaseAction
         }
         $this->branch = $result["branch"];
         $this->goods = $result["goods"];
-        trace($result["goods"]);
         $this->display();
     }
 
@@ -128,7 +127,6 @@ class PromotionsAction extends BaseAction
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
-        trace($result);
         $this->list = $result["list"];
         $this->page = $result["page"];
         $this->display();

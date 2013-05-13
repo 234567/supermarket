@@ -16,7 +16,6 @@ class StockRecordAction extends BaseAction
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
-        trace($result["list"]);
         $this->list = $result["list"];
         $this->page = $result["page"];
         $this->display();
@@ -35,7 +34,6 @@ class StockRecordAction extends BaseAction
         }
         $this->list = $result["list"];
         $this->supplier = $result["supplier"];
-        trace($result);
         $this->display();
     }
 

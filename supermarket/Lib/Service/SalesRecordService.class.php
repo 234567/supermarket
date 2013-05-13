@@ -128,7 +128,6 @@ class SalesRecordService
     public function getList($map = array(), $branchId = 0, $staffId = 0)
     {
         $model = M("SalesRecord");
-        trace($branchId);
         if (!empty($branchId)) {
             $map["sales_record.branch_id"] = $branchId;
         }

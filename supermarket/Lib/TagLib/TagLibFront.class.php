@@ -169,6 +169,9 @@ class TagLibFront extends TagLib
             /**
              * 商品分类选择列表
              */
+            if ($appendoption) {
+                $parsestr .= '<option value="0">无</option>';
+            }
             import("@.ORG.Category");
             $cat = new Category($model, array('id', 'pid', 'name', 'fullname'));
             $list = $cat->getList("status=1"); //获取分类结构

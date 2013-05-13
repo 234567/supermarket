@@ -199,7 +199,6 @@ class StockGoodsAction extends BaseAction
         }
         $this->list = $result["list"];
         $this->supplier = $result["supplier"];
-        trace($result);
         $this->display();
     }
 
