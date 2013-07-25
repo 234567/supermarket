@@ -2,3 +2,4 @@
 
 #忽略SuperMarket目录下的Runtime文件夹
 SuperMarket/Runtime/**/*
+.idea
