@@ -9,12 +9,6 @@ return array(
     'DB_USER'               => 'root',      // 用户名
     'DB_PWD'                => 'root',          // 密码
     'DB_PORT'               => '3306',        // 端口
-
-//    'DB_HOST'               => '10.0.22.169', // 服务器地址
-//    'DB_NAME'               => 'd4a5a5e975871452e9f981cdb7bf79555',          // 数据库名
-//    'DB_USER'               => 'uxpmOqx0bNICN',      // 用户名
-//    'DB_PWD'                => 'paU4YzisZuv3u',          // 密码
-//    'DB_PORT'               => '3306',        // 端口
     'DB_PREFIX'             => '',    // 数据库表前缀
 
     //启用主题
