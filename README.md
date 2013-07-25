@@ -9,4 +9,4 @@ SuperMarket
 
 如果你有兴趣也可以提交代码。
 
-在线DEMO [supermarket.ap01.aws.af.cm/goods/index](supermarket.ap01.aws.af.cm/goods/index) 。
+在线DEMO [supermarket.ap01.aws.af.cm/goods/index](http://supermarket.ap01.aws.af.cm/goods/index) 。
